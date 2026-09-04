@@ -12,29 +12,27 @@
     <p id="timeElement"></p>
   </div>
 
-  <!-- ЦЕНТРАЛЕН ГЛАВЕН КОНТЕЙНЕР (Всичко е тук) -->
-  <div style="position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); display: flex; gap: 20px; align-items: flex-start; justify-content: center;">
+  <!-- ЦЕНТРАЛНО ИНТРО (Правоъгълник точно в центъра) -->
+  <div style="position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); padding: 30px; border: thick double orange; width: 340px; border-radius: 16px; background-color: rgba(255, 255, 255, 0.2); text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.2);">
+    <h1 style="margin: 4px; font-size: 32px;">vaskoOS</h1>  
+    <h2>Introduction</h2>
+    <p>Hello world!</p>
     
-    <!-- ПРОЗОРЕЦ 1: vaskoOS (В центъра) -->
-    <div style="padding: 20px; border: thick double orange; width: 200px; border-radius: 16px; background-color: rgba(255, 255, 255, 0.2); text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.2);">
-      <h1 style="margin: 4px;">vaskoOS</h1>  
-      <h2>Introduction</h2>
-      <p>Hello world!</p>
-      
-      <!-- Сигурен линк за логото, който се отваря във всеки браузър -->
-      <img style="width: 140px; height: auto; display: block; margin: 15px auto;" 
-           src="https://unpkg.com" alt="IKEA Logo" />
-      
-      <br>
-      <a href="https://instagram.com" style="color: yellow;">label</a>
-    </div>
+    <!-- ВГРАДЕНО ИСТИНСКО ЛОГО НА IKEA (Чрез чист HTML код - няма как да се счупи) -->
+    <svg style="width: 140px; height: auto; display: block; margin: 15px auto;" viewBox="0 0 24 24" xmlns="http://w3.org">
+      <path fill="#0051ba" d="M24 0H0v24h24V0z"/>
+      <ellipse fill="#ffcc00" cx="12" cy="12" rx="11.5" ry="8.5"/>
+      <path fill="#0051ba" d="M4.2 8.5h2.1v7H4.2v-7zm3.1 0h2.1v2.8l2.1-2.8h2.5l-2.7 3.3 2.9 3.7h-2.5l-1.9-2.6v2.6H7.3v-7zm10 0h3.5v1.7h-1.4v1h1.2v1.6h-1.2v1h1.5v1.7h-3.6v-7zm-4 0H15l-.6 1.8h-1.1L12.7 8.5h-1.4l-1.9 7h2l.3-1.3h1.8l.3 1.3h2l-1.9-7zm-2.4 4l.6-2.5.6 2.5h-1.2z"/>
+    </svg>
+    
+    <br>
+    <a href="https://instagram.com" style="color: yellow;">label</a>
 
-    <!-- ПРОЗОРЕЦ 2: Notepad (Зависим от главния и се показва/крие до него) -->
-    <div id="notepadWindow" style="padding: 20px; border: thick double orange; width: 220px; border-radius: 16px; background-color: rgba(255, 255, 255, 0.2); text-align: center; display: block; box-shadow: 0 8px 32px rgba(0,0,0,0.2);">
+    <!-- NOTEPAD (Закачен в долния десен ъгъл на централното интро) -->
+    <div id="notepadWindow" style="position: absolute; top: 100%; left: 50%; width: 260px; padding: 15px; margin-top: 20px; border: thick double orange; border-radius: 16px; background-color: rgba(255, 255, 255, 0.2); text-align: center; display: block; box-shadow: 0 8px 32px rgba(0,0,0,0.2);">
       <h2 style="margin: 4px; color: yellow;">📝 Notepad</h2>
-      <p style="margin: 5px 0 15px 0; font-size: 13px; color: #e0e0e0;">Твоята отделна програма</p>
-      
-      <textarea placeholder="Напиши нещо тук..." style="width: 90%; height: 120px; border-radius: 8px; border: 1px solid orange; padding: 8px; font-family: sans-serif; resize: none; background-color: rgba(255,255,255,0.8); color: black; box-sizing: border-box;"></textarea>
+      <p style="margin: 5px 0 10px 0; font-size: 13px; color: #e0e0e0;">Твоята отделна програма</p>
+      <textarea placeholder="Напиши нещо тук..." style="width: 95%; height: 100px; border-radius: 8px; border: 1px solid orange; padding: 8px; font-family: sans-serif; resize: none; background-color: rgba(255,255,255,0.8); color: black; box-sizing: border-box;"></textarea>
     </div>
 
   </div>
