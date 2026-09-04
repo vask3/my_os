@@ -1,37 +1,64 @@
 <!DOCTYPE html>
 <html>
 
-  <body style="background: linear-gradient(135deg, #667eea, #764ba2); background-size: cover; height: 100vh; margin: 0; font-family: sans-serif; color: white;">
+  <body style="background: linear-gradient(135deg, #667eea, #764ba2); background-size: cover; height: 100vh; margin: 0; font-family: sans-serif; color: white; overflow: hidden;">
 
+    <!-- Горна лента (Часовник) -->
     <div style="display: flex; justify-content: space-between; padding: 10px;">
       <p>VaskoOS</p>
       <p id="timeElement"></p>
     </div>
 
-    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px; border: thick double orange; width: 200px; border-radius: 16px; background-color: rgba(255, 255, 255, 0.2); text-align: center;">
+    <!-- Централен прозорец -->
+    <div style="position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); padding: 20px; border: thick double orange; width: 200px; border-radius: 16px; background-color: rgba(255, 255, 255, 0.2); text-align: center;">
       
-      <button onclick="toggleStartMenu()" style=""background-color: orange; border: none; color: black; font-weight: bold; padding: 8px 16px; border-radius: 8px; cursor: pointer;">
-       Start Menu
-      </button>
-
-
-        <h1 style="margin: 4px;">vaskoOS</h1>  
+      <h1 style="margin: 4px;">vaskoOS</h1>  
       <h2>Introduction</h2>
-      
       <p>Hello world!</p>
       
       <!-- Стабилен и работещ линк към официалното лого на IKEA -->
-      <img style="width: 140px; height: auto; display: block; margin: 15px auto;" 
-           src="https://wikimedia.org" alt="IKEA Logo" />
-      <br>
+      <img style="width: 140px; height: auto; display: block; margin: 15px auto; border-radius: 4px;" 
+           src="https://postimg.cc" alt="IKEA Logo" />
       
+      <!-- Поле за бележки (Notepad) -->
+      <h3 style="margin: 10px 0 5px 0; font-size: 14px; color: yellow;">Бележник:</h3>
+      <textarea placeholder="Напиши нещо тук..." style="width: 90%; height: 60px; border-radius: 8px; border: 1px solid orange; padding: 5px; font-family: sans-serif; resize: none; background-color: rgba(255,255,255,0.7); color: black;"></textarea>
+
+      <br><br>
       <a href="https://instagram.com" style="color: yellow;">label</a>
     </div>
 
+    <!-- ДОЛНА ЛЕНТА (TASKBAR) -->
+    <div style="position: absolute; bottom: 0; left: 0; width: 100%; background-color: rgba(0, 0, 0, 0.5); padding: 10px; display: flex; align-items: center; box-sizing: border-box;">
+      <!-- Бутонът СТАРТ -->
+      <button onclick="toggleStartMenu()" style="background-color: orange; border: none; color: black; font-weight: bold; padding: 8px 16px; border-radius: 8px; cursor: pointer;">
+        🚀 Start Menu
+      </button>
+    </div>
+
+    <!-- ИЗСКАЧАЩО СТАРТ МЕНЮ -->
+    <div id="startMenu" style="display: none; position: absolute; bottom: 55px; left: 10px; width: 180px; background-color: rgba(0, 0, 0, 0.8); border: 2px solid orange; border-radius: 8px; padding: 10px; box-shadow: 0px 4px 10px rgba(0,0,0,0.5); z-index: 999;">
+      <p style="margin: 0 0 10px 0; font-weight: bold; border-bottom: 1px solid orange; padding-bottom: 5px;">Приложения</p>
+      
+      <!-- Линкове в менюто -->
+      <a href="https://instagram.com" target="_blank" style="display: block; color: white; text-decoration: none; margin: 5px 0; padding: 5px; border-radius: 4px; background-color: rgba(255,255,255,0.1);">🌐 Hack Club</a>
+      <a href="https://ikea.bg" target="_blank" style="display: block; color: white; text-decoration: none; margin: 5px 0; padding: 5px; border-radius: 4px; background-color: rgba(255,255,255,0.1);">🛒 IKEA Магазин</a>
+    </div>
+
+    <!-- Скриптове (Часовник и Старт меню) -->
     <script>
       setInterval(() => {
         document.querySelector("#timeElement").innerHTML = new Date().toLocaleString();
       }, 1000);
+
+      function toggleStartMenu() {
+        var menu = document.getElementById("startMenu");
+        if (menu.style.display === "none" || menu.style.display === "") {
+          menu.style.display = "block"; // Показва менюто
+        } else {
+          menu.style.display = "none";  // Скрива менюто
+        }
+      }
     </script>
 
   </body>
