@@ -1,84 +1,86 @@
 <!DOCTYPE html>
-<html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <title>vaskoOS</title>
+</head>
+<body style="background: linear-gradient(135deg, #667eea, #764ba2); background-size: cover; height: 100vh; margin: 0; font-family: sans-serif; color: white; overflow: hidden;">
 
-  <body style="background: linear-gradient(135deg, #667eea, #764ba2); background-size: cover; height: 100vh; margin: 0; font-family: sans-serif; color: white; overflow: hidden;">
+  <!-- Горна лента (Часовник) -->
+  <div style="display: flex; justify-content: space-between; padding: 10px;">
+    <p>VaskoOS</p>
+    <p id="timeElement"></p>
+  </div>
 
-    <!-- Горна лента (Часовник) -->
-    <div style="display: flex; justify-content: space-between; padding: 10px;">
-      <p>VaskoOS</p>
-      <p id="timeElement"></p>
-    </div>
-
-    <!-- ПРОЗОРЕЦ 1: Главен прозорец (vaskoOS) -->
-    <div style="position: absolute; top: 45%; left: 35%; transform: translate(-50%, -50%); padding: 20px; border: thick double orange; width: 200px; border-radius: 16px; background-color: rgba(255, 255, 255, 0.2); text-align: center;">
+  <!-- ЦЕНТРАЛЕН ГЛАВЕН КОНТЕЙНЕР (Всичко е тук) -->
+  <div style="position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); display: flex; gap: 20px; align-items: flex-start; justify-content: center;">
+    
+    <!-- ПРОЗОРЕЦ 1: vaskoOS (В центъра) -->
+    <div style="padding: 20px; border: thick double orange; width: 200px; border-radius: 16px; background-color: rgba(255, 255, 255, 0.2); text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.2);">
       <h1 style="margin: 4px;">vaskoOS</h1>  
       <h2>Introduction</h2>
       <p>Hello world!</p>
       
-      <!-- Стабилен и работещ линк към логото на IKEA -->
-      <img style="width: 140px; height: auto; display: block; margin: 15px auto; border-radius: 4px;" 
-           src="https://postimg.cc" alt="IKEA Logo" />
+      <!-- Сигурен линк за логото, който се отваря във всеки браузър -->
+      <img style="width: 140px; height: auto; display: block; margin: 15px auto;" 
+           src="https://unpkg.com" alt="IKEA Logo" />
       
       <br>
       <a href="https://instagram.com" style="color: yellow;">label</a>
     </div>
 
-    <!-- ПРОЗОРЕЦ 2: Отделна програма Бележник (Добавихме id="notepadWindow" за управление) -->
-    <div id="notepadWindow" style="position: absolute; top: 45%; left: 65%; transform: translate(-50%, -50%); padding: 20px; border: thick double orange; width: 220px; border-radius: 16px; background-color: rgba(255, 255, 255, 0.2); text-align: center; display: block;">
+    <!-- ПРОЗОРЕЦ 2: Notepad (Зависим от главния и се показва/крие до него) -->
+    <div id="notepadWindow" style="padding: 20px; border: thick double orange; width: 220px; border-radius: 16px; background-color: rgba(255, 255, 255, 0.2); text-align: center; display: block; box-shadow: 0 8px 32px rgba(0,0,0,0.2);">
       <h2 style="margin: 4px; color: yellow;">📝 Notepad</h2>
-      <p style="margin: 5px 0 15px 0; font-size: 13px; color: #e0e0e0;">Твоята отделна програма за бележки</p>
+      <p style="margin: 5px 0 15px 0; font-size: 13px; color: #e0e0e0;">Твоята отделна програма</p>
       
       <textarea placeholder="Напиши нещо тук..." style="width: 90%; height: 120px; border-radius: 8px; border: 1px solid orange; padding: 8px; font-family: sans-serif; resize: none; background-color: rgba(255,255,255,0.8); color: black; box-sizing: border-box;"></textarea>
     </div>
 
-    <!-- ДОЛНА ЛЕНТА (TASKBAR) -->
-    <div style="position: absolute; bottom: 0; left: 0; width: 100%; background-color: rgba(0, 0, 0, 0.5); padding: 10px; display: flex; align-items: center; box-sizing: border-box; gap: 10px;">
-      <!-- Бутонът СТАРТ -->
-      <button onclick="toggleStartMenu()" style="background-color: orange; border: none; color: black; font-weight: bold; padding: 8px 16px; border-radius: 8px; cursor: pointer;">
-        🚀 Start Menu
-      </button>
+  </div>
 
-      <!-- НОВ БУТОН: За показване и скриване на Бележника -->
-      <button onclick="toggleNotepad()" style="background-color: #222; border: 1px solid orange; color: white; font-weight: bold; padding: 8px 16px; border-radius: 8px; cursor: pointer;">
-        📝 Notepad
-      </button>
-    </div>
+  <!-- ДОЛНА ЛЕНТА (TASKBAR) -->
+  <div style="position: absolute; bottom: 0; left: 0; width: 100%; background-color: rgba(0, 0, 0, 0.5); padding: 10px; display: flex; align-items: center; box-sizing: border-box; gap: 10px;">
+    <button onclick="toggleStartMenu()" style="background-color: orange; border: none; color: black; font-weight: bold; padding: 8px 16px; border-radius: 8px; cursor: pointer;">
+      🚀 Start Menu
+    </button>
 
-    <!-- ИЗСКАЧАЩО СТАРТ МЕНЮ -->
-    <div id="startMenu" style="display: none; position: absolute; bottom: 55px; left: 10px; width: 180px; background-color: rgba(0, 0, 0, 0.8); border: 2px solid orange; border-radius: 8px; padding: 10px; box-shadow: 0px 4px 10px rgba(0,0,0,0.5); z-index: 999;">
-      <p style="margin: 0 0 10px 0; font-weight: bold; border-bottom: 1px solid orange; padding-bottom: 5px;">Приложения</p>
-      
-      <!-- Линкове в менюто -->
-      <a href="https://instagram.com" target="_blank" style="display: block; color: white; text-decoration: none; margin: 5px 0; padding: 5px; border-radius: 4px; background-color: rgba(255,255,255,0.1);">🌐 Hack Club</a>
-      <a href="https://ikea.bg" target="_blank" style="display: block; color: white; text-decoration: none; margin: 5px 0; padding: 5px; border-radius: 4px; background-color: rgba(255,255,255,0.1);">🛒 IKEA Магазин</a>
-    </div>
+    <button onclick="toggleNotepad()" style="background-color: #222; border: 1px solid orange; color: white; font-weight: bold; padding: 8px 16px; border-radius: 8px; cursor: pointer;">
+      📝 Notepad
+    </button>
+  </div>
 
-    <!-- Скриптове (Часовник, Старт меню и Notepad) -->
-    <script>
-      setInterval(() => {
-        document.querySelector("#timeElement").innerHTML = new Date().toLocaleString();
-      }, 1000);
+  <!-- ИЗСКАЧАЩО СТАРТ МЕНЮ -->
+  <div id="startMenu" style="display: none; position: absolute; bottom: 55px; left: 10px; width: 180px; background-color: rgba(0, 0, 0, 0.8); border: 2px solid orange; border-radius: 8px; padding: 10px; box-shadow: 0px 4px 10px rgba(0,0,0,0.5); z-index: 999;">
+    <p style="margin: 0 0 10px 0; font-weight: bold; border-bottom: 1px solid orange; padding-bottom: 5px;">Приложения</p>
+    <a href="https://instagram.com" target="_blank" style="display: block; color: white; text-decoration: none; margin: 5px 0; padding: 5px; border-radius: 4px; background-color: rgba(255,255,255,0.1);">🌐 Hack Club</a>
+    <a href="https://ikea.bg" target="_blank" style="display: block; color: white; text-decoration: none; margin: 5px 0; padding: 5px; border-radius: 4px; background-color: rgba(255,255,255,0.1);">🛒 IKEA Магазин</a>
+  </div>
 
-      // Функция за Старт менюто
-      function toggleStartMenu() {
-        var menu = document.getElementById("startMenu");
-        if (menu.style.display === "none" || menu.style.display === "") {
-          menu.style.display = "block";
-        } else {
-          menu.style.display = "none";
-        }
+  <!-- Скриптове -->
+  <script>
+    setInterval(() => {
+      document.querySelector("#timeElement").innerHTML = new Date().toLocaleString();
+    }, 1000);
+
+    function toggleStartMenu() {
+      var menu = document.getElementById("startMenu");
+      if (menu.style.display === "none" || menu.style.display === "") {
+        menu.style.display = "block";
+      } else {
+        menu.style.display = "none";
       }
+    }
 
-      // НОВА ФУНКЦИЯ: За прибиране и вадене на Бележника
-      function toggleNotepad() {
-        var notepad = document.getElementById("notepadWindow");
-        if (notepad.style.display === "none") {
-          notepad.style.display = "block"; // Показва го на екрана
-        } else {
-          notepad.style.display = "none";  // Крие го (минимизира го)
-        }
+    function toggleNotepad() {
+      var notepad = document.getElementById("notepadWindow");
+      if (notepad.style.display === "none") {
+        notepad.style.display = "block";
+      } else {
+        notepad.style.display = "none";
       }
-    </script>
+    }
+  </script>
 
-  </body>
+</body>
 </html>
