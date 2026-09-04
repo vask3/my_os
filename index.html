@@ -12,44 +12,40 @@
     <p id="timeElement" style="margin: 0; font-weight: bold;"></p>
   </div>
 
-  <!-- ГЛАВЕН КОНТЕЙНЕР (Подрежда прозорците един до друг, центрирано) -->
-  <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 30px; flex-grow: 1; padding: 20px;">
+  <!-- ГЛАВЕН КОНТЕЙНЕР (Подрежда прозорците един до друг) -->
+  <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 40px; flex-grow: 1; padding: 20px;">
     
-    <!-- ПРОЗОРЕЦ 1: vaskoOS ИНТРО (Правоъгълник в центъра) -->
+    <!-- ПРОЗОРЕЦ 1: vaskoOS ИНТРО -->
     <div style="padding: 24px; border: 3px double orange; width: 280px; border-radius: 16px; background-color: rgba(255, 255, 255, 0.15); text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); backdrop-filter: blur(10px);">
       <h1 style="margin: 0 0 8px 0; font-size: 32px; letter-spacing: 1px;">vaskoOS</h1>  
       <h2 style="margin: 0 0 12px 0; font-size: 18px; color: #e0e0e0; font-weight: normal;">Introduction</h2>
       <p style="margin: 0 0 20px 0; color: #f3f4f6;">Hello world!</p>
       
-      <!-- ЛОГОТО НА IKEA - С фиксирани точни размери, за да изглежда красиво и нормално -->
-      <div style="width: 140px; height: 90px; margin: 0 auto; background-color: #0051ba; display: flex; align-items: center; justify-content: center; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
-        <div style="width: 130px; height: 80px; background-color: #ffcc00; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-          <span style="color: #0051ba; font-family: 'Arial Black', Impact, sans-serif; font-size: 24px; font-weight: 900; letter-spacing: -1px;">IKEA</span>
-        </div>
-      </div>
+      <!-- ОРИГИНАЛНОТО ИСТИНСКО ЛОГО НА IKEA (Директно от техния официален сайт) -->
+      <img style="width: 160px; height: auto; display: block; margin: 0 auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.25);" 
+           src="https://ikea.com" alt="IKEA" />
       
       <br><br>
       <a href="https://instagram.com" target="_blank" style="color: #fcd34d; font-weight: bold; text-decoration: none; border-bottom: 1px dashed #fcd34d;">Instagram</a>
     </div>
 
-    <!-- ПРОЗОРЕЦ 2: NOTEPAD (Правоъгълник долу вдясно от интрото) -->
+    <!-- ПРОЗОРЕЦ 2: NOTEPAD -->
     <div id="notepadWindow" style="padding: 24px; border: 3px double orange; width: 280px; border-radius: 16px; background-color: rgba(255, 255, 255, 0.15); text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); backdrop-filter: blur(10px); display: block;">
       <h2 style="margin: 0 0 4px 0; color: #fcd34d; font-size: 22px;">📝 Notepad</h2>
       <p style="margin: 0 0 16px 0; font-size: 13px; color: #d1d5db;">Твоята отделна програма</p>
       
-      <!-- Текстово поле с фиксиран размер, което не излиза от прозореца -->
       <textarea placeholder="Напиши нещо тук..." style="width: 100%; height: 110px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.3); padding: 10px; font-family: sans-serif; resize: none; background-color: rgba(255,255,255,0.9); color: #111827; box-sizing: border-box; font-size: 14px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);"></textarea>
     </div>
 
   </div>
 
-  <!-- ДОЛНА ЛЕНТА (TASKBAR - Винаги най-отдолу, без да застъпва нищо) -->
+  <!-- ДОЛНА ЛЕНТА (TASKBAR) -->
   <div style="background-color: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 12px 24px; display: flex; align-items: center; gap: 12px; box-sizing: border-box; width: 100%;">
-    <button onclick="toggleStartMenu()" style="background-color: orange; border: none; color: black; font-weight: bold; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-size: 14px; transition: 0.2s;">
+    <button onclick="toggleStartMenu()" style="background-color: orange; border: none; color: black; font-weight: bold; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-size: 14px;">
       🚀 Start Menu
     </button>
 
-    <button onclick="toggleNotepad()" style="background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-weight: bold; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-size: 14px; transition: 0.2s;">
+    <button onclick="toggleNotepad()" style="background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-weight: bold; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-size: 14px;">
       📝 Notepad
     </button>
   </div>
