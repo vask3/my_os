@@ -1,156 +1,264 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>vaskoOS</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VaskoOS</title>
+
 <style>
-*{box-sizing:border-box}body{margin:0;height:100vh;overflow:hidden;font-family:Arial;color:white;background:linear-gradient(135deg,#0f172a,#1e1b4b,#311042)}
-header,footer{padding:12px 24px;background:#0004;backdrop-filter:blur(15px);display:flex;justify-content:space-between}
-main{height:calc(100vh - 100px);position:relative}
-.win{position:absolute;padding:20px;border:1px solid #fff2;border-radius:18px;background:#fff1;backdrop-filter:blur(20px);box-shadow:0 15px 40px #0006}
-button{cursor:pointer;border:0;border-radius:8px;padding:9px;color:white;background:#ffffff20}
-button:hover{filter:brightness(1.3)}
-#home{top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;width:280px}
-#note{top:30px;left:30px;width:250px}
-#calc{right:30px;bottom:30px;width:250px}
-input,textarea{width:100%;padding:10px;border-radius:8px;border:0}
-textarea{height:120px;resize:none}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}
-.grid button{font-size:16px}
-#menu{display:none;position:absolute;bottom:65px;left:20px;padding:15px;width:200px;background:#111e;border:1px solid #fff2;border-radius:12px}
-#menu button{display:block;width:100%;margin:5px 0;text-align:left}
+*{box-sizing:border-box}
+body{
+  margin:0;height:100vh;overflow:hidden;color:white;
+  font-family:Arial,sans-serif;
+  background:linear-gradient(135deg,#0f172a,#312e81,#701a75)
+}
+header,footer{
+  height:55px;padding:15px 20px;
+  background:#0005;backdrop-filter:blur(15px);
+  display:flex;align-items:center;justify-content:space-between
+}
+main{height:calc(100vh - 110px);position:relative}
+
+.window{
+  position:absolute;width:280px;
+  background:#ffffff15;
+  border:1px solid #ffffff30;
+  border-radius:15px;
+  backdrop-filter:blur(20px);
+  box-shadow:0 15px 40px #0008;
+  overflow:hidden;
+  z-index:1
+}
+
+.title{
+  padding:12px 15px;
+  background:#0004;
+  cursor:grab;
+  font-weight:bold;
+  user-select:none
+}
+
+.content{padding:18px;text-align:center}
+
+button{
+  border:0;border-radius:8px;
+  padding:9px 13px;
+  color:white;background:#ffffff25;
+  cursor:pointer
+}
+button:hover{background:#ffffff40}
+
+textarea,input{
+  width:100%;padding:10px;
+  border:0;border-radius:8px;
+  margin-top:8px
+}
+
+#home{left:50%;top:35%;transform:translate(-50%,-50%)}
+#note{left:30px;top:30px}
+#calc{right:30px;bottom:30px}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:5px;margin-top:8px
+}
+
+#menu{
+  display:none;
+  position:absolute;
+  bottom:65px;left:15px;
+  background:#111e;
+  padding:15px;
+  border-radius:12px;
+  z-index:100
+}
+
+@media(max-width:700px){
+  .window{width:240px}
+  #home{left:50%;top:50%}
+}
 </style>
 </head>
 
 <body>
 
 <header>
-<b>VaskoOS</b><span id="clock"></span>
+<b>🚀 VaskoOS</b>
+<span id="clock"></span>
 </header>
 
 <main>
 
-<div class="win" id="home">
-<button onclick="theme()">🌓</button>
-<h1>vaskoOS</h1>
-<h3>Introduction</h3>
-<p>Hello world!</p>
-
-<div style="background:#0051ba;padding:25px">
-<div style="background:#fc0;color:#051b8a;padding:20px;border-radius:50%;font-size:25px;font-weight:bold">
-IKEA
-</div>
-</div>
-
-<p id="quote">Loading...</p>
-<a href="https://instagram.com" target="_blank" style="color:#fcd34d">
-Instagram →
-</a>
+<!-- HOME -->
+<div class="window" id="home">
+  <div class="title">🖥️ VaskoOS</div>
+  <div class="content">
+    <h1>Welcome!</h1>
+    <p>My very own WebOS</p>
+    <p id="quote">Keep coding!</p>
+    <button onclick="newQuote()">💬 New Quote</button>
+  </div>
 </div>
 
-<div class="win" id="note">
-<h2>📝 Notepad</h2>
-<textarea id="text" placeholder="Write something..."></textarea>
+<!-- NOTEPAD -->
+<div class="window" id="note">
+  <div class="title">📝 Notepad</div>
+  <div class="content">
+    <textarea id="text" rows="7"
+      placeholder="Write something..."></textarea>
+  </div>
 </div>
 
-<div class="win" id="calc">
-<h2>🧮 Calculator</h2>
-<input id="screen" readonly>
+<!-- CALCULATOR -->
+<div class="window" id="calc">
+  <div class="title">🧮 Calculator</div>
+  <div class="content">
+    <input id="screen" readonly>
 
-<div class="grid">
-<button onclick="clr()">C</button>
-<button onclick="add('/')">/</button>
-<button onclick="add('*')">*</button>
-<button onclick="add('-')">-</button>
-<button onclick="add('7')">7</button>
-<button onclick="add('8')">8</button>
-<button onclick="add('9')">9</button>
-<button onclick="add('+')">+</button>
-<button onclick="add('4')">4</button>
-<button onclick="add('5')">5</button>
-<button onclick="add('6')">6</button>
-<button onclick="result()">=</button>
-<button onclick="add('1')">1</button>
-<button onclick="add('2')">2</button>
-<button onclick="add('3')">3</button>
-<button onclick="add('0')">0</button>
-</div>
+    <div class="grid">
+      <button onclick="clearCalc()">C</button>
+      <button onclick="add('/')">÷</button>
+      <button onclick="add('*')">×</button>
+      <button onclick="add('-')">−</button>
+
+      <button onclick="add('7')">7</button>
+      <button onclick="add('8')">8</button>
+      <button onclick="add('9')">9</button>
+      <button onclick="add('+')">+</button>
+
+      <button onclick="add('4')">4</button>
+      <button onclick="add('5')">5</button>
+      <button onclick="add('6')">6</button>
+      <button onclick="result()">=</button>
+
+      <button onclick="add('1')">1</button>
+      <button onclick="add('2')">2</button>
+      <button onclick="add('3')">3</button>
+      <button onclick="add('0')">0</button>
+    </div>
+  </div>
 </div>
 
 </main>
 
 <footer>
 <button onclick="menu()">🚀 Start</button>
-<button onclick="newQuote()">💬 Quote</button>
 <button onclick="show('note')">📝 Notepad</button>
 <button onclick="show('calc')">🧮 Calculator</button>
 </footer>
 
 <div id="menu">
-<b>APPLICATIONS</b>
+<b>APPLICATIONS</b><br><br>
 <button onclick="show('note');menu()">📝 Notepad</button>
+<br><br>
 <button onclick="show('calc');menu()">🧮 Calculator</button>
-<a href="https://ikea.bg" target="_blank">
-<button>🛒 IKEA</button>
-</a>
 </div>
 
 <script>
-const $=id=>document.getElementById(id);
 
+/* CLOCK */
 function clock(){
-let d=new Date();
-$("clock").textContent=d.toLocaleTimeString();
+  clockElement.textContent=new Date().toLocaleTimeString();
 }
-setInterval(clock,1000);clock();
+let clockElement=document.getElementById("clock");
+setInterval(clock,1000);
+clock();
+
+
+/* WINDOWS */
+
+let z=1;
+
+document.querySelectorAll(".window").forEach(win=>{
+  let title=win.querySelector(".title");
+  let dragging=false,x=0,y=0;
+
+  title.addEventListener("pointerdown",e=>{
+    dragging=true;
+    z++;
+    win.style.zIndex=z;
+
+    let r=win.getBoundingClientRect();
+    x=e.clientX-r.left;
+    y=e.clientY-r.top;
+
+    title.setPointerCapture(e.pointerId);
+  });
+
+  title.addEventListener("pointermove",e=>{
+    if(!dragging)return;
+
+    win.style.left=(e.clientX-x)+"px";
+    win.style.top=(e.clientY-y)+"px";
+    win.style.transform="none";
+  });
+
+  title.addEventListener("pointerup",()=>{
+    dragging=false;
+  });
+});
+
+
+/* START MENU */
 
 function menu(){
-$("menu").style.display=$("menu").style.display=="block"?"none":"block";
+  let m=document.getElementById("menu");
+  m.style.display=m.style.display=="block"?"none":"block";
 }
 
 function show(id){
-$(""+id).style.display="block";
+  document.getElementById(id).style.display="block";
 }
 
-function theme(){
-document.body.style.background=
-document.body.style.background.includes("fff")
-?"linear-gradient(135deg,#0f172a,#1e1b4b,#311042)"
-:"linear-gradient(135deg,#60a5fa,#c4b5fd,#f9a8d4)";
-}
+
+/* QUOTES */
 
 let quotes=[
-"Keep calm and code.",
-"Every expert was once a beginner.",
-"Build something awesome.",
-"Code. Create. Repeat.",
-"Never stop learning."
+  "Keep calm and code.",
+  "Build something awesome.",
+  "Every expert was once a beginner.",
+  "Code. Create. Repeat.",
+  "Never stop learning!"
 ];
 
 function newQuote(){
-$("quote").textContent=
-quotes[Math.floor(Math.random()*quotes.length)];
+  quote.textContent=
+    quotes[Math.floor(Math.random()*quotes.length)];
 }
-newQuote();
+
+
+/* CALCULATOR */
+
+let screen=document.getElementById("screen");
 
 function add(x){
-$("screen").value+=x;
+  screen.value+=x;
 }
 
-function clr(){
-$("screen").value="";
+function clearCalc(){
+  screen.value="";
 }
 
 function result(){
-try{
-$("screen").value=eval($("screen").value);
-}catch{
-$("screen").value="Error";
-}
+  try{
+    screen.value=eval(screen.value);
+  }catch{
+    screen.value="Error";
+  }
 }
 
-$("text").value=localStorage.note||"";
-$("text").oninput=()=>localStorage.note=$("text").value;
+
+/* NOTEPAD SAVE */
+
+let text=document.getElementById("text");
+
+text.value=localStorage.note||"";
+
+text.oninput=()=>{
+  localStorage.note=text.value;
+};
+
 </script>
 
 </body>
