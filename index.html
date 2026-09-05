@@ -3,65 +3,100 @@
 <head>
   <meta charset="UTF-8">
   <title>vaskoOS</title>
+  <style>
+    /* Модерни анимации за изскачане на прозорците */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .os-window {
+      animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    /* Анимация за забавяне на втория прозорец */
+    #notepadWindow {
+      animation-delay: 0.15s;
+    }
+
+    /* Модерни ефекти при посочване на бутоните (Hover) */
+    .taskbar-btn {
+      transition: all 0.2s ease;
+    }
+    .taskbar-btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .taskbar-btn:active {
+      transform: translateY(0);
+    }
+  </style>
 </head>
-<body style="background: linear-gradient(135deg, #4f46e5, #7c3aed); background-size: cover; height: 100vh; margin: 0; font-family: sans-serif; color: white; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;">
+<body style="background: linear-gradient(135deg, #0f172a, #1e1b4b, #311042); background-size: cover; height: 100vh; margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: white; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;">
 
   <!-- ГОРНА ЛЕНТА (Часовник) -->
-  <div style="display: flex; justify-content: space-between; padding: 12px 24px; background-color: rgba(0, 0, 0, 0.2); backdrop-filter: blur(5px);">
-    <p style="margin: 0; font-weight: bold; letter-spacing: 0.5px;">VaskoOS</p>
-    <p id="timeElement" style="margin: 0; font-weight: bold;"></p>
+  <div style="display: flex; justify-content: space-between; padding: 12px 24px; background-color: rgba(0, 0, 0, 0.25); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px;">
+    <p style="margin: 0; font-weight: 600; letter-spacing: 0.5px;">VaskoOS</p>
+    <p id="timeElement" style="margin: 0; font-weight: 600; opacity: 0.9;"></p>
   </div>
 
   <!-- ГЛАВЕН КОНТЕЙНЕР -->
   <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 40px; flex-grow: 1; padding: 20px;">
     
-    <!-- ПРОЗОРЕЦ 1: vaskoOS ИНТРО (Добавихме class="os-window") -->
-    <div class="os-window" style="position: relative; padding: 24px; border: 3px double orange; width: 280px; border-radius: 16px; background-color: rgba(255, 255, 255, 0.15); text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); backdrop-filter: blur(10px); transition: background-color 0.3s;">
+    <!-- ПРОЗОРЕЦ 1: vaskoOS ИНТРО -->
+    <div class="os-window" style="position: relative; padding: 28px; border: 1px solid rgba(255,255,255,0.1); width: 280px; border-radius: 20px; background-color: rgba(255, 255, 255, 0.08); text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.3); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); transition: background-color 0.3s;">
       
       <!-- БУТОН ЗА СМЯНА НА РЕЖИМА (Light/Dark) -->
-      <button onclick="toggleTheme()" style="position: absolute; top: 12px; right: 12px; background: none; border: none; font-size: 18px; cursor: pointer; padding: 0;">🌓</button>
+      <button onclick="toggleTheme()" style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); font-size: 16px; cursor: pointer; padding: 6px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.2s;">🌓</button>
 
-      <h1 style="margin: 0 0 8px 0; font-size: 32px; letter-spacing: 1px;">vaskoOS</h1>  
-      <h2 style="margin: 0 0 12px 0; font-size: 18px; color: #e0e0e0; font-weight: normal;">Introduction</h2>
-      <p style="margin: 0 0 20px 0; color: #f3f4f6;">Hello world!</p>
+      <h1 style="margin: 0 0 8px 0; font-size: 32px; font-weight: 800; letter-spacing: -0.5px; background: linear-gradient(to right, #ffedd5, #fcd34d); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">vaskoOS</h1>  
+      <h2 style="margin: 0 0 16px 0; font-size: 16px; color: #a1a1aa; font-weight: 400;">Introduction</h2>
+      <p style="margin: 0 0 24px 0; color: #e4e4e7; line-height: 1.5; font-size: 15px;">Hello world!</p>
       
       <!-- СТИЛИЗИРАНО ЛОГО С ИСТИНСКИ ТЕКСТ -->
-      <div style="width: 150px; height: 95px; margin: 0 auto; background-color: #0051ba; display: flex; align-items: center; justify-content: center; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+      <div style="width: 150px; height: 95px; margin: 0 auto; background-color: #0051ba; display: flex; align-items: center; justify-content: center; border-radius: 8px; box-shadow: 0 8px 20px rgba(0,0,0,0.4);">
         <div style="width: 140px; height: 85px; background-color: #ffcc00; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-          <span style="color: #0051ba; font-family: Arial, Helvetica, sans-serif; font-size: 32px; font-weight: 900; letter-spacing: -2px;">IKEA</span>
+          <span style="color: #0051ba; font-family: -apple-system, Arial, sans-serif; font-size: 32px; font-weight: 900; letter-spacing: -2px;">IKEA</span>
         </div>
       </div>
       
       <br><br>
-      <a href="https://instagram.com" target="_blank" style="color: #fcd34d; font-weight: bold; text-decoration: none; border-bottom: 1px dashed #fcd34d;">Instagram</a>
+      <a href="https://instagram.com" target="_blank" style="color: #fcd34d; font-weight: 600; text-decoration: none; font-size: 15px; transition: 0.2s;" onmouseover="this.style.color='#f59e0b'" onmouseout="this.style.color='#fcd34d'">Instagram →</a>
     </div>
 
-    <!-- ПРОЗОРЕЦ 2: NOTEPAD (Добавихме class="os-window") -->
-    <div id="notepadWindow" class="os-window" style="padding: 24px; border: 3px double orange; width: 280px; border-radius: 16px; background-color: rgba(255, 255, 255, 0.15); text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); backdrop-filter: blur(10px); display: block; transition: background-color 0.3s;">
-      <h2 style="margin: 0 0 4px 0; color: #fcd34d; font-size: 22px;">📝 Notepad</h2>
-      <p style="margin: 0 0 16px 0; font-size: 13px; color: #d1d5db;">Твоята отделна програма</p>
+    <!-- ПРОЗОРЕЦ 2: NOTEPAD -->
+    <div id="notepadWindow" class="os-window" style="padding: 28px; border: 1px solid rgba(255,255,255,0.1); width: 280px; border-radius: 20px; background-color: rgba(255, 255, 255, 0.08); text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.3); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: block; transition: background-color 0.3s;">
+      <h2 style="margin: 0 0 4px 0; color: #fcd34d; font-size: 22px; font-weight: 700;">📝 Notepad</h2>
+      <p style="margin: 0 0 20px 0; font-size: 13px; color: #a1a1aa;">Твоята отделна програма</p>
       
-      <textarea placeholder="Напиши нещо тук..." style="width: 100%; height: 110px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.3); padding: 10px; font-family: sans-serif; resize: none; background-color: rgba(255,255,255,0.9); color: #111827; box-sizing: border-box; font-size: 14px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);"></textarea>
+      <textarea placeholder="Напиши нещо тук..." style="width: 100%; height: 120px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); padding: 12px; font-family: sans-serif; resize: none; background-color: rgba(255,255,255,0.95); color: #0f172a; box-sizing: border-box; font-size: 14px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); line-height: 1.4; outline: none;"></textarea>
     </div>
 
   </div>
 
   <!-- ДОЛНА ЛЕНТА (TASKBAR) -->
-  <div style="background-color: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 12px 24px; display: flex; align-items: center; gap: 12px; box-sizing: border-box; width: 100%;">
-    <button onclick="toggleStartMenu()" style="background-color: orange; border: none; color: black; font-weight: bold; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-size: 14px;">
+  <div style="background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 12px 24px; display: flex; align-items: center; gap: 12px; box-sizing: border-box; width: 100%; border-top: 1px solid rgba(255,255,255,0.05);">
+    <button class="taskbar-btn" onclick="toggleStartMenu()" style="background: linear-gradient(135deg, #f97316, #ea580c); border: none; color: white; font-weight: 600; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 14px;">
       🚀 Start Menu
     </button>
 
-    <button onclick="toggleNotepad()" style="background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-weight: bold; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-size: 14px;">
+    <button class="taskbar-btn" onclick="toggleNotepad()" style="background-color: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; font-weight: 600; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 14px;">
       📝 Notepad
     </button>
   </div>
 
   <!-- ИЗСКАЧАЩО СТАРТ МЕНЮ -->
-  <div id="startMenu" style="display: none; position: absolute; bottom: 65px; left: 24px; width: 200px; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 14px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); z-index: 999;">
-    <p style="margin: 0 0 12px 0; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 6px; color: orange; font-size: 14px; letter-spacing: 0.5px;">ПРИЛОЖЕНИЯ</p>
-    <a href="https://instagram.com" target="_blank" style="display: block; color: white; text-decoration: none; margin: 6px 0; padding: 8px 12px; border-radius: 6px; background-color: rgba(255,255,255,0.08); font-size: 14px;">🌐 Hack Club</a>
-    <a href="https://ikea.bg" target="_blank" style="display: block; color: white; text-decoration: none; margin: 6px 0; padding: 8px 12px; border-radius: 6px; background-color: rgba(255,255,255,0.08); font-size: 14px;">🛒 IKEA Магазин</a>
+  <div id="startMenu" style="display: none; position: absolute; bottom: 70px; left: 24px; width: 220px; background-color: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); z-index: 999;">
+    <p style="margin: 0 0 12px 0; font-weight: 700; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; color: #f97316; font-size: 13px; letter-spacing: 0.5px;">ПРИЛОЖЕНИЯ</p>
+    <a href="https://instagram.com" target="_blank" style="display: block; color: white; text-decoration: none; margin: 6px 0; padding: 10px 14px; border-radius: 8px; background-color: rgba(255,255,255,0.03); font-size: 14px; transition: 0.2s;" onmouseover="this.style.backgroundColor='rgba(255,255,255,0.08)'" onmouseout="this.style.backgroundColor='rgba(255,255,255,0.03)'">🌐 Hack Club</a>
+    <a href="https://ikea.bg" target="_blank" style="display: block; color: white; text-decoration: none; margin: 6px 0; padding: 10px 14px; border-radius: 8px; background-color: rgba(255,255,255,0.03); font-size: 14px; transition: 0.2s;" onmouseover="this.style.backgroundColor='rgba(255,255,255,0.08)'" onmouseout="this.style.backgroundColor='rgba(255,255,255,0.03)'">🛒 IKEA Магазин</a>
   </div>
 
   <!-- Скриптове -->
@@ -88,14 +123,13 @@
       }
     }
 
-    // НОВА ФУНКЦИЯ: Превключване между тъмен и светъл режим на прозорците
     function toggleTheme() {
       var windows = document.querySelectorAll(".os-window");
       windows.forEach(win => {
-        if (win.style.backgroundColor === "rgba(0, 0, 0, 0.4)") {
-          win.style.backgroundColor = "rgba(255, 255, 255, 0.15)"; // Светъл режим
+        if (win.style.backgroundColor === "rgba(0, 0, 0, 0.45)") {
+          win.style.backgroundColor = "rgba(255, 255, 255, 0.08)";
         } else {
-          win.style.backgroundColor = "rgba(0, 0, 0, 0.4)"; // Тъмен режим
+          win.style.backgroundColor = "rgba(0, 0, 0, 0.45)";
         }
       });
     }
