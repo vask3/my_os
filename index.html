@@ -20,7 +20,6 @@
       animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
-    /* Анимация за забавяне на втория прозорец */
     #notepadWindow {
       animation-delay: 0.15s;
     }
@@ -53,7 +52,7 @@
     <!-- ПРОЗОРЕЦ 1: vaskoOS ИНТРО -->
     <div class="os-window" style="position: relative; padding: 28px; border: 1px solid rgba(255,255,255,0.1); width: 280px; border-radius: 20px; background-color: rgba(255, 255, 255, 0.08); text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.3); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); transition: background-color 0.3s;">
       
-      <!-- БУТОН ЗА СМЯНА НА РЕЖИМА (Light/Dark) -->
+      <!-- БУТОН ЗА СМЯНА НА РЕЖИМА -->
       <button onclick="toggleTheme()" style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); font-size: 16px; cursor: pointer; padding: 6px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.2s;">🌓</button>
 
       <h1 style="margin: 0 0 8px 0; font-size: 32px; font-weight: 800; letter-spacing: -0.5px; background: linear-gradient(to right, #ffedd5, #fcd34d); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">vaskoOS</h1>  
@@ -61,13 +60,19 @@
       <p style="margin: 0 0 24px 0; color: #e4e4e7; line-height: 1.5; font-size: 15px;">Hello world!</p>
       
       <!-- СТИЛИЗИРАНО ЛОГО С ИСТИНСКИ ТЕКСТ -->
-      <div style="width: 150px; height: 95px; margin: 0 auto; background-color: #0051ba; display: flex; align-items: center; justify-content: center; border-radius: 8px; box-shadow: 0 8px 20px rgba(0,0,0,0.4);">
+      <div style="width: 150px; height: 95px; margin: 0 auto; background-color: #0051ba; display: flex; align-items: center; justify-content: center; border-radius: 4px; box-shadow: 0 8px 20px rgba(0,0,0,0.4);">
         <div style="width: 140px; height: 85px; background-color: #ffcc00; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
           <span style="color: #0051ba; font-family: -apple-system, Arial, sans-serif; font-size: 32px; font-weight: 900; letter-spacing: -2px;">IKEA</span>
         </div>
       </div>
       
-      <br><br>
+      <!-- СЕКЦИЯ ЗА ЦИТАТИ (Точно около интрото) -->
+      <div style="margin-top: 25px; padding: 12px; background-color: rgba(0,0,0,0.2); border-radius: 10px; border-left: 3px solid #fcd34d; text-align: left;">
+        <span style="font-size: 11px; font-weight: bold; color: #fcd34d; display: block; margin-bottom: 4px; letter-spacing: 0.5px;">💡 ЦИТАТ НА ДЕНЯ:</span>
+        <p id="quoteBox" style="margin: 0; font-size: 13px; color: #e4e4e7; font-style: italic; line-height: 1.4;">Натисни бутона долу за цитат!</p>
+      </div>
+      
+      <br>
       <a href="https://instagram.com" target="_blank" style="color: #fcd34d; font-weight: 600; text-decoration: none; font-size: 15px; transition: 0.2s;" onmouseover="this.style.color='#f59e0b'" onmouseout="this.style.color='#fcd34d'">Instagram →</a>
     </div>
 
@@ -85,6 +90,11 @@
   <div style="background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 12px 24px; display: flex; align-items: center; gap: 12px; box-sizing: border-box; width: 100%; border-top: 1px solid rgba(255,255,255,0.05);">
     <button class="taskbar-btn" onclick="toggleStartMenu()" style="background: linear-gradient(135deg, #f97316, #ea580c); border: none; color: white; font-weight: 600; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 14px;">
       🚀 Start Menu
+    </button>
+
+    <!-- НОВ БУТОН ЗА ЦИТАТИ (Долу до старт менюто) -->
+    <button class="taskbar-btn" onclick="generateQuote()" style="background-color: rgba(252, 211, 77, 0.2); border: 1px solid #fcd34d; color: #fcd34d; font-weight: 600; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 14px;">
+      💬 Нов Цитат
     </button>
 
     <button class="taskbar-btn" onclick="toggleNotepad()" style="background-color: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; font-weight: 600; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 14px;">
@@ -133,6 +143,25 @@
         }
       });
     }
+
+    // МАСИВ С ПРОГРАМИСТКИ ЦИТАТИ
+    var quotes = [
+      "Кодът е като хумора. Ако трябва да го обясняваш, значи е лош.",
+      "Първите 90% от кода отнемат 90% от времето. Останалите 10% отнемат другите 90% от времето.",
+      "В моя компютър кодът работи перфектно! 🤷‍♂️",
+      "Програмист е организъм, който превръща кафето в работещ код. ☕",
+      "Има два начина да напишеш програма без грешки. Само третият работи.",
+      "Ако от първия път всичко тръгне без грешка, значи нещо се е счупило много сериозно."
+    ];
+
+    // ФУНКЦИЯ ЗА СЛУЧАЕН ЦИТАТ
+    function generateQuote() {
+      var randomIndex = Math.floor(Math.random() * quotes.length);
+      document.getElementById("quoteBox").innerHTML = quotes[randomIndex];
+    }
+
+    // Автоматично пускане на първия цитат при зареждане
+    generateQuote();
   </script>
 
 </body>
