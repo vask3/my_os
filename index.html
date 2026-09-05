@@ -1,117 +1,157 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>vaskoOS</title>
-  <style>
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px) scale(0.98); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    .os-window {
-      position: absolute;
-      padding: 24px;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 20px;
-      background-color: rgba(255, 255, 255, 0.08);
-      text-align: center;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      transition: background-color 0.3s;
-      animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
-    }
-    .taskbar-btn { transition: all 0.2s ease; }
-    .taskbar-btn:hover { transform: translateY(-2px); filter: brightness(1.1); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-    .taskbar-btn:active { transform: translateY(0); }
-    .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px; }
-    .calc-btn { background-color: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 10px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.1s; }
-    .calc-btn:hover { background-color: rgba(255,255,255,0.3); }
-    .calc-btn:active { transform: scale(0.95); }
-    .calc-op { background-color: rgba(249, 115, 22, 0.4); border-color: #f97316; }
-    .calc-op:hover { background-color: rgba(249, 115, 22, 0.6); }
-  </style>
+<meta charset="UTF-8">
+<title>vaskoOS</title>
+<style>
+*{box-sizing:border-box}body{margin:0;height:100vh;overflow:hidden;font-family:Arial;color:white;background:linear-gradient(135deg,#0f172a,#1e1b4b,#311042)}
+header,footer{padding:12px 24px;background:#0004;backdrop-filter:blur(15px);display:flex;justify-content:space-between}
+main{height:calc(100vh - 100px);position:relative}
+.win{position:absolute;padding:20px;border:1px solid #fff2;border-radius:18px;background:#fff1;backdrop-filter:blur(20px);box-shadow:0 15px 40px #0006}
+button{cursor:pointer;border:0;border-radius:8px;padding:9px;color:white;background:#ffffff20}
+button:hover{filter:brightness(1.3)}
+#home{top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;width:280px}
+#note{top:30px;left:30px;width:250px}
+#calc{right:30px;bottom:30px;width:250px}
+input,textarea{width:100%;padding:10px;border-radius:8px;border:0}
+textarea{height:120px;resize:none}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}
+.grid button{font-size:16px}
+#menu{display:none;position:absolute;bottom:65px;left:20px;padding:15px;width:200px;background:#111e;border:1px solid #fff2;border-radius:12px}
+#menu button{display:block;width:100%;margin:5px 0;text-align:left}
+</style>
 </head>
-<body style="background: linear-gradient(135deg, #0f172a, #1e1b4b, #311042); background-size: cover; height: 100vh; margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: white; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;">
 
-  <div style="display: flex; justify-content: space-between; padding: 12px 24px; background-color: rgba(0, 0, 0, 0.25); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px; z-index: 1001;">
-    <p style="margin: 0; font-weight: 600; letter-spacing: 0.5px;">VaskoOS</p>
-    <p id="timeElement" style="margin: 0; font-weight: 600; opacity: 0.9;"></p>
-  </div>
+<body>
 
-  <div style="position: relative; flex-grow: 1; width: 100%; height: calc(100vh - 100px);">
-    <div class="os-window" style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 260px;">
-      <button onclick="toggleTheme()" style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); font-size: 16px; cursor: pointer; padding: 6px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.2s;">🌓</button>
-      <h1 style="margin: 0 0 8px 0; font-size: 32px; font-weight: 800; letter-spacing: -0.5px; background: linear-gradient(to right, #ffedd5, #fcd34d); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">vaskoOS</h1>  
-      <h2 style="margin: 0 0 16px 0; font-size: 16px; color: #a1a1aa; font-weight: 400;">Introduction</h2>
-      <p style="margin: 0 0 24px 0; color: #e4e4e7; line-height: 1.5; font-size: 15px;">Hello world!</p>
-      <div style="width: 150px; height: 95px; margin: 0 auto; background-color: #0051ba; display: flex; align-items: center; justify-content: center; border-radius: 4px; box-shadow: 0 8px 20px rgba(0,0,0,0.4);">
-        <div style="width: 140px; height: 85px; background-color: #ffcc00; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-          <span style="color: #0051ba; font-family: -apple-system, Arial, sans-serif; font-size: 32px; font-weight: 900; letter-spacing: -2px;">IKEA</span>
-        </div>
-      </div>
-      <div style="margin-top: 25px; padding: 12px; background-color: rgba(0,0,0,0.4); border-radius: 10px; border-left: 3px solid #fcd34d; text-align: left;">
-        <span style="font-size: 11px; font-weight: bold; color: #fcd34d; display: block; margin-bottom: 4px; letter-spacing: 0.5px;">💡 QUOTE OF THE DAY:</span>
-        <p id="quoteBox" style="margin: 0; font-size: 13px; color: #ffffff; font-style: italic; line-height: 1.4; font-weight: 500;">Loading System Quote...</p>
-      </div>
-      <br>
-      <a href="https://instagram.com" target="_blank" style="color: #fcd34d; font-weight: 600; text-decoration: none; font-size: 15px; transition: 0.2s;">Instagram →</a>
-    </div>
+<header>
+<b>VaskoOS</b><span id="clock"></span>
+</header>
 
-    <div id="notepadWindow" class="os-window" style="top: 40px; left: 40px; width: 260px; display: block;">
-      <h2 style="margin: 0 0 4px 0; color: #fcd34d; font-size: 22px; font-weight: 700;">📝 Notepad</h2>
-      <p style="margin: 0 0 16px 0; font-size: 13px; color: #a1a1aa;">Your personal text editor</p>
-      <textarea placeholder="Type something here..." style="width: 100%; height: 125px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); padding: 12px; font-family: sans-serif; resize: none; background-color: rgba(255,255,255,0.95); color: #0f172a; box-sizing: border-box; font-size: 14px; outline: none;"></textarea>
-    </div>
+<main>
 
-    <div id="calcWindow" class="os-window" style="bottom: 80px; right: 40px; width: 240px; display: block;">
-      <h2 style="margin: 0 0 4px 0; color: #fcd34d; font-size: 22px; font-weight: 700;">🧮 Calculator</h2>
-      <p style="margin: 0 0 12px 0; font-size: 13px; color: #a1a1aa;">Quick utility math tool</p>
-      <input id="calcScreen" type="text" readonly style="width: 100%; padding: 12px; font-size: 20px; text-align: right; background-color: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 8px; box-sizing: border-box; outline: none; font-weight: bold;">
-      <div class="calc-grid">
-        <button class="calc-btn calc-op" onclick="clearCalc()">C</button>
-        <button class="calc-btn calc-op" onclick="pressCalc('/')">/</button>
-        <button class="calc-btn calc-op" onclick="pressCalc('*')">*</button>
-        <button class="calc-btn calc-op" onclick="pressCalc('-')">-</button>
-        <button class="calc-btn" onclick="pressCalc('7')">7</button>
-        <button class="calc-btn" onclick="pressCalc('8')">8</button>
-        <button class="calc-btn" onclick="pressCalc('9')">9</button>
-        <button class="calc-btn calc-op" onclick="pressCalc('+')">+</button>
-        <button class="calc-btn" onclick="pressCalc('4')">4</button>
-        <button class="calc-btn" onclick="pressCalc('5')">5</button>
-        <button class="calc-btn" onclick="pressCalc('6')">6</button>
-        <button class="calc-btn calc-op" style="grid-row: span 2; height: 100%;" onclick="calculateResult()">=</button>
-        <button class="calc-btn" onclick="pressCalc('1')">1</button>
-        <button class="calc-btn" onclick="pressCalc('2')">2</button>
-        <button class="calc-btn" onclick="pressCalc('3')">3</button>
-        <button class="calc-btn" style="grid-column: span 3;" onclick="pressCalc('0')">0</button>
-      </div>
-    </div>
-  </div>
+<div class="win" id="home">
+<button onclick="theme()">🌓</button>
+<h1>vaskoOS</h1>
+<h3>Introduction</h3>
+<p>Hello world!</p>
 
-  <div style="background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 12px 24px; display: flex; align-items: center; gap: 12px; box-sizing: border-box; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); z-index: 1002;">
-    <button class="taskbar-btn" onclick="toggleStartMenu()" style="background: linear-gradient(135deg, #f97316, #ea580c); border: none; color: white; font-weight: 600; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 14px;">🚀 Start Menu</button>
-    <button class="taskbar-btn" onclick="refreshSystemQuote()" style="background-color: rgba(252, 211, 77, 0.15); border: 1px solid #fcd34d; color: #fcd34d; font-weight: 600; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 14px;">     💬 New Quote</button>
-    <button class="taskbar-btn" onclick="toggleNotepad()" style="background-color: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; font-weight: 600; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 14px;">📝 Notepad</button>
-    <button class="taskbar-btn" onclick="toggleCalc()" style="background-color: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; font-weight: 600; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 14px;">🧮 Calculator</button>
-  </div>
+<div style="background:#0051ba;padding:25px">
+<div style="background:#fc0;color:#051b8a;padding:20px;border-radius:50%;font-size:25px;font-weight:bold">
+IKEA
+</div>
+</div>
 
-  <div id="startMenu" style="display: none; position: absolute; bottom: 70px; left: 24px; width: 220px; background-color: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.4); z-index: 1003;">
-    <p style="margin: 0 0 12px 0; font-weight: 700; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; color: #f97316; font-size: 13px; letter-spacing: 0.5px;">APPLICATIONS</p>
-    <a href="https://instagram.com" target="_blank" style="display: block; color: white; text-decoration: none; margin: 6px 0; padding: 10px 14px; border-radius: 8px; background-color: rgba(255,255,255,0.03); font-size: 14px;">🌐 Hack Club</a>
-    <a href="https://ikea.bg" target="_blank" style="display: block; color: white; text-decoration: none; margin: 6px 0; padding: 10px 14px; border-radius: 8px; background-color: rgba(255,255,255,0.03); font-size: 14px;">🛒 IKEA Store</a>
-  </div>
+<p id="quote">Loading...</p>
+<a href="https://instagram.com" target="_blank" style="color:#fcd34d">
+Instagram →
+</a>
+</div>
 
-  <script>
-    function updateClock() {
-      var d = new Date();
-      var hours = String(d.getHours()).padStart(2, '0');
-      var minutes = String(d.getMinutes()).padStart(2, '0');
-      var seconds = String(d.getSeconds()).padStart(2, '0');
-      document.getElementById("timeElement").innerHTML = hours + ":" + minutes + ":" + seconds;
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
+<div class="win" id="note">
+<h2>📝 Notepad</h2>
+<textarea id="text" placeholder="Write something..."></textarea>
+</div>
 
-    function toggleStartMenu() {
-      var menu = document.getElementById("startMenu");
+<div class="win" id="calc">
+<h2>🧮 Calculator</h2>
+<input id="screen" readonly>
+
+<div class="grid">
+<button onclick="clr()">C</button>
+<button onclick="add('/')">/</button>
+<button onclick="add('*')">*</button>
+<button onclick="add('-')">-</button>
+<button onclick="add('7')">7</button>
+<button onclick="add('8')">8</button>
+<button onclick="add('9')">9</button>
+<button onclick="add('+')">+</button>
+<button onclick="add('4')">4</button>
+<button onclick="add('5')">5</button>
+<button onclick="add('6')">6</button>
+<button onclick="result()">=</button>
+<button onclick="add('1')">1</button>
+<button onclick="add('2')">2</button>
+<button onclick="add('3')">3</button>
+<button onclick="add('0')">0</button>
+</div>
+</div>
+
+</main>
+
+<footer>
+<button onclick="menu()">🚀 Start</button>
+<button onclick="newQuote()">💬 Quote</button>
+<button onclick="show('note')">📝 Notepad</button>
+<button onclick="show('calc')">🧮 Calculator</button>
+</footer>
+
+<div id="menu">
+<b>APPLICATIONS</b>
+<button onclick="show('note');menu()">📝 Notepad</button>
+<button onclick="show('calc');menu()">🧮 Calculator</button>
+<a href="https://ikea.bg" target="_blank">
+<button>🛒 IKEA</button>
+</a>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+
+function clock(){
+let d=new Date();
+$("clock").textContent=d.toLocaleTimeString();
+}
+setInterval(clock,1000);clock();
+
+function menu(){
+$("menu").style.display=$("menu").style.display=="block"?"none":"block";
+}
+
+function show(id){
+$(""+id).style.display="block";
+}
+
+function theme(){
+document.body.style.background=
+document.body.style.background.includes("fff")
+?"linear-gradient(135deg,#0f172a,#1e1b4b,#311042)"
+:"linear-gradient(135deg,#60a5fa,#c4b5fd,#f9a8d4)";
+}
+
+let quotes=[
+"Keep calm and code.",
+"Every expert was once a beginner.",
+"Build something awesome.",
+"Code. Create. Repeat.",
+"Never stop learning."
+];
+
+function newQuote(){
+$("quote").textContent=
+quotes[Math.floor(Math.random()*quotes.length)];
+}
+newQuote();
+
+function add(x){
+$("screen").value+=x;
+}
+
+function clr(){
+$("screen").value="";
+}
+
+function result(){
+try{
+$("screen").value=eval($("screen").value);
+}catch{
+$("screen").value="Error";
+}
+}
+
+$("text").value=localStorage.note||"";
+$("text").oninput=()=>localStorage.note=$("text").value;
+</script>
+
+</body>
+</html>
