@@ -2,81 +2,190 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VaskoOS</title>
 
 <style>
-*{box-sizing:border-box}
-body{
-  margin:0;height:100vh;overflow:hidden;color:white;
-  font-family:Arial,sans-serif;
-  background:linear-gradient(135deg,#0f172a,#312e81,#701a75)
-}
-header,footer{
-  height:55px;padding:15px 20px;
-  background:#0005;backdrop-filter:blur(15px);
-  display:flex;align-items:center;justify-content:space-between
-}
-main{height:calc(100vh - 110px);position:relative}
+*{ box-sizing: border-box; }
 
-.window{
-  position:absolute;width:280px;
-  background:#ffffff15;
-  border:1px solid #ffffff30;
-  border-radius:15px;
-  backdrop-filter:blur(20px);
-  box-shadow:0 15px 40px #0008;
-  overflow:hidden;
-  z-index:1
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #0d122b;
+  user-select: none;
+  transition: background 0.3s;
 }
 
-.title{
-  padding:12px 15px;
-  background:#0004;
-  cursor:grab;
-  font-weight:bold;
-  user-select:none
+header, footer {
+  height: 50px;
+  padding: 0 20px;
+  background: rgba(10, 15, 35, 0.8);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.content{padding:18px;text-align:center}
-
-button{
-  border:0;border-radius:8px;
-  padding:9px 13px;
-  color:white;background:#ffffff25;
-  cursor:pointer
-}
-button:hover{background:#ffffff40}
-
-textarea,input{
-  width:100%;padding:10px;
-  border:0;border-radius:8px;
-  margin-top:8px
+footer {
+  border-bottom: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-#home{left:50%;top:35%;transform:translate(-50%,-50%)}
-#note{left:30px;top:30px}
-#calc{right:30px;bottom:30px}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:5px;margin-top:8px
+main {
+  height: calc(100vh - 100px);
+  position: relative;
+  padding: 30px;
 }
 
-#menu{
-  display:none;
-  position:absolute;
-  bottom:65px;left:15px;
-  background:#111e;
-  padding:15px;
-  border-radius:12px;
-  z-index:100
+/* DESKTOP ICONS GRID */
+.desktop-icons {
+  display: grid;
+  grid-template-columns: repeat(2, 90px);
+  gap: 25px 30px;
+  align-content: start;
 }
 
-@media(max-width:700px){
-  .window{width:240px}
-  #home{left:50%;top:50%}
+.icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background 0.2s;
+  text-align: center;
+}
+
+.icon:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.icon-img {
+  font-size: 34px;
+  margin-bottom: 6px;
+}
+
+.icon-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+/* WINDOWS */
+.window {
+  position: absolute;
+  width: 380px;
+  background: #161d3a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  display: none;
+}
+
+.title {
+  padding: 10px 14px;
+  background: rgba(0, 0, 0, 0.25);
+  cursor: grab;
+  font-weight: bold;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: #ff5f56;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-btn:hover { color: #ff3b30; }
+
+.content { padding: 15px; }
+
+button, select {
+  border: 0;
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: white;
+  background: rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+button:hover { background: rgba(255, 255, 255, 0.25); }
+
+select option {
+  background: #161d3a;
+  color: white;
+}
+
+input[type="text"], textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.3);
+  color: white;
+  outline: none;
+}
+
+/* POSITIONS */
+#home { left: 240px; top: 30px; }
+#paint { left: 260px; top: 50px; width: 440px; }
+#notepad { left: 280px; top: 70px; width: 400px; }
+#files { left: 300px; top: 90px; width: 360px; }
+#calc { left: 320px; top: 110px; width: 260px; }
+#taskmgr { left: 340px; top: 130px; width: 340px; }
+#terminal { left: 360px; top: 150px; width: 450px; }
+#settings { left: 220px; top: 40px; width: 360px; }
+
+/* TERMINAL SPECIFIC */
+#term-output {
+  height: 180px;
+  overflow-y: auto;
+  font-family: monospace;
+  font-size: 13px;
+  color: #4ade80;
+  background: #050814;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+/* CALCULATOR */
+.calc-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-top: 8px;
+}
+
+#menu {
+  display: none;
+  position: absolute;
+  bottom: 60px;
+  left: 15px;
+  background: #11172e;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  z-index: 1001;
+  width: 180px;
 }
 </style>
 </head>
@@ -84,182 +193,299 @@ textarea,input{
 <body>
 
 <header>
-<b>🚀 VaskoOS</b>
-<span id="clock"></span>
+  <b style="font-size: 18px;">🚀 VaskoOS</b>
+  <span id="clock" style="font-size: 14px; opacity: 0.9;"></span>
 </header>
 
 <main>
 
-<!-- HOME -->
-<div class="window" id="home">
-  <div class="title">🖥️ VaskoOS</div>
-  <div class="content">
-    <h1>Welcome!</h1>
-    <p>My very own WebOS</p>
-    <p id="quote">Keep coding!</p>
-    <button onclick="newQuote()">💬 New Quote</button>
-  </div>
-</div>
-
-<!-- NOTEPAD -->
-<div class="window" id="note">
-  <div class="title">📝 Notepad</div>
-  <div class="content">
-    <textarea id="text" rows="7"
-      placeholder="Write something..."></textarea>
-  </div>
-</div>
-
-<!-- CALCULATOR -->
-<div class="window" id="calc">
-  <div class="title">🧮 Calculator</div>
-  <div class="content">
-    <input id="screen" readonly>
-
-    <div class="grid">
-      <button onclick="clearCalc()">C</button>
-      <button onclick="add('/')">÷</button>
-      <button onclick="add('*')">×</button>
-      <button onclick="add('-')">−</button>
-
-      <button onclick="add('7')">7</button>
-      <button onclick="add('8')">8</button>
-      <button onclick="add('9')">9</button>
-      <button onclick="add('+')">+</button>
-
-      <button onclick="add('4')">4</button>
-      <button onclick="add('5')">5</button>
-      <button onclick="add('6')">6</button>
-      <button onclick="result()">=</button>
-
-      <button onclick="add('1')">1</button>
-      <button onclick="add('2')">2</button>
-      <button onclick="add('3')">3</button>
-      <button onclick="add('0')">0</button>
+  <!-- DESKTOP ICONS -->
+  <div class="desktop-icons">
+    <div class="icon" onclick="show('home')">
+      <div class="icon-img">🖥️</div>
+      <div class="icon-title">About</div>
+    </div>
+    <div class="icon" onclick="show('paint')">
+      <div class="icon-img">🎨</div>
+      <div class="icon-title">Paint</div>
+    </div>
+    <div class="icon" onclick="show('notepad')">
+      <div class="icon-img">📝</div>
+      <div class="icon-title">Notepad</div>
+    </div>
+    <div class="icon" onclick="show('files')">
+      <div class="icon-img">📁</div>
+      <div class="icon-title">Files</div>
+    </div>
+    <div class="icon" onclick="show('calc')">
+      <div class="icon-img">🧮</div>
+      <div class="icon-title">Calculator</div>
+    </div>
+    <div class="icon" onclick="show('taskmgr')">
+      <div class="icon-img">📊</div>
+      <div class="icon-title">Task Mgr</div>
+    </div>
+    <div class="icon" onclick="show('terminal')">
+      <div class="icon-img">💻</div>
+      <div class="icon-title">Terminal</div>
+    </div>
+    <div class="icon" onclick="show('settings')">
+      <div class="icon-img">⚙️</div>
+      <div class="icon-title">Settings</div>
     </div>
   </div>
-</div>
+
+  <!-- ABOUT WINDOW -->
+  <div class="window" id="home">
+    <div class="title"><span>🖥️ About</span><button class="close-btn" onclick="hide('home')">✕</button></div>
+    <div class="content" style="text-align:center;">
+      <h3>VaskoOS v1.0</h3>
+      <p>Personal web desktop interface with built-in applications.</p>
+    </div>
+  </div>
+
+  <!-- PAINT WINDOW -->
+  <div class="window" id="paint">
+    <div class="title"><span>🎨 Paint</span><button class="close-btn" onclick="hide('paint')">✕</button></div>
+    <div class="content">
+      <canvas id="paint-canvas" width="400" height="220" style="background:white; border-radius:6px; cursor:crosshair;"></canvas>
+      <div style="display:flex; justify-content:space-between; margin-top:8px;">
+        <input type="color" id="paint-color" value="#000000">
+        <button onclick="clearCanvas()">Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTEPAD WINDOW -->
+  <div class="window" id="notepad">
+    <div class="title"><span>📝 Notepad</span><button class="close-btn" onclick="hide('notepad')">✕</button></div>
+    <div class="content">
+      <textarea id="note-text" rows="8" placeholder="Type a note here..."></textarea>
+      <button onclick="saveNote()" style="margin-top:8px; width:100%;">💾 Save</button>
+    </div>
+  </div>
+
+  <!-- FILES WINDOW -->
+  <div class="window" id="files">
+    <div class="title"><span>📁 File Explorer</span><button class="close-btn" onclick="hide('files')">✕</button></div>
+    <div class="content">
+      <p>📄 document1.txt</p>
+      <p>🖼️ image.png</p>
+      <p>⚙️ system.config</p>
+    </div>
+  </div>
+
+  <!-- CALCULATOR WINDOW -->
+  <div class="window" id="calc">
+    <div class="title"><span>🧮 Calculator</span><button class="close-btn" onclick="hide('calc')">✕</button></div>
+    <div class="content">
+      <input type="text" id="calc-display" readonly style="text-align:right; font-size:18px;" value="0">
+      <div class="calc-grid">
+        <button onclick="clearCalc()">C</button>
+        <button onclick="addCalc('/')">/</button>
+        <button onclick="addCalc('*')">*</button>
+        <button onclick="addCalc('-')">-</button>
+        <button onclick="addCalc('7')">7</button>
+        <button onclick="addCalc('8')">8</button>
+        <button onclick="addCalc('9')">9</button>
+        <button onclick="addCalc('+')">+</button>
+        <button onclick="addCalc('4')">4</button>
+        <button onclick="addCalc('5')">5</button>
+        <button onclick="addCalc('6')">6</button>
+        <button onclick="evalCalc()" style="grid-row: span 2; height:100%; background:#2563eb;">=</button>
+        <button onclick="addCalc('1')">1</button>
+        <button onclick="addCalc('2')">2</button>
+        <button onclick="addCalc('3')">3</button>
+        <button onclick="addCalc('0')" style="grid-column: span 2;">0</button>
+        <button onclick="addCalc('.')">.</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TASK MANAGER WINDOW -->
+  <div class="window" id="taskmgr">
+    <div class="title"><span>📊 Task Manager</span><button class="close-btn" onclick="hide('taskmgr')">✕</button></div>
+    <div class="content">
+      <p><b>CPU Usage:</b> <span id="cpu-load">12%</span></p>
+      <p><b>RAM Usage:</b> 1.4 GB / 4.0 GB</p>
+      <p><b>Status:</b> All systems operating normally.</p>
+    </div>
+  </div>
+
+  <!-- TERMINAL WINDOW -->
+  <div class="window" id="terminal">
+    <div class="title"><span>💻 Terminal</span><button class="close-btn" onclick="hide('terminal')">✕</button></div>
+    <div class="content">
+      <div id="term-output">VaskoOS [Version 1.0.0]<br>Type 'help' for a list of commands.<br><br></div>
+      <input type="text" id="term-input" placeholder="Command..." onkeypress="if(event.key==='Enter') runCmd()">
+    </div>
+  </div>
+
+  <!-- SETTINGS WINDOW -->
+  <div class="window" id="settings">
+    <div class="title"><span>⚙️ Settings</span><button class="close-btn" onclick="hide('settings')">✕</button></div>
+    <div class="content">
+      <p style="margin-top: 0;"><b>Personalization</b></p>
+      <label style="font-size:13px;">Desktop Background:</label><br>
+      <select id="bg-select" onchange="changeBg()" style="width:100%; margin-top:6px; margin-bottom:12px;">
+        <option value="dark">Dark Blue (Default)</option>
+        <option value="gradient">Purple Gradient</option>
+        <option value="cyber">Cyberpunk (Black & Neon)</option>
+      </select>
+      <p id="settings-status" style="font-size:12px; color:#4ade80;"></p>
+    </div>
+  </div>
 
 </main>
 
 <footer>
-<button onclick="menu()">🚀 Start</button>
-<button onclick="show('note')">📝 Notepad</button>
-<button onclick="show('calc')">🧮 Calculator</button>
+  <button onclick="menu()">🚀 Start</button>
+  <span style="font-size:12px; opacity:0.6;">VaskoOS Web Desktop</span>
 </footer>
 
+<!-- START MENU -->
 <div id="menu">
-<b>APPLICATIONS</b><br><br>
-<button onclick="show('note');menu()">📝 Notepad</button>
-<br><br>
-<button onclick="show('calc');menu()">🧮 Calculator</button>
+  <b>APPLICATIONS</b><br><br>
+  <button onclick="show('home');menu()" style="width:100%; text-align:left; margin-bottom:4px;">🖥️ About</button>
+  <button onclick="show('paint');menu()" style="width:100%; text-align:left; margin-bottom:4px;">🎨 Paint</button>
+  <button onclick="show('notepad');menu()" style="width:100%; text-align:left; margin-bottom:4px;">📝 Notepad</button>
+  <button onclick="show('files');menu()" style="width:100%; text-align:left; margin-bottom:4px;">📁 Files</button>
+  <button onclick="show('calc');menu()" style="width:100%; text-align:left; margin-bottom:4px;">🧮 Calculator</button>
+  <button onclick="show('taskmgr');menu()" style="width:100%; text-align:left; margin-bottom:4px;">📊 Task Mgr</button>
+  <button onclick="show('terminal');menu()" style="width:100%; text-align:left; margin-bottom:4px;">💻 Terminal</button>
+  <button onclick="show('settings');menu()" style="width:100%; text-align:left;">⚙️ Settings</button>
 </div>
 
 <script>
 
 /* CLOCK */
-function clock(){
-  clockElement.textContent=new Date().toLocaleTimeString();
-}
-let clockElement=document.getElementById("clock");
-setInterval(clock,1000);
-clock();
+function clock(){ document.getElementById("clock").textContent = new Date().toLocaleTimeString(); }
+setInterval(clock, 1000); clock();
 
+/* DRAG & WINDOW MANAGEMENT */
+let z = 1;
+document.querySelectorAll(".window").forEach(win => {
+  let title = win.querySelector(".title");
+  let dragging = false, x = 0, y = 0;
 
-/* WINDOWS */
+  win.addEventListener("pointerdown", () => { z++; win.style.zIndex = z; });
 
-let z=1;
-
-document.querySelectorAll(".window").forEach(win=>{
-  let title=win.querySelector(".title");
-  let dragging=false,x=0,y=0;
-
-  title.addEventListener("pointerdown",e=>{
-    dragging=true;
-    z++;
-    win.style.zIndex=z;
-
-    let r=win.getBoundingClientRect();
-    x=e.clientX-r.left;
-    y=e.clientY-r.top;
-
+  title.addEventListener("pointerdown", e => {
+    if(e.target.classList.contains("close-btn")) return;
+    dragging = true;
+    let r = win.getBoundingClientRect();
+    x = e.clientX - r.left; y = e.clientY - r.top;
     title.setPointerCapture(e.pointerId);
   });
 
-  title.addEventListener("pointermove",e=>{
-    if(!dragging)return;
-
-    win.style.left=(e.clientX-x)+"px";
-    win.style.top=(e.clientY-y)+"px";
-    win.style.transform="none";
+  title.addEventListener("pointermove", e => {
+    if(!dragging) return;
+    win.style.left = (e.clientX - x) + "px";
+    win.style.top = (e.clientY - y) + "px";
   });
 
-  title.addEventListener("pointerup",()=>{
-    dragging=false;
-  });
+  title.addEventListener("pointerup", () => { dragging = false; });
 });
 
+function menu(){ let m = document.getElementById("menu"); m.style.display = m.style.display === "block" ? "none" : "block"; }
+function show(id){ let win = document.getElementById(id); win.style.display = "block"; z++; win.style.zIndex = z; }
+function hide(id){ document.getElementById(id).style.display = "none"; }
 
-/* START MENU */
+/* PAINT LOGIC */
+const canvas = document.getElementById('paint-canvas');
+const ctx = canvas.getContext('2d');
+let painting = false;
 
-function menu(){
-  let m=document.getElementById("menu");
-  m.style.display=m.style.display=="block"?"none":"block";
+canvas.addEventListener('mousedown', () => painting = true);
+canvas.addEventListener('mouseup', () => { painting = false; ctx.beginPath(); });
+canvas.addEventListener('mousemove', draw);
+
+function draw(e) {
+  if (!painting) return;
+  const rect = canvas.getBoundingClientRect();
+  ctx.lineWidth = 3;
+  ctx.lineCap = 'round';
+  ctx.strokeStyle = document.getElementById('paint-color').value;
+  ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+}
+function clearCanvas() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+
+/* NOTEPAD LOGIC */
+document.addEventListener("DOMContentLoaded", () => {
+  const note = localStorage.getItem("vasko_note");
+  if(note) document.getElementById("note-text").value = note;
+  
+  const savedBg = localStorage.getItem("vasko_bg");
+  if(savedBg) {
+    document.getElementById("bg-select").value = savedBg;
+    applyBg(savedBg);
+  }
+});
+
+function saveNote() {
+  localStorage.setItem("vasko_note", document.getElementById("note-text").value);
+  alert("Saved!");
 }
 
-function show(id){
-  document.getElementById(id).style.display="block";
+/* CALCULATOR LOGIC */
+let calc = document.getElementById("calc-display");
+function addCalc(v) { calc.value = calc.value === "0" ? v : calc.value + v; }
+function clearCalc() { calc.value = "0"; }
+function evalCalc() { try { calc.value = eval(calc.value); } catch(e) { calc.value = "Error"; setTimeout(clearCalc, 1000); } }
+
+/* TASK MGR SIMULATION */
+setInterval(() => {
+  document.getElementById("cpu-load").textContent = Math.floor(Math.random() * 25 + 5) + "%";
+}, 2000);
+
+/* TERMINAL LOGIC */
+function runCmd() {
+  const input = document.getElementById("term-input");
+  const output = document.getElementById("term-output");
+  const cmd = input.value.trim().toLowerCase();
+  
+  output.innerHTML += `> ${input.value}<br>`;
+  
+  if (cmd === "help") {
+    output.innerHTML += "Available commands: help, clear, date, whoami, version<br>";
+  } else if (cmd === "clear") {
+    output.innerHTML = "";
+  } else if (cmd === "date") {
+    output.innerHTML += `${new Date().toString()}<br>`;
+  } else if (cmd === "whoami") {
+    output.innerHTML += "vasko_user<br>";
+  } else if (cmd === "version") {
+    output.innerHTML += "VaskoOS v1.0.0<br>";
+  } else if (cmd !== "") {
+    output.innerHTML += `Unknown command: '${cmd}'<br>`;
+  }
+  
+  input.value = "";
+  output.scrollTop = output.scrollHeight;
 }
 
-
-/* QUOTES */
-
-let quotes=[
-  "Keep calm and code.",
-  "Build something awesome.",
-  "Every expert was once a beginner.",
-  "Code. Create. Repeat.",
-  "Never stop learning!"
-];
-
-function newQuote(){
-  quote.textContent=
-    quotes[Math.floor(Math.random()*quotes.length)];
+/* SETTINGS LOGIC */
+function changeBg() {
+  const val = document.getElementById("bg-select").value;
+  localStorage.setItem("vasko_bg", val);
+  applyBg(val);
+  document.getElementById("settings-status").textContent = "✅ Settings saved!";
+  setTimeout(() => document.getElementById("settings-status").textContent = "", 2000);
 }
 
-
-/* CALCULATOR */
-
-let screen=document.getElementById("screen");
-
-function add(x){
-  screen.value+=x;
-}
-
-function clearCalc(){
-  screen.value="";
-}
-
-function result(){
-  try{
-    screen.value=eval(screen.value);
-  }catch{
-    screen.value="Error";
+function applyBg(val) {
+  if (val === "gradient") {
+    document.body.style.background = "linear-gradient(135deg, #0f172a, #312e81, #701a75)";
+  } else if (val === "cyber") {
+    document.body.style.background = "radial-gradient(circle, #09090b 0%, #000000 100%)";
+  } else {
+    document.body.style.background = "#0d122b";
   }
 }
 
-
-/* NOTEPAD SAVE */
-
-let text=document.getElementById("text");
-
-text.value=localStorage.note||"";
-
-text.oninput=()=>{
-  localStorage.note=text.value;
-};
-
 </script>
-
 </body>
 </html>
