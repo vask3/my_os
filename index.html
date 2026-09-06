@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="bg">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +10,7 @@
 
   <!-- Top Bar -->
   <header class="top-bar">
-    <div class="brand">🚀 VaskoOS</div>
+    <div class="brand">✨ VaskoOS</div>
     <div class="top-controls">
       <span id="clock">00:00:00</span>
     </div>
@@ -22,128 +22,128 @@
     <!-- Desktop Icons -->
     <div class="icon-grid">
       <div class="desk-icon" onclick="openWin('win-about')">
-        <div class="icon-box">🖥️</div>
-        <span>За системата</span>
+        <div class="icon-box">💻</div>
+        <span>About</span>
       </div>
       <div class="desk-icon" onclick="openWin('win-notes')">
         <div class="icon-box">📝</div>
-        <span>Бележки</span>
+        <span>Notes</span>
       </div>
       <div class="desk-icon" onclick="openWin('win-draw')">
         <div class="icon-box">🎨</div>
-        <span>Rysuvane</span>
+        <span>Paint</span>
       </div>
       <div class="desk-icon" onclick="openWin('win-music')">
         <div class="icon-box">🎵</div>
-        <span>Музика</span>
+        <span>Ambient Sound</span>
       </div>
       <div class="desk-icon" onclick="openWin('win-pomo')">
         <div class="icon-box">⏱️</div>
-        <span>Помодоро</span>
+        <span>Pomodoro</span>
       </div>
       <div class="desk-icon" onclick="openWin('win-weather')">
         <div class="icon-box">🌤️</div>
-        <span>Времето</span>
+        <span>Weather</span>
       </div>
       <div class="desk-icon" onclick="openWin('win-term')">
-        <div class="icon-box">💻</div>
-        <span>Терминал</span>
+        <div class="icon-box">📟</div>
+        <span>Terminal</span>
       </div>
     </div>
 
     <!-- Window: About -->
-    <div class="window" id="win-about" style="top: 60px; left: 180px;">
+    <div class="window" id="win-about" style="top: 70px; left: 200px;">
       <div class="win-header">
-        <span>🖥️ Относно VaskoOS</span>
+        <span>💻 About VaskoOS</span>
         <button class="win-close" onclick="closeWin('win-about')">✕</button>
       </div>
       <div class="win-body">
-        <h2>Добре дошли във VaskoOS v2.5</h2>
-        <p>Модерна, бърза и приятна уеб операционна система с изчистен дизайн.</p>
-        <p>💡 <b>Съвет:</b> Можете да влачите и пускате ваше изображение върху десктопа, за да промените тапета!</p>
+        <h2>Welcome to VaskoOS</h2>
+        <p>A soft, modern, and lightweight web desktop experience designed for smooth productivity.</p>
+        <p>💡 <b>Tip:</b> Drag and drop any image onto the background to change your wallpaper!</p>
       </div>
     </div>
 
     <!-- Window: Notes -->
-    <div class="window" id="win-notes" style="top: 80px; left: 220px;">
+    <div class="window" id="win-notes" style="top: 90px; left: 240px;">
       <div class="win-header">
-        <span>📝 Бележник</span>
+        <span>📝 Quick Notepad</span>
         <button class="win-close" onclick="closeWin('win-notes')">✕</button>
       </div>
       <div class="win-body">
-        <textarea id="note-input" placeholder="Запишете идеите си тук..."></textarea>
-        <button class="btn-primary" onclick="saveNote()" style="width: 100%; margin-top: 8px;">💾 Запази</button>
+        <textarea id="note-input" placeholder="Type your notes here..."></textarea>
+        <button class="btn-primary" onclick="saveNote()" style="width: 100%; margin-top: 10px;">Save Notes</button>
       </div>
     </div>
 
     <!-- Window: Draw -->
-    <div class="window" id="win-draw" style="top: 100px; left: 260px;">
+    <div class="window" id="win-draw" style="top: 110px; left: 280px;">
       <div class="win-header">
-        <span>🎨 Рисуване</span>
+        <span>🎨 Canvas Paint</span>
         <button class="win-close" onclick="closeWin('win-draw')">✕</button>
       </div>
       <div class="win-body">
         <canvas id="canvas" width="300" height="180"></canvas>
-        <div class="controls-row" style="margin-top: 8px; display: flex; justify-content: space-between;">
-          <input type="color" id="draw-color" value="#3b82f6">
-          <button class="btn-primary" onclick="clearCanvas()">Изчисти</button>
+        <div class="controls-row" style="margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+          <input type="color" id="draw-color" value="#6366f1">
+          <button class="btn-primary" onclick="clearCanvas()">Clear Canvas</button>
         </div>
       </div>
     </div>
 
     <!-- Window: Music Player -->
-    <div class="window" id="win-music" style="top: 120px; left: 300px;">
+    <div class="window" id="win-music" style="top: 130px; left: 320px;">
       <div class="win-header">
-        <span>🎵 Ambient Music</span>
+        <span>🎵 Focus Sound Generator</span>
         <button class="win-close" onclick="closeWin('win-music')">✕</button>
       </div>
       <div class="win-body" style="text-align: center;">
-        <p style="margin-top:0;">Звуци за фокус и релакс</p>
-        <div style="display:flex; gap:10px; justify-content:center;">
-          <button class="btn-primary" onclick="playAmbient('rain')">🌧️ Дъжд</button>
-          <button class="btn-primary" onclick="playAmbient('waves')">🌊 Вълни</button>
-          <button class="btn-primary" onclick="stopAmbient()">⏹️ Стоп</button>
+        <p style="margin-top: 0; color: #64748b;">Relaxing ambient noise generator</p>
+        <div style="display: flex; gap: 8px; justify-content: center; margin-top: 12px;">
+          <button class="btn-primary" onclick="playAmbient('rain')">🌧️ Rain</button>
+          <button class="btn-primary" onclick="playAmbient('waves')">🌊 Ocean</button>
+          <button class="btn-secondary" onclick="stopAmbient()">⏹️ Stop</button>
         </div>
       </div>
     </div>
 
     <!-- Window: Pomodoro Timer -->
-    <div class="window" id="win-pomo" style="top: 140px; left: 340px;">
+    <div class="window" id="win-pomo" style="top: 150px; left: 360px;">
       <div class="win-header">
-        <span>⏱️ Помодоро Таймер</span>
+        <span>⏱️ Pomodoro Timer</span>
         <button class="win-close" onclick="closeWin('win-pomo')">✕</button>
       </div>
       <div class="win-body" style="text-align: center;">
-        <h1 id="pomo-display" style="font-size: 36px; margin: 10px 0;">25:00</h1>
-        <div style="display:flex; gap:8px; justify-content:center;">
-          <button class="btn-primary" onclick="startPomo()">Старт</button>
-          <button class="btn-primary" onclick="resetPomo()">Ресет</button>
+        <h1 id="pomo-display" style="font-size: 42px; margin: 10px 0; color: #4F46E5;">25:00</h1>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+          <button class="btn-primary" onclick="startPomo()">Start</button>
+          <button class="btn-secondary" onclick="resetPomo()">Reset</button>
         </div>
       </div>
     </div>
 
     <!-- Window: Weather -->
-    <div class="window" id="win-weather" style="top: 160px; left: 380px;">
+    <div class="window" id="win-weather" style="top: 170px; left: 400px;">
       <div class="win-header">
-        <span>🌤️ Прогноза за времето</span>
+        <span>🌤️ Local Weather</span>
         <button class="win-close" onclick="closeWin('win-weather')">✕</button>
       </div>
       <div class="win-body" style="text-align: center;">
-        <h3 style="margin: 5px 0;">София / Пловдив</h3>
-        <p style="font-size: 28px; font-weight: bold; margin: 10px 0;">22°C 🌤️</p>
-        <p style="font-size: 13px; color: #94a3b8;">Предимно слънчево, лек бриз</p>
+        <h3 style="margin: 5px 0; color: #334155;">Current Forecast</h3>
+        <p style="font-size: 32px; font-weight: bold; margin: 10px 0; color: #2563EB;">22°C 🌤️</p>
+        <p style="font-size: 13px; color: #64748b;">Mostly Sunny & Pleasant</p>
       </div>
     </div>
 
     <!-- Window: Terminal -->
-    <div class="window" id="win-term" style="top: 180px; left: 420px;">
+    <div class="window" id="win-term" style="top: 190px; left: 440px;">
       <div class="win-header">
-        <span>💻 Терминал</span>
+        <span>📟 Command Terminal</span>
         <button class="win-close" onclick="closeWin('win-term')">✕</button>
       </div>
       <div class="win-body">
-        <div id="term-out">VaskoOS Console v2.5<br>Напишете 'help' за команди.<br></div>
-        <input type="text" id="term-in" placeholder="Команда..." onkeypress="handleTerm(event)">
+        <div id="term-out">VaskoOS Terminal v3.0<br>Type 'help' to see commands.<br></div>
+        <input type="text" id="term-in" placeholder="Type a command..." onkeypress="handleTerm(event)">
       </div>
     </div>
 
@@ -151,15 +151,15 @@
 
   <!-- Bottom Taskbar -->
   <footer class="taskbar">
-    <button class="btn-start" onclick="toggleMenu()">🚀 Старт</button>
+    <button class="btn-start" onclick="toggleMenu()">✨ Start</button>
     <div id="start-menu" class="hidden">
-      <div class="menu-item" onclick="openWin('win-about'); toggleMenu();">🖥️ За системата</div>
-      <div class="menu-item" onclick="openWin('win-notes'); toggleMenu();">📝 Бележник</div>
-      <div class="menu-item" onclick="openWin('win-draw'); toggleMenu();">🎨 Рисуване</div>
-      <div class="menu-item" onclick="openWin('win-music'); toggleMenu();">🎵 Музика</div>
-      <div class="menu-item" onclick="openWin('win-pomo'); toggleMenu();">⏱️ Помодоро</div>
-      <div class="menu-item" onclick="openWin('win-weather'); toggleMenu();">🌤️ Времето</div>
-      <div class="menu-item" onclick="openWin('win-term'); toggleMenu();">💻 Терминал</div>
+      <div class="menu-item" onclick="openWin('win-about'); toggleMenu();">💻 About</div>
+      <div class="menu-item" onclick="openWin('win-notes'); toggleMenu();">📝 Notepad</div>
+      <div class="menu-item" onclick="openWin('win-draw'); toggleMenu();">🎨 Paint</div>
+      <div class="menu-item" onclick="openWin('win-music'); toggleMenu();">🎵 Ambient Sound</div>
+      <div class="menu-item" onclick="openWin('win-pomo'); toggleMenu();">⏱️ Pomodoro</div>
+      <div class="menu-item" onclick="openWin('win-weather'); toggleMenu();">🌤️ Weather</div>
+      <div class="menu-item" onclick="openWin('win-term'); toggleMenu();">📟 Terminal</div>
     </div>
   </footer>
 
