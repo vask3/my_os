@@ -16,7 +16,7 @@ document.querySelectorAll('.window').forEach(win => {
   });
 
   header.addEventListener('pointerdown', (e) => {
-    if (e.target.classList.contains('win-close')) return;
+    if (e.target.closest('.win-close')) return;
     isDragging = true;
     offsetEx = e.clientX - win.offsetLeft;
     offsetEy = e.clientY - win.offsetTop;
@@ -72,12 +72,12 @@ function clearCanvas() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
 // NOTES PERSISTENCE
 function saveNote() {
   const text = document.getElementById('note-input').value;
-  localStorage.setItem('vasko_soft_notes', text);
+  localStorage.setItem('vasko_dark_notes', text);
   alert('Notes saved successfully!');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const saved = localStorage.getItem('vasko_soft_notes');
+  const saved = localStorage.getItem('vasko_dark_notes');
   if (saved) document.getElementById('note-input').value = saved;
 });
 
@@ -108,7 +108,7 @@ function addTask() {
   if (!text) return;
 
   const li = document.createElement('li');
-  li.innerHTML = `<span>${text}</span> <span class="task-del" onclick="this.parentElement.remove()">X</span>`;
+  li.innerHTML = `<span>${text}</span> <i class="fa-solid fa-trash task-del" onclick="this.parentElement.remove()"></i>`;
   document.getElementById('task-list').appendChild(li);
   input.value = '';
 }
@@ -130,7 +130,7 @@ function startPomo() {
       updatePomoDisplay();
     } else {
       clearInterval(pomoInterval);
-      alert('Time is up! Take a short break.');
+      alert('Time is up!');
     }
   }, 1000);
 }
@@ -158,7 +158,7 @@ function handleTerm(e) {
   } else if (cmd === 'date') {
     out.innerHTML += `${new Date().toLocaleString()}<br>`;
   } else if (cmd === 'version') {
-    out.innerHTML += 'VaskoOS Light Edition v3.5<br>';
+    out.innerHTML += 'VaskoOS Dark Edition v4.0<br>';
   } else {
     out.innerHTML += `Command not recognized: ${cmd}<br>`;
   }
