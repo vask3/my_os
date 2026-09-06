@@ -10,7 +10,7 @@
 
   <!-- Top Bar -->
   <header class="top-bar">
-    <div class="brand">✨ VaskoOS</div>
+    <div class="brand">VaskoOS</div>
     <div class="top-controls">
       <span id="clock">00:00:00</span>
     </div>
@@ -22,31 +22,35 @@
     <!-- Desktop Icons -->
     <div class="icon-grid">
       <div class="desk-icon" onclick="openWin('win-about')">
-        <div class="icon-box">💻</div>
+        <div class="icon-box">SYS</div>
         <span>About</span>
       </div>
       <div class="desk-icon" onclick="openWin('win-notes')">
-        <div class="icon-box">📝</div>
+        <div class="icon-box">TXT</div>
         <span>Notes</span>
       </div>
       <div class="desk-icon" onclick="openWin('win-draw')">
-        <div class="icon-box">🎨</div>
+        <div class="icon-box">DRW</div>
         <span>Paint</span>
       </div>
-      <div class="desk-icon" onclick="openWin('win-music')">
-        <div class="icon-box">🎵</div>
-        <span>Ambient Sound</span>
+      <div class="desk-icon" onclick="openWin('win-calc')">
+        <div class="icon-box">CLC</div>
+        <span>Calculator</span>
+      </div>
+      <div class="desk-icon" onclick="openWin('win-tasks')">
+        <div class="icon-box">TSK</div>
+        <span>Tasks</span>
       </div>
       <div class="desk-icon" onclick="openWin('win-pomo')">
-        <div class="icon-box">⏱️</div>
+        <div class="icon-box">TMR</div>
         <span>Pomodoro</span>
       </div>
       <div class="desk-icon" onclick="openWin('win-weather')">
-        <div class="icon-box">🌤️</div>
+        <div class="icon-box">WTR</div>
         <span>Weather</span>
       </div>
       <div class="desk-icon" onclick="openWin('win-term')">
-        <div class="icon-box">📟</div>
+        <div class="icon-box">CLI</div>
         <span>Terminal</span>
       </div>
     </div>
@@ -54,21 +58,21 @@
     <!-- Window: About -->
     <div class="window" id="win-about" style="top: 70px; left: 200px;">
       <div class="win-header">
-        <span>💻 About VaskoOS</span>
-        <button class="win-close" onclick="closeWin('win-about')">✕</button>
+        <span>About VaskoOS</span>
+        <button class="win-close" onclick="closeWin('win-about')">X</button>
       </div>
       <div class="win-body">
         <h2>Welcome to VaskoOS</h2>
         <p>A soft, modern, and lightweight web desktop experience designed for smooth productivity.</p>
-        <p>💡 <b>Tip:</b> Drag and drop any image onto the background to change your wallpaper!</p>
+        <p><b>Tip:</b> Drag and drop any image onto the background to change your wallpaper!</p>
       </div>
     </div>
 
     <!-- Window: Notes -->
     <div class="window" id="win-notes" style="top: 90px; left: 240px;">
       <div class="win-header">
-        <span>📝 Quick Notepad</span>
-        <button class="win-close" onclick="closeWin('win-notes')">✕</button>
+        <span>Quick Notepad</span>
+        <button class="win-close" onclick="closeWin('win-notes')">X</button>
       </div>
       <div class="win-body">
         <textarea id="note-input" placeholder="Type your notes here..."></textarea>
@@ -79,8 +83,8 @@
     <!-- Window: Draw -->
     <div class="window" id="win-draw" style="top: 110px; left: 280px;">
       <div class="win-header">
-        <span>🎨 Canvas Paint</span>
-        <button class="win-close" onclick="closeWin('win-draw')">✕</button>
+        <span>Canvas Paint</span>
+        <button class="win-close" onclick="closeWin('win-draw')">X</button>
       </div>
       <div class="win-body">
         <canvas id="canvas" width="300" height="180"></canvas>
@@ -91,27 +95,55 @@
       </div>
     </div>
 
-    <!-- Window: Music Player -->
-    <div class="window" id="win-music" style="top: 130px; left: 320px;">
+    <!-- Window: Calculator -->
+    <div class="window" id="win-calc" style="top: 130px; left: 320px; width: 280px;">
       <div class="win-header">
-        <span>🎵 Focus Sound Generator</span>
-        <button class="win-close" onclick="closeWin('win-music')">✕</button>
+        <span>Calculator</span>
+        <button class="win-close" onclick="closeWin('win-calc')">X</button>
       </div>
-      <div class="win-body" style="text-align: center;">
-        <p style="margin-top: 0; color: #64748b;">Relaxing ambient noise generator</p>
-        <div style="display: flex; gap: 8px; justify-content: center; margin-top: 12px;">
-          <button class="btn-primary" onclick="playAmbient('rain')">🌧️ Rain</button>
-          <button class="btn-primary" onclick="playAmbient('waves')">🌊 Ocean</button>
-          <button class="btn-secondary" onclick="stopAmbient()">⏹️ Stop</button>
+      <div class="win-body">
+        <input type="text" id="calc-display" readonly value="0" style="text-align: right; font-size: 18px; margin-bottom: 10px;">
+        <div class="calc-grid">
+          <button class="btn-secondary" onclick="calcInput('7')">7</button>
+          <button class="btn-secondary" onclick="calcInput('8')">8</button>
+          <button class="btn-secondary" onclick="calcInput('9')">9</button>
+          <button class="btn-primary" onclick="calcInput('/')">/</button>
+          <button class="btn-secondary" onclick="calcInput('4')">4</button>
+          <button class="btn-secondary" onclick="calcInput('5')">5</button>
+          <button class="btn-secondary" onclick="calcInput('6')">6</button>
+          <button class="btn-primary" onclick="calcInput('*')">*</button>
+          <button class="btn-secondary" onclick="calcInput('1')">1</button>
+          <button class="btn-secondary" onclick="calcInput('2')">2</button>
+          <button class="btn-secondary" onclick="calcInput('3')">3</button>
+          <button class="btn-primary" onclick="calcInput('-')">-</button>
+          <button class="btn-secondary" onclick="calcClear()">C</button>
+          <button class="btn-secondary" onclick="calcInput('0')">0</button>
+          <button class="btn-primary" onclick="calcEqual()">=</button>
+          <button class="btn-primary" onclick="calcInput('+')">+</button>
         </div>
       </div>
     </div>
 
-    <!-- Window: Pomodoro Timer -->
-    <div class="window" id="win-pomo" style="top: 150px; left: 360px;">
+    <!-- Window: Tasks -->
+    <div class="window" id="win-tasks" style="top: 150px; left: 360px;">
       <div class="win-header">
-        <span>⏱️ Pomodoro Timer</span>
-        <button class="win-close" onclick="closeWin('win-pomo')">✕</button>
+        <span>Task Manager</span>
+        <button class="win-close" onclick="closeWin('win-tasks')">X</button>
+      </div>
+      <div class="win-body">
+        <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+          <input type="text" id="task-in" placeholder="New task...">
+          <button class="btn-primary" onclick="addTask()">Add</button>
+        </div>
+        <ul id="task-list"></ul>
+      </div>
+    </div>
+
+    <!-- Window: Pomodoro Timer -->
+    <div class="window" id="win-pomo" style="top: 170px; left: 400px;">
+      <div class="win-header">
+        <span>Pomodoro Timer</span>
+        <button class="win-close" onclick="closeWin('win-pomo')">X</button>
       </div>
       <div class="win-body" style="text-align: center;">
         <h1 id="pomo-display" style="font-size: 42px; margin: 10px 0; color: #4F46E5;">25:00</h1>
@@ -123,26 +155,26 @@
     </div>
 
     <!-- Window: Weather -->
-    <div class="window" id="win-weather" style="top: 170px; left: 400px;">
+    <div class="window" id="win-weather" style="top: 190px; left: 440px;">
       <div class="win-header">
-        <span>🌤️ Local Weather</span>
-        <button class="win-close" onclick="closeWin('win-weather')">✕</button>
+        <span>Local Weather</span>
+        <button class="win-close" onclick="closeWin('win-weather')">X</button>
       </div>
       <div class="win-body" style="text-align: center;">
         <h3 style="margin: 5px 0; color: #334155;">Current Forecast</h3>
-        <p style="font-size: 32px; font-weight: bold; margin: 10px 0; color: #2563EB;">22°C 🌤️</p>
-        <p style="font-size: 13px; color: #64748b;">Mostly Sunny & Pleasant</p>
+        <p style="font-size: 32px; font-weight: bold; margin: 10px 0; color: #2563EB;">22 C</p>
+        <p style="font-size: 13px; color: #64748b;">Mostly Sunny and Pleasant</p>
       </div>
     </div>
 
     <!-- Window: Terminal -->
-    <div class="window" id="win-term" style="top: 190px; left: 440px;">
+    <div class="window" id="win-term" style="top: 210px; left: 480px;">
       <div class="win-header">
-        <span>📟 Command Terminal</span>
-        <button class="win-close" onclick="closeWin('win-term')">✕</button>
+        <span>Command Terminal</span>
+        <button class="win-close" onclick="closeWin('win-term')">X</button>
       </div>
       <div class="win-body">
-        <div id="term-out">VaskoOS Terminal v3.0<br>Type 'help' to see commands.<br></div>
+        <div id="term-out">VaskoOS Terminal v3.5<br>Type 'help' to see commands.<br></div>
         <input type="text" id="term-in" placeholder="Type a command..." onkeypress="handleTerm(event)">
       </div>
     </div>
@@ -151,15 +183,16 @@
 
   <!-- Bottom Taskbar -->
   <footer class="taskbar">
-    <button class="btn-start" onclick="toggleMenu()">✨ Start</button>
+    <button class="btn-start" onclick="toggleMenu()">Start</button>
     <div id="start-menu" class="hidden">
-      <div class="menu-item" onclick="openWin('win-about'); toggleMenu();">💻 About</div>
-      <div class="menu-item" onclick="openWin('win-notes'); toggleMenu();">📝 Notepad</div>
-      <div class="menu-item" onclick="openWin('win-draw'); toggleMenu();">🎨 Paint</div>
-      <div class="menu-item" onclick="openWin('win-music'); toggleMenu();">🎵 Ambient Sound</div>
-      <div class="menu-item" onclick="openWin('win-pomo'); toggleMenu();">⏱️ Pomodoro</div>
-      <div class="menu-item" onclick="openWin('win-weather'); toggleMenu();">🌤️ Weather</div>
-      <div class="menu-item" onclick="openWin('win-term'); toggleMenu();">📟 Terminal</div>
+      <div class="menu-item" onclick="openWin('win-about'); toggleMenu();">About</div>
+      <div class="menu-item" onclick="openWin('win-notes'); toggleMenu();">Notepad</div>
+      <div class="menu-item" onclick="openWin('win-draw'); toggleMenu();">Paint</div>
+      <div class="menu-item" onclick="openWin('win-calc'); toggleMenu();">Calculator</div>
+      <div class="menu-item" onclick="openWin('win-tasks'); toggleMenu();">Tasks</div>
+      <div class="menu-item" onclick="openWin('win-pomo'); toggleMenu();">Pomodoro</div>
+      <div class="menu-item" onclick="openWin('win-weather'); toggleMenu();">Weather</div>
+      <div class="menu-item" onclick="openWin('win-term'); toggleMenu();">Terminal</div>
     </div>
   </footer>
 
