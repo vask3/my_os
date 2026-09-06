@@ -1,491 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VaskoOS</title>
-
-<style>
-*{ box-sizing: border-box; }
-
-body {
-  margin: 0;
-  height: 100vh;
-  overflow: hidden;
-  color: white;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #0d122b;
-  user-select: none;
-  transition: background 0.3s;
-}
-
-header, footer {
-  height: 50px;
-  padding: 0 20px;
-  background: rgba(10, 15, 35, 0.8);
-  backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-  z-index: 1000;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-footer {
-  border-bottom: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-main {
-  height: calc(100vh - 100px);
-  position: relative;
-  padding: 30px;
-}
-
-/* DESKTOP ICONS GRID */
-.desktop-icons {
-  display: grid;
-  grid-template-columns: repeat(2, 90px);
-  gap: 25px 30px;
-  align-content: start;
-}
-
-.icon {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 8px;
-  transition: background 0.2s;
-  text-align: center;
-}
-
-.icon:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.icon-img {
-  font-size: 34px;
-  margin-bottom: 6px;
-}
-
-.icon-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: #ffffff;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
-}
-
-/* WINDOWS */
-.window {
-  position: absolute;
-  width: 380px;
-  background: #161d3a;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 12px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-  overflow: hidden;
-  display: none;
-}
-
-.title {
-  padding: 10px 14px;
-  background: rgba(0, 0, 0, 0.25);
-  cursor: grab;
-  font-weight: bold;
-  font-size: 14px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.close-btn {
-  background: transparent;
-  border: none;
-  color: #ff5f56;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.close-btn:hover { color: #ff3b30; }
-
-.content { padding: 15px; }
-
-button, select {
-  border: 0;
-  border-radius: 6px;
-  padding: 8px 12px;
-  color: white;
-  background: rgba(255, 255, 255, 0.15);
-  cursor: pointer;
-  font-weight: 600;
-  transition: background 0.2s;
-}
-
-button:hover { background: rgba(255, 255, 255, 0.25); }
-
-select option {
-  background: #161d3a;
-  color: white;
-}
-
-input[type="text"], textarea {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 6px;
-  background: rgba(0, 0, 0, 0.3);
-  color: white;
-  outline: none;
-}
-
-/* POSITIONS */
-#home { left: 240px; top: 30px; }
-#paint { left: 260px; top: 50px; width: 440px; }
-#notepad { left: 280px; top: 70px; width: 400px; }
-#files { left: 300px; top: 90px; width: 360px; }
-#calc { left: 320px; top: 110px; width: 260px; }
-#taskmgr { left: 340px; top: 130px; width: 340px; }
-#terminal { left: 360px; top: 150px; width: 450px; }
-#settings { left: 220px; top: 40px; width: 360px; }
-
-/* TERMINAL SPECIFIC */
-#term-output {
-  height: 180px;
-  overflow-y: auto;
-  font-family: monospace;
-  font-size: 13px;
-  color: #4ade80;
-  background: #050814;
-  padding: 10px;
-  border-radius: 6px;
-  margin-bottom: 8px;
-}
-
-/* CALCULATOR */
-.calc-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
-  margin-top: 8px;
-}
-
-#menu {
-  display: none;
-  position: absolute;
-  bottom: 60px;
-  left: 15px;
-  background: #11172e;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  z-index: 1001;
-  width: 180px;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VaskoOS - Brutalist Web Desktop</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<header>
-  <b style="font-size: 18px;">🚀 VaskoOS</b>
-  <span id="clock" style="font-size: 14px; opacity: 0.9;"></span>
-</header>
+  <!-- CRT Scanline Effect Overlay -->
+  <div id="crt-overlay" class="crt-on"></div>
 
-<main>
+  <!-- Top Bar -->
+  <header class="top-bar">
+    <div class="brand"><b>VASKO_OS // v2.0</b></div>
+    <div class="top-controls">
+      <button class="btn-retro" onclick="toggleCRT()">📺 CRT: ON</button>
+      <button class="btn-retro" onclick="toggleSound()">🔊 SFX: ON</button>
+      <span id="clock">00:00:00</span>
+    </div>
+  </header>
 
-  <!-- DESKTOP ICONS -->
-  <div class="desktop-icons">
-    <div class="icon" onclick="show('home')">
-      <div class="icon-img">🖥️</div>
-      <div class="icon-title">About</div>
-    </div>
-    <div class="icon" onclick="show('paint')">
-      <div class="icon-img">🎨</div>
-      <div class="icon-title">Paint</div>
-    </div>
-    <div class="icon" onclick="show('notepad')">
-      <div class="icon-img">📝</div>
-      <div class="icon-title">Notepad</div>
-    </div>
-    <div class="icon" onclick="show('files')">
-      <div class="icon-img">📁</div>
-      <div class="icon-title">Files</div>
-    </div>
-    <div class="icon" onclick="show('calc')">
-      <div class="icon-img">🧮</div>
-      <div class="icon-title">Calculator</div>
-    </div>
-    <div class="icon" onclick="show('taskmgr')">
-      <div class="icon-img">📊</div>
-      <div class="icon-title">Task Mgr</div>
-    </div>
-    <div class="icon" onclick="show('terminal')">
-      <div class="icon-img">💻</div>
-      <div class="icon-title">Terminal</div>
-    </div>
-    <div class="icon" onclick="show('settings')">
-      <div class="icon-img">⚙️</div>
-      <div class="icon-title">Settings</div>
-    </div>
-  </div>
+  <!-- Main Desktop Space -->
+  <main id="desktop">
 
-  <!-- ABOUT WINDOW -->
-  <div class="window" id="home">
-    <div class="title"><span>🖥️ About</span><button class="close-btn" onclick="hide('home')">✕</button></div>
-    <div class="content" style="text-align:center;">
-      <h3>VaskoOS v1.0</h3>
-      <p>Personal web desktop interface with built-in applications.</p>
-    </div>
-  </div>
-
-  <!-- PAINT WINDOW -->
-  <div class="window" id="paint">
-    <div class="title"><span>🎨 Paint</span><button class="close-btn" onclick="hide('paint')">✕</button></div>
-    <div class="content">
-      <canvas id="paint-canvas" width="400" height="220" style="background:white; border-radius:6px; cursor:crosshair;"></canvas>
-      <div style="display:flex; justify-content:space-between; margin-top:8px;">
-        <input type="color" id="paint-color" value="#000000">
-        <button onclick="clearCanvas()">Clear</button>
+    <!-- Desktop Icons -->
+    <div class="icon-grid">
+      <div class="desk-icon" onclick="openWin('win-about')">
+        <div class="icon-box">👾</div>
+        <span>ABOUT.TXT</span>
+      </div>
+      <div class="desk-icon" onclick="openWin('win-draw')">
+        <div class="icon-box">🖌️</div>
+        <span>PIXEL_DRAW</span>
+      </div>
+      <div class="desk-icon" onclick="openWin('win-notes')">
+        <div class="icon-box">📋</div>
+        <span>NOTES.BAT</span>
+      </div>
+      <div class="desk-icon" onclick="openWin('win-synth')">
+        <div class="icon-box">🎹</div>
+        <span>8BIT_SYNTH</span>
+      </div>
+      <div class="desk-icon" onclick="openWin('win-term')">
+        <div class="icon-box">💻</div>
+        <span>TERMINAL</span>
       </div>
     </div>
-  </div>
 
-  <!-- NOTEPAD WINDOW -->
-  <div class="window" id="notepad">
-    <div class="title"><span>📝 Notepad</span><button class="close-btn" onclick="hide('notepad')">✕</button></div>
-    <div class="content">
-      <textarea id="note-text" rows="8" placeholder="Type a note here..."></textarea>
-      <button onclick="saveNote()" style="margin-top:8px; width:100%;">💾 Save</button>
-    </div>
-  </div>
+    <!-- Desktop Pet Mascot -->
+    <div id="pet" onclick="petMascot()" title="Click to feed me!">🐱</div>
 
-  <!-- FILES WINDOW -->
-  <div class="window" id="files">
-    <div class="title"><span>📁 File Explorer</span><button class="close-btn" onclick="hide('files')">✕</button></div>
-    <div class="content">
-      <p>📄 document1.txt</p>
-      <p>🖼️ image.png</p>
-      <p>⚙️ system.config</p>
-    </div>
-  </div>
-
-  <!-- CALCULATOR WINDOW -->
-  <div class="window" id="calc">
-    <div class="title"><span>🧮 Calculator</span><button class="close-btn" onclick="hide('calc')">✕</button></div>
-    <div class="content">
-      <input type="text" id="calc-display" readonly style="text-align:right; font-size:18px;" value="0">
-      <div class="calc-grid">
-        <button onclick="clearCalc()">C</button>
-        <button onclick="addCalc('/')">/</button>
-        <button onclick="addCalc('*')">*</button>
-        <button onclick="addCalc('-')">-</button>
-        <button onclick="addCalc('7')">7</button>
-        <button onclick="addCalc('8')">8</button>
-        <button onclick="addCalc('9')">9</button>
-        <button onclick="addCalc('+')">+</button>
-        <button onclick="addCalc('4')">4</button>
-        <button onclick="addCalc('5')">5</button>
-        <button onclick="addCalc('6')">6</button>
-        <button onclick="evalCalc()" style="grid-row: span 2; height:100%; background:#2563eb;">=</button>
-        <button onclick="addCalc('1')">1</button>
-        <button onclick="addCalc('2')">2</button>
-        <button onclick="addCalc('3')">3</button>
-        <button onclick="addCalc('0')" style="grid-column: span 2;">0</button>
-        <button onclick="addCalc('.')">.</button>
+    <!-- Window: About -->
+    <div class="window" id="win-about" style="top: 80px; left: 200px;">
+      <div class="win-header">
+        <span>👾 ABOUT_VASKO_OS</span>
+        <button class="win-close" onclick="closeWin('win-about')">X</button>
+      </div>
+      <div class="win-body">
+        <h2>VASKO_OS v2.0</h2>
+        <p>A custom brutalist web-desktop experience built from scratch without boilerplate frameworks.</p>
+        <p><b>Tips:</b> Drag and drop any image from your PC onto the background to change wallpaper!</p>
       </div>
     </div>
-  </div>
 
-  <!-- TASK MANAGER WINDOW -->
-  <div class="window" id="taskmgr">
-    <div class="title"><span>📊 Task Manager</span><button class="close-btn" onclick="hide('taskmgr')">✕</button></div>
-    <div class="content">
-      <p><b>CPU Usage:</b> <span id="cpu-load">12%</span></p>
-      <p><b>RAM Usage:</b> 1.4 GB / 4.0 GB</p>
-      <p><b>Status:</b> All systems operating normally.</p>
+    <!-- Window: Pixel Draw -->
+    <div class="window" id="win-draw" style="top: 100px; left: 240px;">
+      <div class="win-header">
+        <span>🖌️ PIXEL_DRAW</span>
+        <button class="win-close" onclick="closeWin('win-draw')">X</button>
+      </div>
+      <div class="win-body">
+        <canvas id="canvas" width="300" height="200"></canvas>
+        <div class="controls-row">
+          <input type="color" id="draw-color" value="#00ffcc">
+          <button class="btn-retro" onclick="clearCanvas()">CLEAR</button>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <!-- TERMINAL WINDOW -->
-  <div class="window" id="terminal">
-    <div class="title"><span>💻 Terminal</span><button class="close-btn" onclick="hide('terminal')">✕</button></div>
-    <div class="content">
-      <div id="term-output">VaskoOS [Version 1.0.0]<br>Type 'help' for a list of commands.<br><br></div>
-      <input type="text" id="term-input" placeholder="Command..." onkeypress="if(event.key==='Enter') runCmd()">
+    <!-- Window: Notes -->
+    <div class="window" id="win-notes" style="top: 120px; left: 280px;">
+      <div class="win-header">
+        <span>📋 QUICK_NOTES</span>
+        <button class="win-close" onclick="closeWin('win-notes')">X</button>
+      </div>
+      <div class="win-body">
+        <textarea id="note-input" placeholder="Write thoughts here..."></textarea>
+        <button class="btn-retro" onclick="saveNote()" style="width: 100%; margin-top: 5px;">SAVE TO DISK</button>
+      </div>
     </div>
-  </div>
 
-  <!-- SETTINGS WINDOW -->
-  <div class="window" id="settings">
-    <div class="title"><span>⚙️ Settings</span><button class="close-btn" onclick="hide('settings')">✕</button></div>
-    <div class="content">
-      <p style="margin-top: 0;"><b>Personalization</b></p>
-      <label style="font-size:13px;">Desktop Background:</label><br>
-      <select id="bg-select" onchange="changeBg()" style="width:100%; margin-top:6px; margin-bottom:12px;">
-        <option value="dark">Dark Blue (Default)</option>
-        <option value="gradient">Purple Gradient</option>
-        <option value="cyber">Cyberpunk (Black & Neon)</option>
-      </select>
-      <p id="settings-status" style="font-size:12px; color:#4ade80;"></p>
+    <!-- Window: 8-Bit Synth -->
+    <div class="window" id="win-synth" style="top: 140px; left: 320px;">
+      <div class="win-header">
+        <span>🎹 8BIT_SYNTH</span>
+        <button class="win-close" onclick="closeWin('win-synth')">X</button>
+      </div>
+      <div class="win-body">
+        <p>Play 8-bit sound frequencies:</p>
+        <div class="synth-keys">
+          <button class="btn-retro" onclick="playFreq(261.63)">C4</button>
+          <button class="btn-retro" onclick="playFreq(293.66)">D4</button>
+          <button class="btn-retro" onclick="playFreq(329.63)">E4</button>
+          <button class="btn-retro" onclick="playFreq(349.23)">F4</button>
+          <button class="btn-retro" onclick="playFreq(392.00)">G4</button>
+          <button class="btn-retro" onclick="playFreq(440.00)">A4</button>
+        </div>
+      </div>
     </div>
-  </div>
 
-</main>
+    <!-- Window: Terminal -->
+    <div class="window" id="win-term" style="top: 160px; left: 360px;">
+      <div class="win-header">
+        <span>💻 TERMINAL_CLI</span>
+        <button class="win-close" onclick="closeWin('win-term')">X</button>
+      </div>
+      <div class="win-body">
+        <div id="term-out">VaskoOS Terminal CLI [Ready]<br>Type 'help' for commands.<br></div>
+        <input type="text" id="term-in" placeholder=">" onkeypress="handleTerm(event)">
+      </div>
+    </div>
 
-<footer>
-  <button onclick="menu()">🚀 Start</button>
-  <span style="font-size:12px; opacity:0.6;">VaskoOS Web Desktop</span>
-</footer>
+  </main>
 
-<!-- START MENU -->
-<div id="menu">
-  <b>APPLICATIONS</b><br><br>
-  <button onclick="show('home');menu()" style="width:100%; text-align:left; margin-bottom:4px;">🖥️ About</button>
-  <button onclick="show('paint');menu()" style="width:100%; text-align:left; margin-bottom:4px;">🎨 Paint</button>
-  <button onclick="show('notepad');menu()" style="width:100%; text-align:left; margin-bottom:4px;">📝 Notepad</button>
-  <button onclick="show('files');menu()" style="width:100%; text-align:left; margin-bottom:4px;">📁 Files</button>
-  <button onclick="show('calc');menu()" style="width:100%; text-align:left; margin-bottom:4px;">🧮 Calculator</button>
-  <button onclick="show('taskmgr');menu()" style="width:100%; text-align:left; margin-bottom:4px;">📊 Task Mgr</button>
-  <button onclick="show('terminal');menu()" style="width:100%; text-align:left; margin-bottom:4px;">💻 Terminal</button>
-  <button onclick="show('settings');menu()" style="width:100%; text-align:left;">⚙️ Settings</button>
-</div>
+  <!-- Bottom Taskbar -->
+  <footer class="taskbar">
+    <button class="btn-start" onclick="toggleMenu()">⚡ START</button>
+    <div id="start-menu" class="hidden">
+      <div class="menu-item" onclick="openWin('win-about'); toggleMenu();">👾 About OS</div>
+      <div class="menu-item" onclick="openWin('win-draw'); toggleMenu();">🖌️ Canvas Draw</div>
+      <div class="menu-item" onclick="openWin('win-notes'); toggleMenu();">📋 Notepad</div>
+      <div class="menu-item" onclick="openWin('win-synth'); toggleMenu();">🎹 Audio Synth</div>
+      <div class="menu-item" onclick="openWin('win-term'); toggleMenu();">💻 Command CLI</div>
+    </div>
+  </footer>
 
-<script>
-
-/* CLOCK */
-function clock(){ document.getElementById("clock").textContent = new Date().toLocaleTimeString(); }
-setInterval(clock, 1000); clock();
-
-/* DRAG & WINDOW MANAGEMENT */
-let z = 1;
-document.querySelectorAll(".window").forEach(win => {
-  let title = win.querySelector(".title");
-  let dragging = false, x = 0, y = 0;
-
-  win.addEventListener("pointerdown", () => { z++; win.style.zIndex = z; });
-
-  title.addEventListener("pointerdown", e => {
-    if(e.target.classList.contains("close-btn")) return;
-    dragging = true;
-    let r = win.getBoundingClientRect();
-    x = e.clientX - r.left; y = e.clientY - r.top;
-    title.setPointerCapture(e.pointerId);
-  });
-
-  title.addEventListener("pointermove", e => {
-    if(!dragging) return;
-    win.style.left = (e.clientX - x) + "px";
-    win.style.top = (e.clientY - y) + "px";
-  });
-
-  title.addEventListener("pointerup", () => { dragging = false; });
-});
-
-function menu(){ let m = document.getElementById("menu"); m.style.display = m.style.display === "block" ? "none" : "block"; }
-function show(id){ let win = document.getElementById(id); win.style.display = "block"; z++; win.style.zIndex = z; }
-function hide(id){ document.getElementById(id).style.display = "none"; }
-
-/* PAINT LOGIC */
-const canvas = document.getElementById('paint-canvas');
-const ctx = canvas.getContext('2d');
-let painting = false;
-
-canvas.addEventListener('mousedown', () => painting = true);
-canvas.addEventListener('mouseup', () => { painting = false; ctx.beginPath(); });
-canvas.addEventListener('mousemove', draw);
-
-function draw(e) {
-  if (!painting) return;
-  const rect = canvas.getBoundingClientRect();
-  ctx.lineWidth = 3;
-  ctx.lineCap = 'round';
-  ctx.strokeStyle = document.getElementById('paint-color').value;
-  ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
-}
-function clearCanvas() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
-
-/* NOTEPAD LOGIC */
-document.addEventListener("DOMContentLoaded", () => {
-  const note = localStorage.getItem("vasko_note");
-  if(note) document.getElementById("note-text").value = note;
-  
-  const savedBg = localStorage.getItem("vasko_bg");
-  if(savedBg) {
-    document.getElementById("bg-select").value = savedBg;
-    applyBg(savedBg);
-  }
-});
-
-function saveNote() {
-  localStorage.setItem("vasko_note", document.getElementById("note-text").value);
-  alert("Saved!");
-}
-
-/* CALCULATOR LOGIC */
-let calc = document.getElementById("calc-display");
-function addCalc(v) { calc.value = calc.value === "0" ? v : calc.value + v; }
-function clearCalc() { calc.value = "0"; }
-function evalCalc() { try { calc.value = eval(calc.value); } catch(e) { calc.value = "Error"; setTimeout(clearCalc, 1000); } }
-
-/* TASK MGR SIMULATION */
-setInterval(() => {
-  document.getElementById("cpu-load").textContent = Math.floor(Math.random() * 25 + 5) + "%";
-}, 2000);
-
-/* TERMINAL LOGIC */
-function runCmd() {
-  const input = document.getElementById("term-input");
-  const output = document.getElementById("term-output");
-  const cmd = input.value.trim().toLowerCase();
-  
-  output.innerHTML += `> ${input.value}<br>`;
-  
-  if (cmd === "help") {
-    output.innerHTML += "Available commands: help, clear, date, whoami, version<br>";
-  } else if (cmd === "clear") {
-    output.innerHTML = "";
-  } else if (cmd === "date") {
-    output.innerHTML += `${new Date().toString()}<br>`;
-  } else if (cmd === "whoami") {
-    output.innerHTML += "vasko_user<br>";
-  } else if (cmd === "version") {
-    output.innerHTML += "VaskoOS v1.0.0<br>";
-  } else if (cmd !== "") {
-    output.innerHTML += `Unknown command: '${cmd}'<br>`;
-  }
-  
-  input.value = "";
-  output.scrollTop = output.scrollHeight;
-}
-
-/* SETTINGS LOGIC */
-function changeBg() {
-  const val = document.getElementById("bg-select").value;
-  localStorage.setItem("vasko_bg", val);
-  applyBg(val);
-  document.getElementById("settings-status").textContent = "✅ Settings saved!";
-  setTimeout(() => document.getElementById("settings-status").textContent = "", 2000);
-}
-
-function applyBg(val) {
-  if (val === "gradient") {
-    document.body.style.background = "linear-gradient(135deg, #0f172a, #312e81, #701a75)";
-  } else if (val === "cyber") {
-    document.body.style.background = "radial-gradient(circle, #09090b 0%, #000000 100%)";
-  } else {
-    document.body.style.background = "#0d122b";
-  }
-}
-
-</script>
+  <script src="script.js"></script>
 </body>
 </html>
