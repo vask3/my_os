@@ -81,51 +81,36 @@ document.addEventListener('DOMContentLoaded', () => {
   if (saved) document.getElementById('note-input').value = saved;
 });
 
-// AMBIENT MUSIC SYNTHESIZER (Web Audio API - Browser Fix Added)
-let audioCtx = null, noiseNode = null;
+// CALCULATOR LOGIC
+const calcDisplay = document.getElementById('calc-display');
 
-function playAmbient(type) {
-  stopAmbient();
-
-  // Initialize and unlock AudioContext on first click
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
-  if (audioCtx.state === 'suspended') {
-    audioCtx.resume();
-  }
-
-  const bufferSize = audioCtx.sampleRate * 2;
-  const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-  const data = buffer.getChannelData(0);
-
-  for (let i = 0; i < bufferSize; i++) {
-    data[i] = Math.random() * 2 - 1;
-  }
-
-  noiseNode = audioCtx.createBufferSource();
-  noiseNode.buffer = buffer;
-  noiseNode.loop = true;
-
-  const filter = audioCtx.createBiquadFilter();
-  filter.type = type === 'rain' ? 'lowpass' : 'bandpass';
-  filter.frequency.value = type === 'rain' ? 600 : 300;
-
-  const gain = audioCtx.createGain();
-  gain.gain.value = 0.12;
-
-  noiseNode.connect(filter);
-  filter.connect(gain);
-  gain.connect(audioCtx.destination);
-  noiseNode.start();
+function calcInput(val) {
+  if (calcDisplay.value === '0') calcDisplay.value = val;
+  else calcDisplay.value += val;
 }
 
-function stopAmbient() {
-  if (noiseNode) {
-    noiseNode.stop();
-    noiseNode.disconnect();
-    noiseNode = null;
+function calcClear() {
+  calcDisplay.value = '0';
+}
+
+function calcEqual() {
+  try {
+    calcDisplay.value = eval(calcDisplay.value);
+  } catch (e) {
+    calcDisplay.value = 'Error';
   }
+}
+
+// TASKS LOGIC
+function addTask() {
+  const input = document.getElementById('task-in');
+  const text = input.value.trim();
+  if (!text) return;
+
+  const li = document.createElement('li');
+  li.innerHTML = `<span>${text}</span> <span class="task-del" onclick="this.parentElement.remove()">X</span>`;
+  document.getElementById('task-list').appendChild(li);
+  input.value = '';
 }
 
 // POMODORO TIMER
@@ -173,7 +158,7 @@ function handleTerm(e) {
   } else if (cmd === 'date') {
     out.innerHTML += `${new Date().toLocaleString()}<br>`;
   } else if (cmd === 'version') {
-    out.innerHTML += 'VaskoOS Light Edition v3.0<br>';
+    out.innerHTML += 'VaskoOS Light Edition v3.5<br>';
   } else {
     out.innerHTML += `Command not recognized: ${cmd}<br>`;
   }
