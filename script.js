@@ -58,7 +58,7 @@ canvas.addEventListener('mouseup', () => { drawing = false; ctx.beginPath(); });
 canvas.addEventListener('mousemove', (e) => {
   if (!drawing) return;
   const rect = canvas.getBoundingClientRect();
-  ctx.lineWidth = 3;
+  ctx.lineWidth = 4;
   ctx.lineCap = 'round';
   ctx.strokeStyle = document.getElementById('draw-color').value;
   ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
@@ -72,21 +72,29 @@ function clearCanvas() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
 // NOTES PERSISTENCE
 function saveNote() {
   const text = document.getElementById('note-input').value;
-  localStorage.setItem('vasko_clean_notes', text);
-  alert('Запазено успешно!');
+  localStorage.setItem('vasko_soft_notes', text);
+  alert('Notes saved successfully!');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const saved = localStorage.getItem('vasko_clean_notes');
+  const saved = localStorage.getItem('vasko_soft_notes');
   if (saved) document.getElementById('note-input').value = saved;
 });
 
-// AMBIENT MUSIC SYNTHESIZER (Web Audio API)
-let audioCtx, noiseNode;
+// AMBIENT MUSIC SYNTHESIZER (Web Audio API - Browser Fix Added)
+let audioCtx = null, noiseNode = null;
 
 function playAmbient(type) {
   stopAmbient();
-  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+  // Initialize and unlock AudioContext on first click
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+
   const bufferSize = audioCtx.sampleRate * 2;
   const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
   const data = buffer.getChannelData(0);
@@ -101,10 +109,10 @@ function playAmbient(type) {
 
   const filter = audioCtx.createBiquadFilter();
   filter.type = type === 'rain' ? 'lowpass' : 'bandpass';
-  filter.frequency.value = type === 'rain' ? 800 : 400;
+  filter.frequency.value = type === 'rain' ? 600 : 300;
 
   const gain = audioCtx.createGain();
-  gain.gain.value = 0.15;
+  gain.gain.value = 0.12;
 
   noiseNode.connect(filter);
   filter.connect(gain);
@@ -116,6 +124,7 @@ function stopAmbient() {
   if (noiseNode) {
     noiseNode.stop();
     noiseNode.disconnect();
+    noiseNode = null;
   }
 }
 
@@ -136,7 +145,7 @@ function startPomo() {
       updatePomoDisplay();
     } else {
       clearInterval(pomoInterval);
-      alert('Времето за фокус изтече! Вземете си почивка.');
+      alert('Time is up! Take a short break.');
     }
   }, 1000);
 }
@@ -158,15 +167,15 @@ function handleTerm(e) {
   out.innerHTML += `> ${input.value}<br>`;
   
   if (cmd === 'help') {
-    out.innerHTML += 'Налични команди: help, clear, date, version<br>';
+    out.innerHTML += 'Available commands: help, clear, date, version<br>';
   } else if (cmd === 'clear') {
     out.innerHTML = '';
   } else if (cmd === 'date') {
     out.innerHTML += `${new Date().toLocaleString()}<br>`;
   } else if (cmd === 'version') {
-    out.innerHTML += 'VaskoOS Clean Edition v2.5<br>';
+    out.innerHTML += 'VaskoOS Light Edition v3.0<br>';
   } else {
-    out.innerHTML += `Непозната команда: ${cmd}<br>`;
+    out.innerHTML += `Command not recognized: ${cmd}<br>`;
   }
   
   input.value = '';
@@ -184,6 +193,7 @@ desktop.addEventListener('drop', (e) => {
     reader.onload = (event) => {
       document.body.style.backgroundImage = `url('${event.target.result}')`;
       document.body.style.backgroundSize = 'cover';
+      document.body.style.backgroundPosition = 'center';
     };
     reader.readAsDataURL(file);
   }
