@@ -1,211 +1,242 @@
-/* RESET & BRUTALIST THEME SETUP */
+/* RESET & CSS ПРОМЕНЛИВИ */
+:root {
+  /* Извлечени точни цветове от логото */
+  --logo-cyan: #17bbbb;
+  --logo-green: #59d16a;
+  --logo-lime: #b6f36b;
+  
+  /* Градиенти */
+  --gradient-main: linear-gradient(135deg, var(--logo-cyan), var(--logo-green));
+  --gradient-hover: linear-gradient(135deg, var(--logo-green), var(--logo-lime));
+  
+  /* Общи цветове */
+  --text-color: #2c3e50;
+  --bg-light: #f8fafc;
+  --white: #ffffff;
+}
+
 * {
   box-sizing: border-box;
-  font-family: 'Courier New', Courier, monospace;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
-  height: 100vh;
-  overflow: hidden;
-  background-color: #1a1a24;
-  background-image: radial-gradient(#2a2a3a 1px, transparent 1px);
-  background-size: 16px 16px;
-  color: #00ffcc;
-  user-select: none;
+  font-family: 'Montserrat', sans-serif;
+  color: var(--text-color);
+  background-color: var(--bg-light);
+  line-height: 1.6;
+  padding-top: 90px; /* Пространство заради фиксираното меню */
 }
 
-/* CRT SCANLINE OVERLAY EFFECT */
-#crt-overlay.crt-on {
-  position: absolute;
-  top: 0; left: 0; width: 100vw; height: 100vh;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
-  background-size: 100% 4px;
-  z-index: 9999;
-  pointer-events: none;
-}
-
-/* HEADER & FOOTER */
-.top-bar, .taskbar {
-  height: 40px;
-  background: #0d0d13;
-  border-bottom: 3px solid #00ffcc;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 15px;
-  z-index: 1000;
-  position: relative;
-}
-
-.taskbar {
-  border-bottom: none;
-  border-top: 3px solid #00ffcc;
+/* ИНДИКАТОР ЗА СКРОЛВАНЕ */
+#progress-bar {
   position: fixed;
-  bottom: 0;
-  width: 100%;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: var(--gradient-main);
+  width: 0%;
+  z-index: 9999;
+  transition: width 0.1s ease-out;
 }
 
-.brand { font-weight: bold; letter-spacing: 1px; }
+/* HEADER & НАВИГАЦИЯ */
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 8%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
 
-/* DESKTOP & ICONS */
-#desktop {
-  height: calc(100vh - 80px);
-  position: relative;
+.site-logo {
+  max-height: 50px;
+  width: auto;
+  transition: transform 0.2s ease;
+  display: block;
+}
+
+.site-logo:hover {
+  transform: scale(1.05);
+}
+
+.main-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.main-nav a {
+  text-decoration: none;
+  color: var(--text-color);
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.main-nav a:not(.contact-btn):hover {
+  color: var(--logo-cyan);
+}
+
+/* БУТОНИ */
+.contact-btn, .cta-button {
+  background: var(--gradient-main);
+  color: var(--white) !important;
+  padding: 10px 22px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  display: inline-block;
+  box-shadow: 0 4px 12px rgba(23, 187, 187, 0.2);
+}
+
+.contact-btn:hover, .cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(89, 209, 106, 0.35);
+  background: var(--gradient-hover);
+  color: #1a431e !important;
+}
+
+/* ГЕРОЙ СЕКЦИЯ */
+.content-container {
+  max-width: 1100px;
+  margin: 0 auto;
   padding: 20px;
 }
 
-.icon-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-  gap: 20px;
-  width: 220px;
+.hero-section {
+  text-align: center;
+  padding: 80px 20px;
+  background: var(--white);
+  border-radius: 20px;
+  margin-bottom: 50px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
 }
 
-.desk-icon {
+.gradient-text {
+  font-size: 2.5rem;
+  font-weight: 800;
+  background: var(--gradient-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 15px;
+}
+
+.hero-section p {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 25px;
+}
+
+/* СТАТИИ - РЕШЕТКА */
+.articles-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 25px;
+  position: relative;
+  display: inline-block;
+}
+
+.articles-section h2::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 50%;
+  height: 3px;
+  background: var(--gradient-main);
+  border-radius: 2px;
+}
+
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+.article-card {
+  background: var(--white);
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.04);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  cursor: pointer;
 }
 
-.icon-box {
-  width: 60px;
-  height: 60px;
-  background: #00ffcc;
-  color: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  border: 3px solid #000;
-  box-shadow: 4px 4px 0px #ff0055;
-  transition: transform 0.1s;
+.article-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.08);
 }
 
-.desk-icon:hover .icon-box {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px #ff0055;
+.card-badge {
+  align-self: flex-start;
+  background: rgba(23, 187, 187, 0.1);
+  color: var(--logo-cyan);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 15px;
 }
 
-.desk-icon span {
-  font-size: 11px;
-  margin-top: 6px;
-  background: #000;
-  padding: 2px 4px;
-  color: #fff;
-  font-weight: bold;
+.article-card h3 {
+  margin-bottom: 10px;
+  font-size: 1.3rem;
 }
 
-/* WINDOWS (BRUTALIST BEVEL) */
-.window {
-  position: absolute;
-  width: 320px;
-  background: #0d0d13;
-  border: 3px solid #00ffcc;
-  box-shadow: 8px 8px 0px #000;
-  display: none;
+.article-card p {
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+  flex-grow: 1;
 }
 
-.win-header {
-  background: #00ffcc;
-  color: #000;
-  padding: 6px 10px;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: move;
+.read-more {
+  text-decoration: none;
+  color: var(--logo-cyan);
+  font-weight: 700;
+  transition: color 0.2s;
 }
 
-.win-close {
-  background: #ff0055;
-  color: #fff;
-  border: 2px solid #000;
-  font-weight: bold;
-  cursor: pointer;
+.read-more:hover {
+  color: var(--logo-green);
 }
 
-.win-body {
-  padding: 12px;
-  color: #fff;
+/* ФУТЪР */
+.main-footer {
+  text-align: center;
+  padding: 30px;
+  margin-top: 60px;
+  background: var(--white);
+  border-top: 1px solid rgba(0,0,0,0.05);
+  color: #888;
+  font-size: 0.9rem;
 }
 
-/* BUTTONS & INPUTS */
-.btn-retro, .btn-start {
-  background: #ff0055;
-  color: #fff;
-  border: 2px solid #000;
-  padding: 4px 10px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 2px 2px 0px #000;
-}
+/* МОБИЛНА АДАПТИВНОСТ */
+@media (max-width: 768px) {
+  .main-header {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+  }
+  
+  body {
+    padding-top: 130px;
+  }
 
-.btn-retro:active, .btn-start:active {
-  transform: translate(2px, 2px);
-  box-shadow: 0px 0px 0px #000;
-}
-
-textarea, input[type="text"] {
-  width: 100%;
-  background: #000;
-  border: 2px solid #00ffcc;
-  color: #00ffcc;
-  padding: 6px;
-  outline: none;
-}
-
-#canvas {
-  background: #000;
-  border: 2px solid #00ffcc;
-  cursor: crosshair;
-}
-
-/* DESKTOP PET */
-#pet {
-  position: absolute;
-  bottom: 30px;
-  right: 30px;
-  font-size: 40px;
-  cursor: pointer;
-  transition: all 0.5s ease;
-  filter: drop-shadow(3px 3px 0px #000);
-}
-
-/* TERMINAL OUTPUT */
-#term-out {
-  height: 120px;
-  background: #000;
-  border: 2px solid #00ffcc;
-  padding: 6px;
-  font-size: 12px;
-  overflow-y: auto;
-  color: #00ffcc;
-  margin-bottom: 6px;
-}
-
-/* START MENU */
-#start-menu {
-  position: absolute;
-  bottom: 45px;
-  left: 10px;
-  background: #0d0d13;
-  border: 3px solid #00ffcc;
-  box-shadow: 6px 6px 0px #000;
-  width: 160px;
-}
-
-.hidden { display: none; }
-
-.menu-item {
-  padding: 8px;
-  color: #fff;
-  cursor: pointer;
-  border-bottom: 1px solid #222;
-}
-
-.menu-item:hover {
-  background: #00ffcc;
-  color: #000;
+  .gradient-text {
+    font-size: 1.8rem;
+  }
 }
