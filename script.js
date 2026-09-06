@@ -1,44 +1,11 @@
-// GLOBAL OS STATE
-let soundEnabled = true;
-let zIndexCounter = 10;
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
 // CLOCK
 setInterval(() => {
   document.getElementById('clock').textContent = new Date().toLocaleTimeString();
 }, 1000);
 
-// CUSTOM 8-BIT AUDIO SYNTHESIZER (Web Audio API)
-function playAudioTone(freq, type = 'square', duration = 0.1) {
-  if (!soundEnabled) return;
-  try {
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = type;
-    osc.frequency.value = freq;
-    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.start();
-    osc.stop(audioCtx.currentTime + duration);
-  } catch (e) { console.log(e); }
-}
+// WINDOW MANAGEMENT
+let zIndexCounter = 10;
 
-function playFreq(f) { playAudioTone(f, 'triangle', 0.3); }
-
-function toggleSound() {
-  soundEnabled = !soundEnabled;
-  event.target.textContent = soundEnabled ? '🔊 SFX: ON' : '🔇 SFX: OFF';
-}
-
-function toggleCRT() {
-  const crt = document.getElementById('crt-overlay');
-  crt.classList.toggle('crt-on');
-  playAudioTone(400, 'square', 0.05);
-}
-
-// DRAGGABLE WINDOW SYSTEM
 document.querySelectorAll('.window').forEach(win => {
   const header = win.querySelector('.win-header');
   let isDragging = false, offsetEx = 0, offsetEy = 0;
@@ -70,21 +37,18 @@ function openWin(id) {
   win.style.display = 'block';
   zIndexCounter++;
   win.style.zIndex = zIndexCounter;
-  playAudioTone(600, 'square', 0.08);
 }
 
 function closeWin(id) {
   document.getElementById(id).style.display = 'none';
-  playAudioTone(200, 'square', 0.08);
 }
 
 function toggleMenu() {
   const menu = document.getElementById('start-menu');
   menu.classList.toggle('hidden');
-  playAudioTone(500, 'square', 0.05);
 }
 
-// PIXEL DRAW CANVAS LOGIC
+// DRAWING CANVAS LOGIC
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 let drawing = false;
@@ -94,8 +58,13 @@ canvas.addEventListener('mouseup', () => { drawing = false; ctx.beginPath(); });
 canvas.addEventListener('mousemove', (e) => {
   if (!drawing) return;
   const rect = canvas.getBoundingClientRect();
-  ctx.fillStyle = document.getElementById('draw-color').value;
-  ctx.fillRect(Math.floor((e.clientX - rect.left)/10)*10, Math.floor((e.clientY - rect.top)/10)*10, 10, 10);
+  ctx.lineWidth = 3;
+  ctx.lineCap = 'round';
+  ctx.strokeStyle = document.getElementById('draw-color').value;
+  ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
 });
 
 function clearCanvas() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
@@ -103,15 +72,81 @@ function clearCanvas() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
 // NOTES PERSISTENCE
 function saveNote() {
   const text = document.getElementById('note-input').value;
-  localStorage.setItem('vasko_brutal_notes', text);
-  playAudioTone(800, 'sine', 0.15);
-  alert('Saved to local disk!');
+  localStorage.setItem('vasko_clean_notes', text);
+  alert('Запазено успешно!');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const saved = localStorage.getItem('vasko_brutal_notes');
+  const saved = localStorage.getItem('vasko_clean_notes');
   if (saved) document.getElementById('note-input').value = saved;
 });
+
+// AMBIENT MUSIC SYNTHESIZER (Web Audio API)
+let audioCtx, noiseNode;
+
+function playAmbient(type) {
+  stopAmbient();
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const bufferSize = audioCtx.sampleRate * 2;
+  const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+  const data = buffer.getChannelData(0);
+
+  for (let i = 0; i < bufferSize; i++) {
+    data[i] = Math.random() * 2 - 1;
+  }
+
+  noiseNode = audioCtx.createBufferSource();
+  noiseNode.buffer = buffer;
+  noiseNode.loop = true;
+
+  const filter = audioCtx.createBiquadFilter();
+  filter.type = type === 'rain' ? 'lowpass' : 'bandpass';
+  filter.frequency.value = type === 'rain' ? 800 : 400;
+
+  const gain = audioCtx.createGain();
+  gain.gain.value = 0.15;
+
+  noiseNode.connect(filter);
+  filter.connect(gain);
+  gain.connect(audioCtx.destination);
+  noiseNode.start();
+}
+
+function stopAmbient() {
+  if (noiseNode) {
+    noiseNode.stop();
+    noiseNode.disconnect();
+  }
+}
+
+// POMODORO TIMER
+let pomoTime = 1500, pomoInterval = null;
+
+function updatePomoDisplay() {
+  const m = Math.floor(pomoTime / 60).toString().padStart(2, '0');
+  const s = (pomoTime % 60).toString().padStart(2, '0');
+  document.getElementById('pomo-display').textContent = `${m}:${s}`;
+}
+
+function startPomo() {
+  if (pomoInterval) return;
+  pomoInterval = setInterval(() => {
+    if (pomoTime > 0) {
+      pomoTime--;
+      updatePomoDisplay();
+    } else {
+      clearInterval(pomoInterval);
+      alert('Времето за фокус изтече! Вземете си почивка.');
+    }
+  }, 1000);
+}
+
+function resetPomo() {
+  clearInterval(pomoInterval);
+  pomoInterval = null;
+  pomoTime = 1500;
+  updatePomoDisplay();
+}
 
 // TERMINAL LOGIC
 function handleTerm(e) {
@@ -123,34 +158,22 @@ function handleTerm(e) {
   out.innerHTML += `> ${input.value}<br>`;
   
   if (cmd === 'help') {
-    out.innerHTML += 'Commands: help, clear, date, pet, matrix<br>';
+    out.innerHTML += 'Налични команди: help, clear, date, version<br>';
   } else if (cmd === 'clear') {
     out.innerHTML = '';
   } else if (cmd === 'date') {
     out.innerHTML += `${new Date().toLocaleString()}<br>`;
-  } else if (cmd === 'pet') {
-    petMascot();
-    out.innerHTML += 'Cat status: Happy!<br>';
-  } else if (cmd === 'matrix') {
-    out.innerHTML += 'Wake up, Neo...<br>';
+  } else if (cmd === 'version') {
+    out.innerHTML += 'VaskoOS Clean Edition v2.5<br>';
   } else {
-    out.innerHTML += `Unknown command: ${cmd}<br>`;
+    out.innerHTML += `Непозната команда: ${cmd}<br>`;
   }
   
   input.value = '';
   out.scrollTop = out.scrollHeight;
-  playAudioTone(300, 'square', 0.04);
 }
 
-// INTERACTIVE DESKTOP PET
-function petMascot() {
-  const pet = document.getElementById('pet');
-  pet.style.transform = 'scale(1.4)';
-  playAudioTone(900, 'sine', 0.2);
-  setTimeout(() => pet.style.transform = 'scale(1)', 300);
-}
-
-// DRAG AND DROP WALLPAPER CUSTOMIZATION
+// DRAG AND DROP WALLPAPER
 const desktop = document.getElementById('desktop');
 desktop.addEventListener('dragover', (e) => e.preventDefault());
 desktop.addEventListener('drop', (e) => {
@@ -161,7 +184,6 @@ desktop.addEventListener('drop', (e) => {
     reader.onload = (event) => {
       document.body.style.backgroundImage = `url('${event.target.result}')`;
       document.body.style.backgroundSize = 'cover';
-      playAudioTone(1000, 'triangle', 0.2);
     };
     reader.readAsDataURL(file);
   }
