@@ -1,38 +1,38 @@
-/* // osnova na ekrana */
+/* // baza i fon */
 * {
   box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 body {
-  overflow: hidden;
-  height: 100vh;
   margin: 0;
+  height: 100vh;
+  overflow: hidden;
   user-select: none;
   background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 60%, #020617 100%);
   color: #f8fafc;
 }
 
-/* // lenti otgore i otdolu */
+/* // lenti */
 .top-bar, .taskbar {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   height: 48px;
   background: rgba(15, 23, 42, 0.75);
   backdrop-filter: blur(20px);
-  padding: 0 19px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0 21px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   z-index: 1000;
   position: relative;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .taskbar {
   position: fixed;
-  border-bottom: none;
   width: 100%;
   bottom: 0;
+  border-bottom: none;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -44,11 +44,11 @@ body {
 }
 
 #clock {
-  color: #94a3b8;
   font-weight: 600;
+  color: #94a3b8;
 }
 
-/* // ikoni po ekrana */
+/* // rabotno mqsto i ikoni */
 #desktop {
   position: relative;
   height: calc(100vh - 96px);
@@ -64,11 +64,11 @@ body {
 
 .desk-icon {
   display: flex;
-  cursor: pointer;
   flex-direction: column;
   align-items: center;
-  border-radius: 17px;
+  cursor: pointer;
   padding: 9px;
+  border-radius: 17px;
   transition: all 0.2s ease-in-out;
 }
 
@@ -82,8 +82,8 @@ body {
   height: 56px;
   display: flex;
   align-items: center;
-  background: rgba(30, 41, 59, 0.7);
   justify-content: center;
+  background: rgba(30, 41, 59, 0.7);
   font-size: 20px;
   border-radius: 17px;
   color: #818cf8;
@@ -105,7 +105,7 @@ body {
   color: #cbd5e1;
 }
 
-/* // prozorci i nastroiki po tyh */
+/* // stakleni prozorci */
 .window {
   position: absolute;
   width: 350px;
@@ -168,7 +168,7 @@ body {
   margin-top: 0;
 }
 
-/* // butoni i boksove za pisane */
+/* // botoni i inputs */
 .btn-primary, .btn-start {
   background: #6366f1;
   border: none;
@@ -227,14 +227,13 @@ textarea {
   cursor: crosshair;
 }
 
-/* // calculator */
+/* // moduli i nastroiki */
 .calc-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 6px;
 }
 
-/* // taskove-to-do-list */
 #task-list {
   list-style: none;
   padding: 0;
@@ -261,7 +260,6 @@ textarea {
   cursor: pointer;
 }
 
-/* // terminala cheberek */
 #term-out {
   height: 130px;
   background: #020617;
@@ -275,7 +273,6 @@ textarea {
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* // start menu-to */
 #start-menu {
   position: absolute;
   bottom: 56px;
@@ -287,6 +284,7 @@ textarea {
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
   width: 200px;
   padding: 8px;
+  z-index: 2000;
 }
 
 .hidden { 
