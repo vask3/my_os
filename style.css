@@ -1,74 +1,74 @@
-/* DARK NEON & GLASS THEME */
+/* // osnova na ekrana */
 * {
   box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 body {
-  margin: 0;
-  height: 100vh;
   overflow: hidden;
+  height: 100vh;
+  margin: 0;
+  user-select: none;
   background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 60%, #020617 100%);
   color: #f8fafc;
-  user-select: none;
 }
 
-/* TOP BAR & TASKBAR */
+/* // lenti otgore i otdolu */
 .top-bar, .taskbar {
-  height: 48px;
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  height: 48px;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(20px);
+  padding: 0 19px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   z-index: 1000;
   position: relative;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 .taskbar {
-  border-bottom: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
   position: fixed;
-  bottom: 0;
+  border-bottom: none;
   width: 100%;
+  bottom: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .brand { 
-  font-weight: 700; 
   font-size: 16px; 
+  font-weight: 700; 
   color: #818cf8;
   letter-spacing: 0.5px;
 }
 
 #clock {
-  font-weight: 600;
   color: #94a3b8;
+  font-weight: 600;
 }
 
-/* DESKTOP & ICONS */
+/* // ikoni po ekrana */
 #desktop {
-  height: calc(100vh - 96px);
   position: relative;
-  padding: 24px;
+  height: calc(100vh - 96px);
+  padding: 23px;
 }
 
 .icon-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-  gap: 24px;
   width: 240px;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 23px;
 }
 
 .desk-icon {
   display: flex;
+  cursor: pointer;
   flex-direction: column;
   align-items: center;
-  cursor: pointer;
-  padding: 10px;
-  border-radius: 18px;
+  border-radius: 17px;
+  padding: 9px;
   transition: all 0.2s ease-in-out;
 }
 
@@ -80,15 +80,15 @@ body {
 .icon-box {
   width: 56px;
   height: 56px;
-  background: rgba(30, 41, 59, 0.7);
-  border-radius: 18px;
   display: flex;
   align-items: center;
+  background: rgba(30, 41, 59, 0.7);
   justify-content: center;
   font-size: 20px;
+  border-radius: 17px;
   color: #818cf8;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
   transition: all 0.2s ease;
 }
 
@@ -101,42 +101,45 @@ body {
 .desk-icon span {
   font-size: 12px;
   margin-top: 8px;
-  color: #cbd5e1;
   font-weight: 500;
+  color: #cbd5e1;
 }
 
-/* DARK GLASS WINDOWS */
+/* // prozorci i nastroiki po tyh */
 .window {
   position: absolute;
   width: 350px;
-  background: rgba(15, 23, 42, 0.85);
   backdrop-filter: blur(25px);
+  background: rgba(15, 23, 42, 0.85);
+  border-radius: 21px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
   overflow: hidden;
   display: none;
 }
 
 .win-header {
-  background: rgba(255, 255, 255, 0.03);
-  padding: 12px 18px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #e2e8f0;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 11px 17px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #e2e8f0;
   cursor: move;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .win-header i {
-  margin-right: 6px;
   color: #818cf8;
+  margin-right: 6px;
 }
 
 .win-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: rgba(239, 68, 68, 0.15);
   color: #f87171;
   border: none;
@@ -145,9 +148,6 @@ body {
   border-radius: 50%;
   font-size: 12px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   transition: all 0.2s ease;
 }
 
@@ -157,29 +157,29 @@ body {
 }
 
 .win-body {
-  padding: 18px;
-  color: #94a3b8;
+  padding: 17px;
   font-size: 14px;
+  color: #94a3b8;
   line-height: 1.6;
 }
 
 .win-body h2 {
-  margin-top: 0;
   color: #f8fafc;
+  margin-top: 0;
 }
 
-/* BUTTONS & INPUTS */
+/* // butoni i boksove za pisane */
 .btn-primary, .btn-start {
   background: #6366f1;
-  color: #fff;
   border: none;
+  color: #fff;
   padding: 10px 18px;
-  border-radius: 12px;
+  border-radius: 11px;
   font-weight: 600;
   font-size: 13px;
   cursor: pointer;
-  transition: all 0.2s ease;
   box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+  transition: all 0.2s ease;
 }
 
 .btn-primary:hover, .btn-start:hover {
@@ -189,10 +189,10 @@ body {
 
 .btn-secondary {
   background: rgba(255, 255, 255, 0.06);
-  color: #cbd5e1;
   border: 1px solid rgba(255, 255, 255, 0.05);
+  color: #cbd5e1;
   padding: 10px 18px;
-  border-radius: 12px;
+  border-radius: 11px;
   font-weight: 600;
   font-size: 13px;
   cursor: pointer;
@@ -208,30 +208,33 @@ textarea, input[type="text"] {
   width: 100%;
   background: rgba(30, 41, 59, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  border-radius: 11px;
   color: #f8fafc;
-  padding: 12px;
+  padding: 11px;
   outline: none;
   font-size: 13px;
 }
 
-textarea { height: 110px; resize: none; }
+textarea { 
+  height: 110px; 
+  resize: none; 
+}
 
 #canvas {
   background: #020617;
-  border-radius: 12px;
+  border-radius: 11px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: crosshair;
 }
 
-/* CALCULATOR GRID */
+/* // calculator */
 .calc-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 6px;
 }
 
-/* TASKS LIST */
+/* // taskove-to-do-list */
 #task-list {
   list-style: none;
   padding: 0;
@@ -241,14 +244,14 @@ textarea { height: 110px; resize: none; }
 }
 
 #task-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 8px 12px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 8px;
   margin-bottom: 6px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   font-size: 13px;
   color: #e2e8f0;
 }
@@ -258,12 +261,12 @@ textarea { height: 110px; resize: none; }
   cursor: pointer;
 }
 
-/* TERMINAL OUTPUT */
+/* // terminala cheberek */
 #term-out {
   height: 130px;
   background: #020617;
-  border-radius: 12px;
-  padding: 12px;
+  border-radius: 11px;
+  padding: 11px;
   font-family: monospace;
   font-size: 12px;
   overflow-y: auto;
@@ -272,7 +275,7 @@ textarea { height: 110px; resize: none; }
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* START MENU */
+/* // start menu-to */
 #start-menu {
   position: absolute;
   bottom: 56px;
@@ -280,25 +283,27 @@ textarea { height: 110px; resize: none; }
   background: rgba(15, 23, 42, 0.95);
   backdrop-filter: blur(25px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
+  border-radius: 15px;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
   width: 200px;
   padding: 8px;
 }
 
-.hidden { display: none; }
+.hidden { 
+  display: none; 
+}
 
 .menu-item {
-  padding: 10px 14px;
-  color: #cbd5e1;
-  cursor: pointer;
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: 500;
-  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   gap: 10px;
+  padding: 10px 14px;
+  color: #cbd5e1;
+  cursor: pointer;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
 .menu-item i {
