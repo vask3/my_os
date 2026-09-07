@@ -9,6 +9,8 @@ let zIndexCounter = 10;
 
 document.querySelectorAll('.window').forEach(function(win) {
   var header = win.querySelector('.win-header');
+  if (!header) return; // zastrahovka
+  
   let isDragging = false;
   let ox = 0;
   let oy = 0;
@@ -40,41 +42,54 @@ document.querySelectorAll('.window').forEach(function(win) {
 
 function openWin(id) {
   var targetWin = document.getElementById(id);
-  targetWin.style.display = 'block';
-  zIndexCounter++;
-  targetWin.style.zIndex = zIndexCounter;
+  if (targetWin) {
+    targetWin.style.display = 'block';
+    zIndexCounter++;
+    targetWin.style.zIndex = zIndexCounter;
+  }
 }
 
 function closeWin(id) {
-  document.getElementById(id).style.display = 'none';
+  var targetWin = document.getElementById(id);
+  if (targetWin) {
+    targetWin.style.display = 'none';
+  }
 }
 
 function toggleMenu() {
   var menu = document.getElementById('start-menu');
-  menu.classList.toggle('hidden');
+  if (menu) {
+    menu.classList.toggle('hidden');
+  }
 }
 
 // DRAWING CANVAS (PAINT)
 const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-let drawing = false;
+if (canvas) {
+  const ctx = canvas.getContext('2d');
+  let drawing = false;
 
-canvas.addEventListener('mousedown', () => { drawing = true; });
-canvas.addEventListener('mouseup', () => { drawing = false; ctx.beginPath(); });
-canvas.addEventListener('mousemove', function(e) {
-  if (!drawing) return;
-  var bounds = canvas.getBoundingClientRect();
-  ctx.lineWidth = 4;
-  ctx.lineCap = 'round';
-  ctx.strokeStyle = document.getElementById('draw-color').value;
-  ctx.lineTo(e.clientX - bounds.left, e.clientY - bounds.top);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(e.clientX - bounds.left, e.clientY - bounds.top);
-});
+  canvas.addEventListener('mousedown', () => { drawing = true; });
+  canvas.addEventListener('mouseup', () => { drawing = false; ctx.beginPath(); });
+  canvas.addEventListener('mousemove', function(e) {
+    if (!drawing) return;
+    var bounds = canvas.getBoundingClientRect();
+    ctx.lineWidth = 4;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = document.getElementById('draw-color').value;
+    ctx.lineTo(e.clientX - bounds.left, e.clientY - bounds.top);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(e.clientX - bounds.left, e.clientY - bounds.top);
+  });
+}
 
 function clearCanvas() { 
-  ctx.clearRect(0, 0, canvas.width, canvas.height); 
+  const cv = document.getElementById('canvas');
+  if (cv) {
+    const cx = cv.getContext('2d');
+    cx.clearRect(0, 0, cv.width, cv.height); 
+  }
 }
 
 // ZAPISVANE NA BELEJKI (LOCALSTORAGE)
@@ -86,8 +101,9 @@ function saveNote() {
 
 document.addEventListener('DOMContentLoaded', () => {
   var savedData = localStorage.getItem('vasko_dark_notes');
-  if (savedData) {
-    document.getElementById('note-input').value = savedData;
+  var inputField = document.getElementById('note-input');
+  if (savedData && inputField) {
+    inputField.value = savedData;
   }
 });
 
@@ -95,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const calcDisplay = document.getElementById('calc-display');
 
 function calcInput(val) {
+  if (!calcDisplay) return;
   if (calcDisplay.value === '0') {
     calcDisplay.value = val;
   } else {
@@ -103,10 +120,11 @@ function calcInput(val) {
 }
 
 function calcClear() {
-  calcDisplay.value = '0';
+  if (calcDisplay) calcDisplay.value = '0';
 }
 
 function calcEqual() {
+  if (!calcDisplay) return;
   try {
     calcDisplay.value = eval(calcDisplay.value);
   } catch (err) {
@@ -133,7 +151,8 @@ let pomoInterval = null;
 function updatePomoDisplay() {
   let minutes = Math.floor(pomoTime / 60).toString().padStart(2, '0');
   let seconds = (pomoTime % 60).toString().padStart(2, '0');
-  document.getElementById('pomo-display').textContent = minutes + ':' + seconds;
+  var disp = document.getElementById('pomo-display');
+  if (disp) disp.textContent = minutes + ':' + seconds;
 }
 
 function startPomo() {
@@ -149,6 +168,7 @@ function startPomo() {
   }, 1000);
 }
 
+// tva e za reset na pomodoro
 function resetPomo() {
   clearInterval(pomoInterval);
   pomoInterval = null;
@@ -183,19 +203,21 @@ function handleTerm(e) {
 
 // DRPNI I PUSNI ZA FON NA DESKTOPA
 var deskElement = document.getElementById('desktop');
-deskElement.addEventListener('dragover', function(e) {
-  e.preventDefault();
-});
-deskElement.addEventListener('drop', function(e) {
-  e.preventDefault();
-  var dropFile = e.dataTransfer.files[0];
-  if (dropFile && dropFile.type.startsWith('image/')) {
-    var fileReader = new FileReader();
-    fileReader.onload = function(event) {
-      document.body.style.backgroundImage = "url('" + event.target.result + "')";
-      document.body.style.backgroundSize = 'cover';
-      document.body.style.backgroundPosition = 'center';
-    };
-    fileReader.readAsDataURL(dropFile);
-  }
-});
+if (deskElement) {
+  deskElement.addEventListener('dragover', function(e) {
+    e.preventDefault();
+  });
+  deskElement.addEventListener('drop', function(e) {
+    e.preventDefault();
+    var dropFile = e.dataTransfer.files[0];
+    if (dropFile && dropFile.type.startsWith('image/')) {
+      var fileReader = new FileReader();
+      fileReader.onload = function(event) {
+        document.body.style.backgroundImage = "url('" + event.target.result + "')";
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundPosition = 'center';
+      };
+      fileReader.readAsDataURL(dropFile);
+    }
+  });
+}
