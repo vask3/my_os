@@ -1,42 +1,48 @@
-// CLOCK
-setInterval(() => {
-  document.getElementById('clock').textContent = new Date().toLocaleTimeString();
+// chasovnik deto baci non stop
+setInterval(function() {
+  var t = new Date();
+  document.getElementById('clock').textContent = t.toLocaleTimeString();
 }, 1000);
 
-// WINDOW MANAGEMENT
+// PROZORCI LOGIKA & DRAG
 let zIndexCounter = 10;
 
-document.querySelectorAll('.window').forEach(win => {
-  const header = win.querySelector('.win-header');
-  let isDragging = false, offsetEx = 0, offsetEy = 0;
+document.querySelectorAll('.window').forEach(function(win) {
+  var header = win.querySelector('.win-header');
+  let isDragging = false;
+  let ox = 0;
+  let oy = 0;
 
   win.addEventListener('pointerdown', () => {
-    zIndexCounter++;
+    zIndexCounter = zIndexCounter + 1;
     win.style.zIndex = zIndexCounter;
   });
 
-  header.addEventListener('pointerdown', (e) => {
+  header.addEventListener('pointerdown', function(e) {
     if (e.target.closest('.win-close')) return;
     isDragging = true;
-    offsetEx = e.clientX - win.offsetLeft;
-    offsetEy = e.clientY - win.offsetTop;
+    ox = e.clientX - win.offsetLeft;
+    oy = e.clientY - win.offsetTop;
     header.setPointerCapture(e.pointerId);
   });
 
   header.addEventListener('pointermove', (e) => {
-    if (!isDragging) return;
-    win.style.left = (e.clientX - offsetEx) + 'px';
-    win.style.top = (e.clientY - offsetEy) + 'px';
+    if (isDragging == true) {
+      win.style.left = (e.clientX - ox) + 'px';
+      win.style.top = (e.clientY - oy) + 'px';
+    }
   });
 
-  header.addEventListener('pointerup', () => isDragging = false);
+  header.addEventListener('pointerup', () => {
+    isDragging = false;
+  });
 });
 
 function openWin(id) {
-  const win = document.getElementById(id);
-  win.style.display = 'block';
+  var targetWin = document.getElementById(id);
+  targetWin.style.display = 'block';
   zIndexCounter++;
-  win.style.zIndex = zIndexCounter;
+  targetWin.style.zIndex = zIndexCounter;
 }
 
 function closeWin(id) {
@@ -44,49 +50,56 @@ function closeWin(id) {
 }
 
 function toggleMenu() {
-  const menu = document.getElementById('start-menu');
+  var menu = document.getElementById('start-menu');
   menu.classList.toggle('hidden');
 }
 
-// DRAWING CANVAS LOGIC
+// DRAWING CANVAS (PAINT)
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 let drawing = false;
 
-canvas.addEventListener('mousedown', () => drawing = true);
+canvas.addEventListener('mousedown', () => { drawing = true; });
 canvas.addEventListener('mouseup', () => { drawing = false; ctx.beginPath(); });
-canvas.addEventListener('mousemove', (e) => {
+canvas.addEventListener('mousemove', function(e) {
   if (!drawing) return;
-  const rect = canvas.getBoundingClientRect();
+  var bounds = canvas.getBoundingClientRect();
   ctx.lineWidth = 4;
   ctx.lineCap = 'round';
   ctx.strokeStyle = document.getElementById('draw-color').value;
-  ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+  ctx.lineTo(e.clientX - bounds.left, e.clientY - bounds.top);
   ctx.stroke();
   ctx.beginPath();
-  ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+  ctx.moveTo(e.clientX - bounds.left, e.clientY - bounds.top);
 });
 
-function clearCanvas() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+function clearCanvas() { 
+  ctx.clearRect(0, 0, canvas.width, canvas.height); 
+}
 
-// NOTES PERSISTENCE
+// ZAPISVANE NA BELEJKI (LOCALSTORAGE)
 function saveNote() {
-  const text = document.getElementById('note-input').value;
-  localStorage.setItem('vasko_dark_notes', text);
+  var noteContent = document.getElementById('note-input').value;
+  localStorage.setItem('vasko_dark_notes', noteContent);
   alert('Notes saved successfully!');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const saved = localStorage.getItem('vasko_dark_notes');
-  if (saved) document.getElementById('note-input').value = saved;
+  var savedData = localStorage.getItem('vasko_dark_notes');
+  if (savedData) {
+    document.getElementById('note-input').value = savedData;
+  }
 });
 
-// CALCULATOR LOGIC
+// CALCULATOR APPA
 const calcDisplay = document.getElementById('calc-display');
 
 function calcInput(val) {
-  if (calcDisplay.value === '0') calcDisplay.value = val;
-  else calcDisplay.value += val;
+  if (calcDisplay.value === '0') {
+    calcDisplay.value = val;
+  } else {
+    calcDisplay.value += val;
+  }
 }
 
 function calcClear() {
@@ -96,35 +109,36 @@ function calcClear() {
 function calcEqual() {
   try {
     calcDisplay.value = eval(calcDisplay.value);
-  } catch (e) {
+  } catch (err) {
     calcDisplay.value = 'Error';
   }
 }
 
-// TASKS LOGIC
+// TASK LOGIKA (TO-DO LIST)
 function addTask() {
-  const input = document.getElementById('task-in');
-  const text = input.value.trim();
-  if (!text) return;
+  var inputField = document.getElementById('task-in');
+  var txt = inputField.value.trim();
+  if (txt === '') return;
 
-  const li = document.createElement('li');
-  li.innerHTML = `<span>${text}</span> <i class="fa-solid fa-trash task-del" onclick="this.parentElement.remove()"></i>`;
-  document.getElementById('task-list').appendChild(li);
-  input.value = '';
+  var elementLi = document.createElement('li');
+  elementLi.innerHTML = `<span>${txt}</span> <i class="fa-solid fa-trash task-del" onclick="this.parentElement.remove()"></i>`;
+  document.getElementById('task-list').appendChild(elementLi);
+  inputField.value = '';
 }
 
-// POMODORO TIMER
-let pomoTime = 1500, pomoInterval = null;
+// POMODORO TIMER CHEKROK
+let pomoTime = 1500;
+let pomoInterval = null;
 
 function updatePomoDisplay() {
-  const m = Math.floor(pomoTime / 60).toString().padStart(2, '0');
-  const s = (pomoTime % 60).toString().padStart(2, '0');
-  document.getElementById('pomo-display').textContent = `${m}:${s}`;
+  let minutes = Math.floor(pomoTime / 60).toString().padStart(2, '0');
+  let seconds = (pomoTime % 60).toString().padStart(2, '0');
+  document.getElementById('pomo-display').textContent = minutes + ':' + seconds;
 }
 
 function startPomo() {
-  if (pomoInterval) return;
-  pomoInterval = setInterval(() => {
+  if (pomoInterval != null) return;
+  pomoInterval = setInterval(function() {
     if (pomoTime > 0) {
       pomoTime--;
       updatePomoDisplay();
@@ -142,44 +156,46 @@ function resetPomo() {
   updatePomoDisplay();
 }
 
-// TERMINAL LOGIC
+// TERMINAL CODES
 function handleTerm(e) {
   if (e.key !== 'Enter') return;
-  const input = document.getElementById('term-in');
-  const out = document.getElementById('term-out');
-  const cmd = input.value.trim().toLowerCase();
+  var inputEl = document.getElementById('term-in');
+  var outputEl = document.getElementById('term-out');
+  var commandClean = inputEl.value.trim().toLowerCase();
   
-  out.innerHTML += `> ${input.value}<br>`;
+  outputEl.innerHTML += `> ${inputEl.value}<br>`;
   
-  if (cmd === 'help') {
-    out.innerHTML += 'Available commands: help, clear, date, version<br>';
-  } else if (cmd === 'clear') {
-    out.innerHTML = '';
-  } else if (cmd === 'date') {
-    out.innerHTML += `${new Date().toLocaleString()}<br>`;
-  } else if (cmd === 'version') {
-    out.innerHTML += 'VaskoOS Dark Edition v4.0<br>';
+  if (commandClean === 'help') {
+    outputEl.innerHTML += 'Available commands: help, clear, date, version<br>';
+  } else if (commandClean === 'clear') {
+    outputEl.innerHTML = '';
+  } else if (commandClean === 'date') {
+    outputEl.innerHTML += `${new Date().toLocaleString()}<br>`;
+  } else if (commandClean === 'version') {
+    outputEl.innerHTML += 'VaskoOS Dark Edition v4.0<br>';
   } else {
-    out.innerHTML += `Command not recognized: ${cmd}<br>`;
+    outputEl.innerHTML += `Command not recognized: ${commandClean}<br>`;
   }
   
-  input.value = '';
-  out.scrollTop = out.scrollHeight;
+  inputEl.value = '';
+  outputEl.scrollTop = outputEl.scrollHeight;
 }
 
-// DRAG AND DROP WALLPAPER
-const desktop = document.getElementById('desktop');
-desktop.addEventListener('dragover', (e) => e.preventDefault());
-desktop.addEventListener('drop', (e) => {
+// DRPNI I PUSNI ZA FON NA DESKTOPA
+var deskElement = document.getElementById('desktop');
+deskElement.addEventListener('dragover', function(e) {
   e.preventDefault();
-  const file = e.dataTransfer.files[0];
-  if (file && file.type.startsWith('image/')) {
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      document.body.style.backgroundImage = `url('${event.target.result}')`;
+});
+deskElement.addEventListener('drop', function(e) {
+  e.preventDefault();
+  var dropFile = e.dataTransfer.files[0];
+  if (dropFile && dropFile.type.startsWith('image/')) {
+    var fileReader = new FileReader();
+    fileReader.onload = function(event) {
+      document.body.style.backgroundImage = "url('" + event.target.result + "')";
       document.body.style.backgroundSize = 'cover';
       document.body.style.backgroundPosition = 'center';
     };
-    reader.readAsDataURL(file);
+    fileReader.readAsDataURL(dropFile);
   }
 });
