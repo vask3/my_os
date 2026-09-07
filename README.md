@@ -1,49 +1,51 @@
 # VaskoOS
 
-VaskoOS is a lightweight, web-based operating system simulator (WebOS) built with pure HTML, CSS, and vanilla JavaScript. It features a modern glassmorphism desktop environment complete with draggable windows, dynamic depth ordering, and essential utility applications.
+VaskoOS is a simple, lightweight WebOS simulator that runs entirely in the browser using just HTML, CSS, and vanilla JS. I built a clean desktop interface with glassmorphism effects, dynamic window layering, and a couple of basic apps to show how it works.
 
 ---
 
-## Features
+## What it can do
 
-* **Interactive Desktop:** Draggable windows built using standard Pointer Events for seamless mouse and touch interactions.
-* **Dynamic Z-Indexing:** Active windows automatically move to the front when focused or dragged.
-* **Real-time System Clock:** Live updating time displayed in the top header.
-* **Start Menu & Taskbar:** Quick access navigation bar and toggleable applications menu.
-* **Responsive Design:** Optimized layout scaling for smaller desktop screens and mobile displays.
+* **Draggable Windows:** You can drag windows around smoothly using standard Pointer Events (works for both mouse and touch screens).
+* **Smart Z-Indexing:** Click or drag a window, and it automatically brings itself to the front.
+* **Live Clock:** A simple system clock in the top header that updates in real time.
+* **Start Menu & Taskbar:** A basic nav bar at the bottom to open and minimize the apps.
+* **Responsive Layout:** The UI scales well enough if you test it on smaller monitors or laptops.
 
 ---
 
-## Included Applications
+## Apps Included
 
-### Home App
-* Welcome dashboard for the WebOS platform.
-* Random coding quote generator.
+### Home
+* A basic welcome dashboard.
+* Pulls up random coding quotes just for fun.
 
 ### Notepad
-* Text editor for taking quick notes.
-* Persistent storage utilizing `localStorage` to save notes automatically across browser sessions.
+* A quick text editor for your notes.
+* Uses `localStorage`, so your text stays there even if you refresh or close the browser.
 
 ### Calculator
-* Simple grid-based calculator capable of basic arithmetic operations (addition, subtraction, multiplication, division).
-* Error handling for invalid expressions.
+* Simple grid calculator that handles basic math (plus, minus, multiply, divide).
+* Doesn't crash if you type an invalid expression.
 
 ---
 
-## Built With
+## Tech Stack
 
-* **HTML5:** Semantic markup structure.
-* **CSS3:** Modern UI features including Flexbox, CSS Grid, and `backdrop-filter` blur effects.
-* **JavaScript (ES6+):** Vanilla JavaScript for window management, DOM manipulation, and local storage integration.
+* **HTML5** for the basic page layout.
+* **CSS3** for styling, flexbox/grid alignments, and the blurry glass look (`backdrop-filter`).
+* **Vanilla JavaScript (ES6+)** for handling the window dragging, DOM events, and saving notes.
 
 ---
 
-## Getting Started
+## How to Run It
 
 ### Prerequisites
-No external dependencies, frameworks, or web servers are required to run this project.
+You don't need to install anything, configure local servers, or download extra frameworks.
 
-### Installation & Usage
-1. Clone or download the repository to your local machine:
+### Setup Steps
+1. Clone or download this repo to your computer:
    ```bash
-   git clone [https://github.com/your-username/VaskoOS.git](https://github.com/your-username/VaskoOS.git)
+   git clone https://github.com
+   ```
+2. Open the project folder and double-click the `index.html` file to launch it directly in your web browser.
