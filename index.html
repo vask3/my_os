@@ -1,203 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VaskoOS</title>
-  <!-- FontAwesome for Vector Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VaskoOS</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Top Bar -->
-  <header class="top-bar">
-    <div class="brand"><i class="fa-solid fa-terminal"></i> VaskoOS</div>
-    <div class="top-controls">
-      <span id="clock">00:00:00</span>
-    </div>
-  </header>
+    <!-- header-a otgore s chasovnika -->
+    <header class="top-bar">
+        <div class="brand">VaskoOS</div>
+        <div id="clock" class="system-time">00:00:00</div>
+    </header>
 
-  <!-- Main Desktop Space -->
-  <main id="desktop">
+    <!-- rabotniq plot -->
+    <main class="desktop" id="desktop">
 
-    <!-- Desktop Icons -->
-    <div class="icon-grid">
-      <div class="desk-icon" onclick="openWin('win-about')">
-        <div class="icon-box"><i class="fa-solid fa-circle-info"></i></div>
-        <span>About</span>
-      </div>
-      <div class="desk-icon" onclick="openWin('win-notes')">
-        <div class="icon-box"><i class="fa-solid fa-pen-to-square"></i></div>
-        <span>Notes</span>
-      </div>
-      <div class="desk-icon" onclick="openWin('win-draw')">
-        <div class="icon-box"><i class="fa-solid fa-palette"></i></div>
-        <span>Paint</span>
-      </div>
-      <div class="desk-icon" onclick="openWin('win-calc')">
-        <div class="icon-box"><i class="fa-solid fa-calculator"></i></div>
-        <span>Calculator</span>
-      </div>
-      <div class="desk-icon" onclick="openWin('win-tasks')">
-        <div class="icon-box"><i class="fa-solid fa-list-check"></i></div>
-        <span>Tasks</span>
-      </div>
-      <div class="desk-icon" onclick="openWin('win-pomo')">
-        <div class="icon-box"><i class="fa-solid fa-stopwatch"></i></div>
-        <span>Pomodoro</span>
-      </div>
-      <div class="desk-icon" onclick="openWin('win-weather')">
-        <div class="icon-box"><i class="fa-solid fa-cloud-sun"></i></div>
-        <span>Weather</span>
-      </div>
-      <div class="desk-icon" onclick="openWin('win-term')">
-        <div class="icon-box"><i class="fa-solid fa-code"></i></div>
-        <span>Terminal</span>
-      </div>
-    </div>
-
-    <!-- Window: About -->
-    <div class="window" id="win-about" style="top: 70px; left: 200px;">
-      <div class="win-header">
-        <span><i class="fa-solid fa-circle-info"></i> About VaskoOS</span>
-        <button class="win-close" onclick="closeWin('win-about')"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="win-body">
-        <h2>Welcome to VaskoOS</h2>
-        <p>A dark, sleek, and modern web desktop environment built for high focus.</p>
-        <p><b>Tip:</b> Drag and drop any background image to change wallpaper!</p>
-      </div>
-    </div>
-
-    <!-- Window: Notes -->
-    <div class="window" id="win-notes" style="top: 90px; left: 240px;">
-      <div class="win-header">
-        <span><i class="fa-solid fa-pen-to-square"></i> Notepad</span>
-        <button class="win-close" onclick="closeWin('win-notes')"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="win-body">
-        <textarea id="note-input" placeholder="Type your notes here..."></textarea>
-        <button class="btn-primary" onclick="saveNote()" style="width: 100%; margin-top: 10px;">Save Notes</button>
-      </div>
-    </div>
-
-    <!-- Window: Draw -->
-    <div class="window" id="win-draw" style="top: 110px; left: 280px;">
-      <div class="win-header">
-        <span><i class="fa-solid fa-palette"></i> Canvas Paint</span>
-        <button class="win-close" onclick="closeWin('win-draw')"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="win-body">
-        <canvas id="canvas" width="300" height="180"></canvas>
-        <div class="controls-row" style="margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">
-          <input type="color" id="draw-color" value="#818cf8">
-          <button class="btn-primary" onclick="clearCanvas()">Clear Canvas</button>
+        <!-- 1. About App -->
+        <div class="window" id="win-about" style="z-index: 1;">
+            <div class="window-header">
+                <span>About VaskoOS</span>
+                <button class="close-btn" data-target="win-about">X</button>
+            </div>
+            <div class="window-content">
+                <h2>Welcome to VaskoOS</h2>
+                <p>A dark, sleek, and modern web desktop environment built for high focus.</p>
+                <p><strong>Tip:</strong> Drag and drop any background image to change wallpaper!</p>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Window: Calculator -->
-    <div class="window" id="win-calc" style="top: 130px; left: 320px; width: 280px;">
-      <div class="win-header">
-        <span><i class="fa-solid fa-calculator"></i> Calculator</span>
-        <button class="win-close" onclick="closeWin('win-calc')"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="win-body">
-        <input type="text" id="calc-display" readonly value="0" style="text-align: right; font-size: 18px; margin-bottom: 10px;">
-        <div class="calc-grid">
-          <button class="btn-secondary" onclick="calcInput('7')">7</button>
-          <button class="btn-secondary" onclick="calcInput('8')">8</button>
-          <button class="btn-secondary" onclick="calcInput('9')">9</button>
-          <button class="btn-primary" onclick="calcInput('/')">/</button>
-          <button class="btn-secondary" onclick="calcInput('4')">4</button>
-          <button class="btn-secondary" onclick="calcInput('5')">5</button>
-          <button class="btn-secondary" onclick="calcInput('6')">6</button>
-          <button class="btn-primary" onclick="calcInput('*')">*</button>
-          <button class="btn-secondary" onclick="calcInput('1')">1</button>
-          <button class="btn-secondary" onclick="calcInput('2')">2</button>
-          <button class="btn-secondary" onclick="calcInput('3')">3</button>
-          <button class="btn-primary" onclick="calcInput('-')">-</button>
-          <button class="btn-secondary" onclick="calcClear()">C</button>
-          <button class="btn-secondary" onclick="calcInput('0')">0</button>
-          <button class="btn-primary" onclick="calcEqual()">=</button>
-          <button class="btn-primary" onclick="calcInput('+')">+</button>
+        <!-- 2. Notepad -->
+        <div class="window" id="win-notes" style="z-index: 1;">
+            <div class="window-header">
+                <span>Notepad</span>
+                <button class="close-btn" data-target="win-notes">X</button>
+            </div>
+            <div class="window-content">
+                <textarea id="note-text" placeholder="Type something here..."></textarea>
+                <button id="save-notes-btn">Save Notes</button>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Window: Tasks -->
-    <div class="window" id="win-tasks" style="top: 150px; left: 360px;">
-      <div class="win-header">
-        <span><i class="fa-solid fa-list-check"></i> Task Manager</span>
-        <button class="win-close" onclick="closeWin('win-tasks')"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="win-body">
-        <div style="display: flex; gap: 8px; margin-bottom: 10px;">
-          <input type="text" id="task-in" placeholder="New task...">
-          <button class="btn-primary" onclick="addTask()">Add</button>
+        <!-- 3. Paint -->
+        <div class="window" id="win-paint" style="z-index: 1;">
+            <div class="window-header">
+                <span>Canvas Paint</span>
+                <button class="close-btn" data-target="win-paint">X</button>
+            </div>
+            <div class="window-content">
+                <div class="paint-controls">
+                    <input type="color" id="paint-color" value="#818cf8">
+                    <button id="clear-canvas-btn">Clear Canvas</button>
+                </div>
+                <canvas id="paint-canvas"></canvas>
+            </div>
         </div>
-        <ul id="task-list"></ul>
-      </div>
-    </div>
 
-    <!-- Window: Pomodoro Timer -->
-    <div class="window" id="win-pomo" style="top: 170px; left: 400px;">
-      <div class="win-header">
-        <span><i class="fa-solid fa-stopwatch"></i> Pomodoro</span>
-        <button class="win-close" onclick="closeWin('win-pomo')"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="win-body" style="text-align: center;">
-        <h1 id="pomo-display" style="font-size: 42px; margin: 10px 0; color: #818cf8;">25:00</h1>
-        <div style="display: flex; gap: 10px; justify-content: center;">
-          <button class="btn-primary" onclick="startPomo()">Start</button>
-          <button class="btn-secondary" onclick="resetPomo()">Reset</button>
+        <!-- 4. Calculator -->
+        <div class="window" id="win-calc" style="z-index: 1;">
+            <div class="window-header">
+                <span>Calculator</span>
+                <button class="close-btn" data-target="win-calc">X</button>
+            </div>
+            <div class="window-content">
+                <div class="calc-screen" id="calc-display">0</div>
+                <div class="calc-buttons">
+                    <button class="calc-btn">7</button><button class="calc-btn">8</button><button class="calc-btn">9</button><button class="calc-btn">/</button>
+                    <button class="calc-btn">4</button><button class="calc-btn">5</button><button class="calc-btn">6</button><button class="calc-btn">*</button>
+                    <button class="calc-btn">1</button><button class="calc-btn">2</button><button class="calc-btn">3</button><button class="calc-btn">-</button>
+                    <button class="calc-btn" id="calc-clear">C</button><button class="calc-btn">0</button><button class="calc-btn" id="calc-equals">=</button><button class="calc-btn">+</button>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Window: Weather -->
-    <div class="window" id="win-weather" style="top: 190px; left: 440px;">
-      <div class="win-header">
-        <span><i class="fa-solid fa-cloud-sun"></i> Weather</span>
-        <button class="win-close" onclick="closeWin('win-weather')"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="win-body" style="text-align: center;">
-        <h3 style="margin: 5px 0; color: #e2e8f0;">Current Forecast</h3>
-        <p style="font-size: 32px; font-weight: bold; margin: 10px 0; color: #38bdf8;">22 C</p>
-        <p style="font-size: 13px; color: #94a3b8;">Mostly Clear & Cool</p>
-      </div>
-    </div>
+        <!-- 5. Task Manager -->
+        <div class="window" id="win-tasks" style="z-index: 1;">
+            <div class="window-header">
+                <span>Task Manager</span>
+                <button class="close-btn" data-target="win-tasks">X</button>
+            </div>
+            <div class="window-content">
+                <div class="task-input-group">
+                    <input type="text" id="task-input" placeholder="New task...">
+                    <button id="add-task-btn">Add</button>
+                </div>
+                <ul id="task-list"></ul>
+            </div>
+        </div>
 
-    <!-- Window: Terminal -->
-    <div class="window" id="win-term" style="top: 210px; left: 480px;">
-      <div class="win-header">
-        <span><i class="fa-solid fa-code"></i> Terminal</span>
-        <button class="win-close" onclick="closeWin('win-term')"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="win-body">
-        <div id="term-out">VaskoOS Terminal v4.0 (Dark Edition)<br>Type 'help' to see commands.<br></div>
-        <input type="text" id="term-in" placeholder="Type a command..." onkeypress="handleTerm(event)">
-      </div>
-    </div>
+        <!-- 6. Pomodoro -->
+        <div class="window" id="win-pomo" style="z-index: 1;">
+            <div class="window-header">
+                <span>Pomodoro</span>
+                <button class="close-btn" data-target="win-pomo">X</button>
+            </div>
+            <div class="window-content">
+                <div class="pomo-timer" id="pomo-display">25:00</div>
+                <div class="pomo-controls">
+                    <button id="pomo-start">Start</button>
+                    <button id="pomo-reset">Reset</button>
+                </div>
+            </div>
+        </div>
 
-  </main>
+        <!-- 7. Weather -->
+        <div class="window" id="win-weather" style="z-index: 1;">
+            <div class="window-header">
+                <span>Weather</span>
+                <button class="close-btn" data-target="win-weather">X</button>
+            </div>
+            <div class="window-content">
+                <h3>Current Forecast</h3>
+                <div class="weather-temp">22 C</div>
+                <div class="weather-desc">Mostly Clear & Cool</div>
+            </div>
+        </div>
 
-  <!-- Bottom Taskbar -->
-  <footer class="taskbar">
-    <button class="btn-start" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i> Start</button>
-    <div id="start-menu" class="hidden">
-      <div class="menu-item" onclick="openWin('win-about'); toggleMenu();"><i class="fa-solid fa-circle-info"></i> About</div>
-      <div class="menu-item" onclick="openWin('win-notes'); toggleMenu();"><i class="fa-solid fa-pen-to-square"></i> Notepad</div>
-      <div class="menu-item" onclick="openWin('win-draw'); toggleMenu();"><i class="fa-solid fa-palette"></i> Paint</div>
-      <div class="menu-item" onclick="openWin('win-calc'); toggleMenu();"><i class="fa-solid fa-calculator"></i> Calculator</div>
-      <div class="menu-item" onclick="openWin('win-tasks'); toggleMenu();"><i class="fa-solid fa-list-check"></i> Tasks</div>
-      <div class="menu-item" onclick="openWin('win-pomo'); toggleMenu();"><i class="fa-solid fa-stopwatch"></i> Pomodoro</div>
-      <div class="menu-item" onclick="openWin('win-weather'); toggleMenu();"><i class="fa-solid fa-cloud-sun"></i> Weather</div>
-      <div class="menu-item" onclick="openWin('win-term'); toggleMenu();"><i class="fa-solid fa-code"></i> Terminal</div>
-    </div>
-  </footer>
+        <!-- 8. Terminal -->
+        <div class="window" id="win-terminal" style="z-index: 1;">
+            <div class="window-header">
+                <span>Terminal</span>
+                <button class="close-btn" data-target="win-terminal">X</button>
+            </div>
+            <div class="window-content">
+                <div class="term-output" id="term-log">
+                    <p>VaskoOS Terminal v4.0 (Dark Edition)</p>
+                    <p>Type 'help' to see commands.</p>
+                </div>
+                <div class="term-input-line">
+                    <span>&gt;</span>
+                    <input type="text" id="term-input" autofocus>
+                </div>
+            </div>
+        </div>
 
-  <script src="script.js"></script>
+    </main>
+
+    <!-- lentiata otbqlu (taskbar-a) -->
+    <footer class="taskbar">
+        <button class="start-btn" id="start-menu-toggle">Start</button>
+        
+        <!-- tva sa ikonite/butonite za prozorcite -->
+        <div class="taskbar-apps">
+            <button class="task-icon" data-open="win-about">About</button>
+            <button class="task-icon" data-open="win-notes">Notepad</button>
+            <button class="task-icon" data-open="win-paint">Paint</button>
+            <button class="task-icon" data-open="win-calc">Calculator</button>
+            <button class="task-icon" data-open="win-tasks">Tasks</button>
+            <button class="task-icon" data-open="win-pomo">Pomodoro</button>
+            <button class="task-icon" data-open="win-weather">Weather</button>
+            <button class="task-icon" data-open="win-terminal">Terminal</button>
+        </div>
+    </footer>
+
+    <!-- tuka e glvniq skript -->
+    <script src="script.js"></script>
 </body>
 </html>
