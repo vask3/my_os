@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VaskoOS</title>
     <link rel="stylesheet" href="style.css">
+    <!-- ТОВА ОПРАВЯ ПРОБЛЕМА: Истинският работещ линк за иконите на системата -->
     <link rel="stylesheet" href="https://cloudflare.com">
 </head>
 <body>
@@ -116,7 +117,7 @@
                     <button class="btn-secondary" onclick="calcInput('-')">-</button>
                     <button class="btn-secondary" onclick="calcClear()">C</button>
                     <button class="btn-secondary" onclick="calcInput('0')">0</button>
-                    <button class="btn-secondary" onclick="calcEqual()">=</button>
+                    <button class="btn-secondary" onclick="calcEqual('=')">=</button>
                     <button class="btn-secondary" onclick="calcInput('+')">+</button>
                 </div>
             </div>
@@ -163,7 +164,7 @@
             </div>
         </div>
 
-        <!-- 8. прозорец терминал -->
+        <!-- 8. прозорец терминал (ТУК Е ЗАВЪРШЕН СТРУКТУРНО) -->
         <div class="window" id="win-terminal">
             <div class="win-header">
                 <div><i class="fa-solid fa-terminal"></i> Terminal</div>
@@ -174,7 +175,6 @@
                     VaskoOS Terminal v4.0 (Dark Edition)<br>
                     Type 'help' to see commands.<br>
                 </div>
-                <!-- тук добавих event за натискане на клавиш -->
                 <input type="text" id="term-in" onkeydown="handleTerm(event)" placeholder="Type a command..." style="font-family: monospace;">
             </div>
         </div>
