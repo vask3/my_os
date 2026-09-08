@@ -22,6 +22,16 @@
           background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 60%, #020617 100%);
         }
 
+        button,
+        input,
+        textarea {
+          font: inherit;
+        }
+
+        button {
+          -webkit-tap-highlight-color: transparent;
+        }
+
         /* gornata lenta */
         .top-bar {
           height: 48px;
@@ -46,6 +56,7 @@
         #clock {
           color: #94a3b8;
           font-weight: 600;
+          font-variant-numeric: tabular-nums;
         }
 
         /* rabotniq plot */
@@ -53,13 +64,14 @@
           position: relative;
           padding: 23px;
           height: calc(100vh - 96px);
+          overflow: hidden;
         }
 
         .icon-grid {
           width: 240px;
           gap: 23px;
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+          grid-template-columns: repeat(2, minmax(90px, 1fr));
         }
 
         .desk-icon {
@@ -71,10 +83,19 @@
           align-items: center;
           transition: all .2s ease-in-out;
         }
-        .desk-icon:hover { background: rgba(255,255,255,.06); transform: translateY(-2px); }
+
+        .desk-icon:hover {
+          background: rgba(255,255,255,.06);
+          transform: translateY(-2px);
+        }
+
+        .desk-icon:active {
+          transform: translateY(0);
+        }
 
         .icon-box {
-          width: 56px; height: 56px;
+          width: 56px;
+          height: 56px;
           display: flex;
           font-size: 24px;
           border-radius: 17px;
@@ -86,11 +107,16 @@
           box-shadow: 0 10px 25px rgba(0,0,0,.3);
         }
 
-        .desk-icon span { margin-top: 8px; font-size: 12px; color: #cbd5e1; }
+        .desk-icon span {
+          margin-top: 8px;
+          font-size: 12px;
+          color: #cbd5e1;
+        }
 
         /* prozorci */
         .window {
           width: 350px;
+          max-width: calc(100vw - 30px);
           display: none;
           position: absolute;
           top: 120px;
@@ -101,6 +127,7 @@
           border: 1px solid rgba(255,255,255,.1);
           backdrop-filter: blur(25px);
           box-shadow: 0 20px 50px rgba(0,0,0,.6);
+          min-height: 80px;
         }
 
         .win-header {
@@ -113,12 +140,25 @@
           justify-content: space-between;
           background: rgba(255,255,255,.03);
           border-bottom: 1px solid rgba(255,255,255,.05);
+          touch-action: none;
         }
 
-        .win-title { display: flex; align-items: center; gap: 8px; }
+        .win-title {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          min-width: 0;
+        }
+
+        .win-title span:last-child {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
 
         .win-close {
-          width: 26px; height: 26px;
+          width: 26px;
+          height: 26px;
           display: flex;
           cursor: pointer;
           border: none;
@@ -127,17 +167,32 @@
           justify-content: center;
           color: #f87171;
           background: rgba(239,68,68,.15);
+          flex: 0 0 auto;
         }
 
-        .win-body { padding: 17px; font-size: 14px; color: #94a3b8; }
+        .win-close:hover {
+          background: rgba(239,68,68,.25);
+        }
 
-        .btn-primary, .btn-start {
+        .win-body {
+          padding: 17px;
+          font-size: 14px;
+          color: #94a3b8;
+        }
+
+        .btn-primary,
+        .btn-start {
           border: none;
           padding: 9px 16px;
           cursor: pointer;
           border-radius: 10px;
           color: #fff;
           background: #6366f1;
+        }
+
+        .btn-primary:hover,
+        .btn-start:hover {
+          background: #5558dd;
         }
 
         .btn-secondary {
@@ -149,7 +204,12 @@
           border: 1px solid rgba(255,255,255,.05);
         }
 
-        textarea, input[type="text"] {
+        .btn-secondary:hover {
+          background: rgba(255,255,255,.1);
+        }
+
+        textarea,
+        input[type="text"] {
           width: 100%;
           color: #f8fafc;
           padding: 10px;
@@ -158,20 +218,114 @@
           background: rgba(30,41,59,.6);
           border: 1px solid rgba(255,255,255,.1);
         }
-        textarea { height: 110px; resize: none; }
 
-        #canvas { cursor: crosshair; border-radius: 10px; background: #020617; border: 1px solid rgba(255,255,255,.1); }
+        textarea:focus,
+        input[type="text"]:focus {
+          border-color: rgba(129,140,248,.55);
+        }
 
-        .calc-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; margin-top: 8px; }
-        .calc-grid button { padding: 12px 0; font-size: 15px; border-radius: 9px; border: 1px solid rgba(255,255,255,.06); background: rgba(255,255,255,.04); color: #f1f5f9; cursor: pointer; }
-        .calc-grid button:hover { background: rgba(99,102,241,.25); }
-        #calc-display { text-align: right; font-size: 20px; padding: 12px; border-radius: 10px; background: #020617; border: 1px solid rgba(255,255,255,.1); margin-bottom: 4px; min-height: 26px; word-break: break-all; }
+        textarea {
+          height: 110px;
+          resize: none;
+        }
 
-        #task-list { list-style: none; max-height: 120px; overflow-y: auto; margin-top: 8px; }
-        #task-list li { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; margin-bottom: 6px; border-radius: 8px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.05); }
-        .task-del { color: #f87171; cursor: pointer; font-weight: bold; }
+        #canvas {
+          cursor: crosshair;
+          display: block;
+          border-radius: 10px;
+          background: #020617;
+          border: 1px solid rgba(255,255,255,.1);
+          max-width: 100%;
+          touch-action: none;
+        }
 
-        #term-out { height: 130px; overflow-y: auto; margin-bottom: 10px; padding: 11px; font-size: 12px; border-radius: 10px; color: #38bdf8; background: #020617; font-family: monospace; border: 1px solid rgba(255,255,255,.05); }
+        .calc-grid {
+          display: grid;
+          grid-template-columns: repeat(4,1fr);
+          gap: 6px;
+          margin-top: 8px;
+        }
+
+        .calc-grid button {
+          padding: 12px 0;
+          font-size: 15px;
+          border-radius: 9px;
+          border: 1px solid rgba(255,255,255,.06);
+          background: rgba(255,255,255,.04);
+          color: #f1f5f9;
+          cursor: pointer;
+        }
+
+        .calc-grid button:hover {
+          background: rgba(99,102,241,.25);
+        }
+
+        .calc-grid button:active {
+          transform: scale(.97);
+        }
+
+        #calc-display {
+          text-align: right;
+          font-size: 20px;
+          padding: 12px;
+          border-radius: 10px;
+          background: #020617;
+          border: 1px solid rgba(255,255,255,.1);
+          margin-bottom: 4px;
+          min-height: 26px;
+          word-break: break-all;
+          font-variant-numeric: tabular-nums;
+        }
+
+        #task-list {
+          list-style: none;
+          max-height: 120px;
+          overflow-y: auto;
+          margin-top: 8px;
+        }
+
+        #task-list li {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 10px;
+          padding: 8px 12px;
+          margin-bottom: 6px;
+          border-radius: 8px;
+          background: rgba(255,255,255,.04);
+          border: 1px solid rgba(255,255,255,.05);
+        }
+
+        #task-list li span:first-child {
+          overflow-wrap: anywhere;
+        }
+
+        .task-del {
+          color: #f87171;
+          cursor: pointer;
+          font-weight: bold;
+          padding: 2px 5px;
+          flex: 0 0 auto;
+        }
+
+        #term-out {
+          height: 130px;
+          overflow-y: auto;
+          margin-bottom: 10px;
+          padding: 11px;
+          font-size: 12px;
+          border-radius: 10px;
+          color: #38bdf8;
+          background: #020617;
+          font-family: monospace;
+          border: 1px solid rgba(255,255,255,.05);
+          white-space: pre-wrap;
+          overflow-wrap: anywhere;
+        }
+
+        #term-input {
+          font-family: monospace;
+        }
 
         .taskbar {
           bottom: 0;
@@ -188,16 +342,41 @@
           backdrop-filter: blur(20px);
         }
 
-        #open-apps { display: flex; gap: 8px; }
-        .taskbar-item { padding: 6px 12px; font-size: 12px; border-radius: 8px; background: rgba(255,255,255,.06); cursor: pointer; color: #cbd5e1; }
-        .taskbar-item.active { background: rgba(99,102,241,.4); color: #fff; }
+        #open-apps {
+          display: flex;
+          gap: 8px;
+          max-width: calc(100vw - 120px);
+          overflow-x: auto;
+          scrollbar-width: none;
+        }
+
+        #open-apps::-webkit-scrollbar {
+          display: none;
+        }
+
+        .taskbar-item {
+          padding: 6px 12px;
+          font-size: 12px;
+          border-radius: 8px;
+          background: rgba(255,255,255,.06);
+          cursor: pointer;
+          color: #cbd5e1;
+          white-space: nowrap;
+        }
+
+        .taskbar-item.active {
+          background: rgba(99,102,241,.4);
+          color: #fff;
+        }
 
         #start-menu {
           bottom: 56px;
           left: 16px;
           width: 200px;
+          max-height: calc(100vh - 75px);
+          overflow-y: auto;
           padding: 8px;
-          position: absolute;
+          position: fixed;
           z-index: 2000;
           border-radius: 15px;
           background: rgba(15,23,42,.95);
@@ -206,16 +385,75 @@
           box-shadow: 0 15px 40px rgba(0,0,0,.5);
         }
 
-        .hidden { display: none; }
+        .hidden {
+          display: none !important;
+        }
 
-        .menu-item { display: flex; gap: 10px; padding: 10px 14px; cursor: pointer; border-radius: 9px; color: #cbd5e1; font-size: 13px; align-items: center; }
-        .menu-item:hover { background: rgba(129,140,248,.15); color: #fff; }
+        .menu-item {
+          display: flex;
+          gap: 10px;
+          padding: 10px 14px;
+          cursor: pointer;
+          border-radius: 9px;
+          color: #cbd5e1;
+          font-size: 13px;
+          align-items: center;
+        }
 
-        #pomo-time { font-size: 40px; text-align: center; font-weight: 700; color: #818cf8; margin: 6px 0; }
-        .pomo-controls { display: flex; gap: 8px; justify-content: center; }
+        .menu-item:hover {
+          background: rgba(129,140,248,.15);
+          color: #fff;
+        }
 
-        #weather-box { text-align: center; padding: 10px 0; }
-        #weather-box .temp { font-size: 36px; font-weight: 700; color: #f8fafc; }
+        #pomo-time {
+          font-size: 40px;
+          text-align: center;
+          font-weight: 700;
+          color: #818cf8;
+          margin: 6px 0;
+          font-variant-numeric: tabular-nums;
+        }
+
+        .pomo-controls {
+          display: flex;
+          gap: 8px;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+
+        #weather-box {
+          text-align: center;
+          padding: 10px 0;
+        }
+
+        #weather-box .temp {
+          font-size: 36px;
+          font-weight: 700;
+          color: #f8fafc;
+        }
+
+        @media (max-width: 600px) {
+          .window {
+            width: calc(100vw - 30px);
+          }
+
+          #desktop {
+            padding: 14px;
+          }
+
+          .icon-grid {
+            width: 220px;
+            gap: 12px;
+          }
+
+          .taskbar {
+            padding: 0 12px;
+          }
+
+          #start-menu {
+            left: 10px;
+          }
+        }
     </style>
 </head>
 <body>
@@ -268,11 +506,11 @@
         <div class="window" id="win-about">
             <div class="win-header">
                 <div class="win-title"><span>ℹ️</span><span>About VaskoOS</span></div>
-                <button class="win-close" onclick="closeWin('win-about')">✕</button>
+                <button class="win-close" onclick="closeWin('win-about')" aria-label="Close">✕</button>
             </div>
             <div class="win-body">
                 <p style="color:#f1f5f9; margin-bottom:8px;">VaskoOS v1.0</p>
-                <p>Malka web operationna sistema, napravena za Hack Club Jam. Otvori prozorcite ot desktopa ili start menuto, dvijat se svobodno, zatvarash gi s x-a. Vsichko rabotu v browsera, nishto ne se izprashta nikade.</p>
+                <p>Malka web operationna sistema, napravena za Hack Club Jam. Otvori prozorcite ot desktopa ili start menuto, dvijat se svobodno, zatvarash gi s x-a. Vsichko raboti v browsera, nishto ne se izprashta nikade.</p>
             </div>
         </div>
 
@@ -280,7 +518,7 @@
         <div class="window" id="win-notes">
             <div class="win-header">
                 <div class="win-title"><span>📝</span><span>Notepad</span></div>
-                <button class="win-close" onclick="closeWin('win-notes')">✕</button>
+                <button class="win-close" onclick="closeWin('win-notes')" aria-label="Close">✕</button>
             </div>
             <div class="win-body">
                 <textarea id="notes-area" placeholder="pishi tuk..."></textarea>
@@ -296,7 +534,7 @@
         <div class="window" id="win-paint">
             <div class="win-header">
                 <div class="win-title"><span>🎨</span><span>Paint</span></div>
-                <button class="win-close" onclick="closeWin('win-paint')">✕</button>
+                <button class="win-close" onclick="closeWin('win-paint')" aria-label="Close">✕</button>
             </div>
             <div class="win-body">
                 <canvas id="canvas" width="316" height="200"></canvas>
@@ -311,7 +549,7 @@
         <div class="window" id="win-calc">
             <div class="win-header">
                 <div class="win-title"><span>🧮</span><span>Calculator</span></div>
-                <button class="win-close" onclick="closeWin('win-calc')">✕</button>
+                <button class="win-close" onclick="closeWin('win-calc')" aria-label="Close">✕</button>
             </div>
             <div class="win-body">
                 <div id="calc-display">0</div>
@@ -329,7 +567,7 @@
         <div class="window" id="win-tasks">
             <div class="win-header">
                 <div class="win-title"><span>🎯</span><span>Tasks</span></div>
-                <button class="win-close" onclick="closeWin('win-tasks')">✕</button>
+                <button class="win-close" onclick="closeWin('win-tasks')" aria-label="Close">✕</button>
             </div>
             <div class="win-body">
                 <div style="display:flex; gap:6px;">
@@ -344,7 +582,7 @@
         <div class="window" id="win-pomo">
             <div class="win-header">
                 <div class="win-title"><span>⏱️</span><span>Pomodoro</span></div>
-                <button class="win-close" onclick="closeWin('win-pomo')">✕</button>
+                <button class="win-close" onclick="closeWin('win-pomo')" aria-label="Close">✕</button>
             </div>
             <div class="win-body">
                 <div id="pomo-time">25:00</div>
@@ -360,7 +598,7 @@
         <div class="window" id="win-weather">
             <div class="win-header">
                 <div class="win-title"><span>🌤️</span><span>Weather</span></div>
-                <button class="win-close" onclick="closeWin('win-weather')">✕</button>
+                <button class="win-close" onclick="closeWin('win-weather')" aria-label="Close">✕</button>
             </div>
             <div class="win-body">
                 <div id="weather-box">
@@ -376,11 +614,12 @@
         <div class="window" id="win-terminal">
             <div class="win-header">
                 <div class="win-title"><span>💻</span><span>Terminal</span></div>
-                <button class="win-close" onclick="closeWin('win-terminal')">✕</button>
+                <button class="win-close" onclick="closeWin('win-terminal')" aria-label="Close">✕</button>
             </div>
             <div class="win-body">
-                <div id="term-out">VaskoOS terminal v1.0&#10;pishi 'help' za komandi</div>
-                <input type="text" id="term-input" placeholder="vkarai komanda...">
+                <div id="term-out">VaskoOS terminal v1.0
+pishi 'help' za komandi</div>
+                <input type="text" id="term-input" placeholder="vkarai komanda..." autocomplete="off" spellcheck="false">
             </div>
         </div>
 
@@ -405,224 +644,449 @@
     </footer>
 
     <script>
-    // chasovnik, tika na vseki sekundi
+    // chasovnik
     function updateClock() {
         var now = new Date();
         var h = String(now.getHours()).padStart(2, '0');
-        var m = String(now.getMinutes()).padStart(2, '0');
-        var s = String(now.getSeconds()).padStart(2, '0');
+        let m = String(now.getMinutes()).padStart(2, '0');
+        const s = String(now.getSeconds()).padStart(2, '0');
+
         document.getElementById('clock').textContent = h + ':' + m + ':' + s;
     }
+
     updateClock();
     setInterval(updateClock, 1000);
 
-    // z-index broiach za prozorcite, za da se izdiga tozi koito e klikan
-    var topZ = 10;
 
-    // spisak na otvoreni prozorci za taskbar-a
+    // prozorci i nastroiki po tyh
+    var topZ = 10;
     var openWindows = [];
 
+    function getWin(id) {
+        return document.getElementById(id);
+    }
+
     function openWin(id) {
-        var win = document.getElementById(id);
+        var win = getWin(id);
         if (!win) return;
 
-        // ako veche e otvoren samo go izdigame
+        var menu = document.getElementById('start-menu');
+        menu.classList.add('hidden');
+
         if (win.style.display === 'block') {
             focusWin(id);
-            document.getElementById('start-menu').classList.add('hidden');
             return;
         }
 
         win.style.display = 'block';
-        topZ = topZ + 1;
+
+        topZ += 1;
         win.style.zIndex = topZ;
 
-        // malko random ofset za da ne izlizat vsichki na edno myasto
-        var offset = openWindows.length * 18;
-        win.style.top = (110 + offset) + 'px';
-        win.style.left = (110 + offset) + 'px';
+        var offset = (openWindows.length % 5) * 18;
+        var desktop = document.getElementById('desktop');
+
+        var maxLeft = Math.max(10, desktop.clientWidth - win.offsetWidth - 20);
+        var maxTop = Math.max(10, desktop.clientHeight - win.offsetHeight - 20);
+
+        var left = Math.min(110 + offset, maxLeft);
+        var top = Math.min(62 + offset, maxTop);
+
+        win.style.left = left + 'px';
+        win.style.top = top + 'px';
 
         if (openWindows.indexOf(id) === -1) {
             openWindows.push(id);
         }
 
-        renderTaskbar();
         makeDraggable(win);
-        document.getElementById('start-menu').classList.add('hidden');
+        renderTaskbar();
     }
 
     function closeWin(id) {
-        var win = document.getElementById(id);
+        var win = getWin(id);
+        if (!win) return;
+
         win.style.display = 'none';
+
         var idx = openWindows.indexOf(id);
-        if (idx > -1) openWindows.splice(idx, 1);
+
+        if (idx !== -1) {
+            openWindows.splice(idx, 1);
+        }
+
         renderTaskbar();
     }
 
     function focusWin(id) {
-        topZ++;
-        document.getElementById(id).style.zIndex = topZ;
+        var win = getWin(id);
+        if (!win) return;
+
+        topZ += 1;
+        win.style.zIndex = topZ;
+
         renderTaskbar();
     }
 
     function renderTaskbar() {
         var box = document.getElementById('open-apps');
         box.innerHTML = '';
-        openWindows.forEach(function (id) {
+
+        for (var i = 0; i < openWindows.length; i++) {
+            var id = openWindows[i];
+            var win = getWin(id);
+            if (!win) continue;
+
             var label = id.replace('win-', '');
             var item = document.createElement('div');
+
             item.className = 'taskbar-item';
+            if (win.style.zIndex == topZ) {
+                item.classList.add('active');
+            }
+
             item.textContent = label;
-            item.onclick = function () { focusWin(id); };
+
+            item.onclick = function (clickedId) {
+                return function () {
+                    var target = getWin(clickedId);
+
+                    if (!target) return;
+
+                    if (target.style.display !== 'block') {
+                        openWin(clickedId);
+                    } else {
+                        focusWin(clickedId);
+                    }
+                };
+            }(id);
+
             box.appendChild(item);
-        });
+        }
     }
 
-    // drpni i pusni - pointer events, rabotu i s mishka i s touch
+
+    // drpni prozoreca
     function makeDraggable(win) {
         var header = win.querySelector('.win-header');
-        if (header.dataset.draggable === 'yes') return; // za da ne slagame dva pati listener
+
+        if (!header || header.dataset.draggable === 'yes') {
+            return;
+        }
+
         header.dataset.draggable = 'yes';
 
         var dragging = false;
-        var startX, startY, startLeft, startTop;
+        var pointerId = null;
+        var startX = 0;
+        var startY = 0;
+        var startLeft = 0;
+        var startTop = 0;
+
+        function stopDragging() {
+            dragging = false;
+            pointerId = null;
+        }
 
         header.addEventListener('pointerdown', function (e) {
+            if (e.target.closest('.win-close')) {
+                return;
+            }
+
             dragging = true;
+            pointerId = e.pointerId;
+
             startX = e.clientX;
             startY = e.clientY;
             startLeft = win.offsetLeft;
             startTop = win.offsetTop;
+
             focusWin(win.id);
-            header.setPointerCapture(e.pointerId);
+
+            try {
+                header.setPointerCapture(e.pointerId);
+            } catch (err) {
+                // ako browsera se pravi na interesen
+            }
+
+            e.preventDefault();
         });
 
         header.addEventListener('pointermove', function (e) {
-            if (!dragging) return;
+            if (!dragging || e.pointerId !== pointerId) {
+                return;
+            }
+
+            var desktop = document.getElementById('desktop');
             var dx = e.clientX - startX;
             var dy = e.clientY - startY;
+
             var newLeft = startLeft + dx;
             var newTop = startTop + dy;
-            // ne davame da izlezе nad gornata lenta
-            if (newTop < 48) newTop = 48;
+
+            var minLeft = 0;
+            var minTop = 0;
+
+            var maxLeft = Math.max(0, desktop.clientWidth - win.offsetWidth);
+            var maxTop = Math.max(0, desktop.clientHeight - win.offsetHeight);
+
+            if (newLeft < minLeft) newLeft = minLeft;
+            if (newTop < minTop) newTop = minTop;
+            if (newLeft > maxLeft) newLeft = maxLeft;
+            if (newTop > maxTop) newTop = maxTop;
+
             win.style.left = newLeft + 'px';
             win.style.top = newTop + 'px';
         });
 
-        header.addEventListener('pointerup', function () { dragging = false; });
-        header.addEventListener('pointercancel', function () { dragging = false; });
+        header.addEventListener('pointerup', function (e) {
+            if (pointerId === e.pointerId) {
+                stopDragging();
+            }
+        });
+
+        header.addEventListener('pointercancel', function (e) {
+            if (pointerId === e.pointerId) {
+                stopDragging();
+            }
+        });
+
+        header.addEventListener('lostpointercapture', function () {
+            stopDragging();
+        });
     }
 
-    // start menu toggle
+
+    // start menu
     function toggleStart() {
-        document.getElementById('start-menu').classList.toggle('hidden');
+        var menu = document.getElementById('start-menu');
+        menu.classList.toggle('hidden');
     }
 
     document.addEventListener('click', function (e) {
         var menu = document.getElementById('start-menu');
+
         if (!menu.contains(e.target) && !e.target.closest('.btn-start')) {
             menu.classList.add('hidden');
         }
     });
 
-    // ---- notepad, pazi v localStorage ----
+
+    // notepad
     var noteArea = document.getElementById('notes-area');
-    var savedNote = localStorage.getItem('vasko-note');
-    if (savedNote) noteArea.value = savedNote;
+
+    function loadNote() {
+        try {
+            var savedNote = localStorage.getItem('vasko-note');
+
+            if (savedNote !== null) {
+                noteArea.value = savedNote;
+            }
+        } catch (err) {
+            console.warn('localStorage ne e dostapen', err);
+        }
+    }
 
     function saveNote() {
-        localStorage.setItem('vasko-note', noteArea.value);
         var status = document.getElementById('notes-status');
-        status.textContent = 'zapazeno ' + new Date().toLocaleTimeString();
-        setTimeout(function () { status.textContent = ''; }, 2000);
+
+        try {
+            localStorage.setItem('vasko-note', noteArea.value);
+            status.textContent = 'zapazeno ' + new Date().toLocaleTimeString();
+
+            setTimeout(function () {
+                status.textContent = '';
+            }, 2000);
+        } catch (err) {
+            status.textContent = 'ne uspqh da zapazq';
+        }
     }
 
     function clearNote() {
         noteArea.value = '';
-        localStorage.removeItem('vasko-note');
+
+        try {
+            localStorage.removeItem('vasko-note');
+        } catch (err) {
+            console.warn('ne moje da iztrie note-a', err);
+        }
+
+        document.getElementById('notes-status').textContent = '';
     }
 
-    // ---- paint, prost canvas s risuvane ----
+    loadNote();
+
+
+    // paint
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
     var drawing = false;
+    var paintPointer = null;
+
+    function canvasPoint(e) {
+        var rect = canvas.getBoundingClientRect();
+
+        return {
+            x: (e.clientX - rect.left) * (canvas.width / rect.width),
+            y: (e.clientY - rect.top) * (canvas.height / rect.height)
+        };
+    }
 
     canvas.addEventListener('pointerdown', function (e) {
         drawing = true;
-        var rect = canvas.getBoundingClientRect();
+        paintPointer = e.pointerId;
+
+        var p = canvasPoint(e);
+
         ctx.beginPath();
-        ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+        ctx.moveTo(p.x, p.y);
+
+        ctx.strokeStyle = document.getElementById('paint-color').value;
+        ctx.lineWidth = 3;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+
+        try {
+            canvas.setPointerCapture(e.pointerId);
+        } catch (err) {}
+
+        e.preventDefault();
     });
 
     canvas.addEventListener('pointermove', function (e) {
-        if (!drawing) return;
-        var rect = canvas.getBoundingClientRect();
-        var colorPick = document.getElementById('paint-color').value;
-        ctx.strokeStyle = colorPick;
-        ctx.lineWidth = 3;
-        ctx.lineCap = 'round';
-        ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+        if (!drawing || e.pointerId !== paintPointer) {
+            return;
+        }
+
+        var p = canvasPoint(e);
+
+        ctx.lineTo(p.x, p.y);
         ctx.stroke();
     });
 
-    window.addEventListener('pointerup', function () { drawing = false; });
+    function stopPaint() {
+        drawing = false;
+        paintPointer = null;
+        ctx.closePath();
+    }
+
+    canvas.addEventListener('pointerup', stopPaint);
+    canvas.addEventListener('pointercancel', stopPaint);
+    canvas.addEventListener('lostpointercapture', stopPaint);
 
     function clearCanvas() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
-    // ---- kalkulatura skript ----
+
+    // kalkulatura skript
     var calcVal = '';
 
+    function updateCalcDisplay(value) {
+        document.getElementById('calc-display').textContent = value || '0';
+    }
+
     function calcInput(v) {
+        if (calcVal.length > 100) return;
+
         calcVal += v;
-        document.getElementById('calc-display').textContent = calcVal || '0';
+        updateCalcDisplay(calcVal);
     }
 
     function calcClear() {
         calcVal = '';
-        document.getElementById('calc-display').textContent = '0';
+        updateCalcDisplay('');
     }
 
     function calcBack() {
         calcVal = calcVal.slice(0, -1);
-        document.getElementById('calc-display').textContent = calcVal || '0';
+        updateCalcDisplay(calcVal);
     }
 
     function calcEval() {
-        if (!calcVal) return;
-        // samo cifri, tochki i osnovni operatori - da ne pusnem nishto sumnitelno
-        if (/^[0-9+\-*/().\s]+$/.test(calcVal) === false) {
-            document.getElementById('calc-display').textContent = 'greshka';
-            calcVal = '';
+        if (!calcVal) {
             return;
         }
+
+        if (!/^[0-9+\-*/().\s]+$/.test(calcVal)) {
+            calcVal = '';
+            updateCalcDisplay('greshka');
+            return;
+        }
+
         try {
             var result = Function('"use strict"; return (' + calcVal + ')')();
-            document.getElementById('calc-display').textContent = result;
+
+            if (typeof result !== 'number' || !Number.isFinite(result)) {
+                throw new Error('bad result');
+            }
+
+            result = Math.round(result * 100000000) / 100000000;
+
             calcVal = String(result);
+            updateCalcDisplay(calcVal);
         } catch (err) {
-            document.getElementById('calc-display').textContent = 'greshka';
             calcVal = '';
+            updateCalcDisplay('greshka');
         }
     }
 
-    // ---- zadachi ----
-    var tasks = JSON.parse(localStorage.getItem('vasko-tasks') || '[]');
+
+    // zadachi
+    var tasks = [];
+
+    function loadTasks() {
+        try {
+            var raw = localStorage.getItem('vasko-tasks');
+
+            if (!raw) {
+                tasks = [];
+                return;
+            }
+
+            var parsed = JSON.parse(raw);
+
+            if (Array.isArray(parsed)) {
+                tasks = parsed.filter(function (item) {
+                    return typeof item === 'string';
+                });
+            } else {
+                tasks = [];
+            }
+        } catch (err) {
+            tasks = [];
+        }
+    }
+
+    function saveTasks() {
+        try {
+            localStorage.setItem('vasko-tasks', JSON.stringify(tasks));
+        } catch (err) {
+            console.warn('tasks ne se zapazvat', err);
+        }
+    }
 
     function renderTasks() {
         var list = document.getElementById('task-list');
         list.innerHTML = '';
+
         for (var i = 0; i < tasks.length; i++) {
-            var li = document.createElement('li');
+            let li = document.createElement('li');
+
             var span = document.createElement('span');
             span.textContent = tasks[i];
+
             var del = document.createElement('span');
             del.textContent = '✕';
             del.className = 'task-del';
-            del.onclick = (function (idx) {
-                return function () { deleteTask(idx); };
-            })(i);
+            del.title = 'Iztrii';
+
+            del.onclick = function (idx) {
+                return function () {
+                    deleteTask(idx);
+                };
+            }(i);
+
             li.appendChild(span);
             li.appendChild(del);
             list.appendChild(li);
@@ -632,66 +1096,99 @@
     function addTask() {
         var input = document.getElementById('task-input');
         var val = input.value.trim();
-        if (val === '') return;
+
+        if (!val) return;
+
         tasks.push(val);
-        localStorage.setItem('vasko-tasks', JSON.stringify(tasks));
+        saveTasks();
+
         input.value = '';
         renderTasks();
+        input.focus();
     }
 
     function deleteTask(idx) {
+        if (idx < 0 || idx >= tasks.length) return;
+
         tasks.splice(idx, 1);
-        localStorage.setItem('vasko-tasks', JSON.stringify(tasks));
+        saveTasks();
         renderTasks();
     }
 
     document.getElementById('task-input').addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') addTask();
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            addTask();
+        }
     });
 
+    loadTasks();
     renderTasks();
 
-    // ---- pomodoro, obiknoven interval ----
+
+    // pomodoro
     var pomoSeconds = 25 * 60;
     var pomoTimer = null;
     var pomoRunning = false;
+    var pomoLastTick = 0;
 
     function pomoRender() {
         var m = Math.floor(pomoSeconds / 60);
         var s = pomoSeconds % 60;
+
         document.getElementById('pomo-time').textContent =
             String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
     }
 
     function pomoStart() {
-        if (pomoRunning) return;
+        if (pomoRunning || pomoSeconds <= 0) {
+            return;
+        }
+
         pomoRunning = true;
+        pomoLastTick = Date.now();
+
+        clearInterval(pomoTimer);
+
         pomoTimer = setInterval(function () {
-            if (pomoSeconds <= 0) {
-                clearInterval(pomoTimer);
-                pomoRunning = false;
+            var now = Date.now();
+            var elapsed = Math.floor((now - pomoLastTick) / 1000);
+
+            if (elapsed < 1) {
                 return;
             }
-            pomoSeconds--;
+
+            pomoLastTick += elapsed * 1000;
+            pomoSeconds -= elapsed;
+
+            if (pomoSeconds <= 0) {
+                pomoSeconds = 0;
+                pomoPause();
+            }
+
             pomoRender();
-        }, 1000);
+        }, 250);
     }
 
     function pomoPause() {
-        clearInterval(pomoTimer);
+        if (pomoTimer !== null) {
+            clearInterval(pomoTimer);
+        }
+
+        pomoTimer = null;
         pomoRunning = false;
     }
 
     function pomoReset() {
-        clearInterval(pomoTimer);
-        pomoRunning = false;
+        pomoPause();
         pomoSeconds = 25 * 60;
         pomoRender();
     }
 
     pomoRender();
 
-    // ---- weather, simulirano, nqma real api key tuk ----
+
+    // weather - samo simulaciq
     var weatherOptions = [
         { icon: '☀️', temp: '24°C', label: 'Plovdiv · Slanchevo' },
         { icon: '⛅', temp: '19°C', label: 'Plovdiv · Oblachno' },
@@ -700,14 +1197,33 @@
     ];
 
     function refreshWeather() {
-        var pick = weatherOptions[Math.floor(Math.random() * weatherOptions.length)];
+        var pick = weatherOptions[
+            Math.floor(Math.random() * weatherOptions.length)
+        ];
+
         var box = document.getElementById('weather-box');
-        box.innerHTML = '<div style="font-size:34px;">' + pick.icon + '</div>' +
-            '<div class="temp">' + pick.temp + '</div>' +
-            '<div style="margin-top:4px;">' + pick.label + '</div>';
+
+        box.innerHTML = '';
+
+        var icon = document.createElement('div');
+        icon.style.fontSize = '34px';
+        icon.textContent = pick.icon;
+
+        var temp = document.createElement('div');
+        temp.className = 'temp';
+        temp.textContent = pick.temp;
+
+        var label = document.createElement('div');
+        label.style.marginTop = '4px';
+        label.textContent = pick.label;
+
+        box.appendChild(icon);
+        box.appendChild(temp);
+        box.appendChild(label);
     }
 
-    // ---- terminal, simuliran CLI ----
+
+    // terminal, malko pseudo linux ot moje ime
     var termOut = document.getElementById('term-out');
     var termInput = document.getElementById('term-input');
 
@@ -715,46 +1231,150 @@
         help: function () {
             return 'komandi: help, date, clear, echo [text], apps, whoami';
         },
+
         date: function () {
             return new Date().toString();
         },
+
         clear: function () {
             termOut.textContent = '';
             return null;
         },
+
         apps: function () {
             return 'about, notes, paint, calc, tasks, pomo, weather, terminal';
         },
+
         whoami: function () {
             return 'vasko@vaskoOS';
         }
     };
 
     function termLog(line) {
-        termOut.textContent += '\n' + line;
+        if (termOut.textContent.length > 5000) {
+            termOut.textContent = termOut.textContent.slice(-3500);
+        }
+
+        if (termOut.textContent) {
+            termOut.textContent += '\n';
+        }
+
+        termOut.textContent += line;
         termOut.scrollTop = termOut.scrollHeight;
     }
 
-    termInput.addEventListener('keydown', function (e) {
-        if (e.key !== 'Enter') return;
-        var raw = termInput.value.trim();
-        if (raw === '') return;
-        termLog('> ' + raw);
-
-        var parts = raw.split(' ');
-        var cmd = parts[0].toLowerCase();
+    function runTerminalCommand(raw) {
+        var parts = raw.split(/\s+/);
+        var cmd = parts.shift().toLowerCase();
 
         if (cmd === 'echo') {
-            termLog(parts.slice(1).join(' '));
-        } else if (termCommands[cmd]) {
-            var res = termCommands[cmd]();
-            if (res) termLog(res);
-        } else {
-            termLog('neznaya komanda: ' + cmd + ' (pishi help)');
+            termLog(parts.join(' '));
+            return;
         }
+
+        if (termCommands[cmd]) {
+            var result = termCommands[cmd]();
+
+            if (result !== null && result !== undefined && result !== '') {
+                termLog(result);
+            }
+
+            return;
+        }
+
+        termLog('neznaya komanda: ' + cmd + ' (pishi help)');
+    }
+
+    termInput.addEventListener('keydown', function (e) {
+        if (e.key !== 'Enter') {
+            return;
+        }
+
+        e.preventDefault();
+
+        var raw = termInput.value.trim();
+
+        if (!raw) {
+            return;
+        }
+
+        termLog('> ' + raw);
+        runTerminalCommand(raw);
 
         termInput.value = '';
     });
+
+
+    // kalkulator i terminal da se usetqt s klaviaturata
+    document.addEventListener('keydown', function (e) {
+        var active = document.activeElement;
+
+        if (active === termInput || active === noteArea || active === document.getElementById('task-input')) {
+            return;
+        }
+
+        var calcWin = document.getElementById('win-calc');
+
+        if (calcWin.style.display !== 'block') {
+            return;
+        }
+
+        if (/^[0-9.]$/.test(e.key)) {
+            calcInput(e.key);
+        } else if (['+', '-', '*', '/', '(', ')'].indexOf(e.key) !== -1) {
+            calcInput(e.key);
+        } else if (e.key === 'Enter') {
+            calcEval();
+        } else if (e.key === 'Backspace') {
+            calcBack();
+        } else if (e.key.toLowerCase() === 'c') {
+            calcClear();
+        }
+    });
+
+
+    // ako nqkoi klikne prozoreca izdiga go
+    document.getElementById('desktop').addEventListener('pointerdown', function (e) {
+        var win = e.target.closest('.window');
+
+        if (!win) {
+            return;
+        }
+
+        focusWin(win.id);
+    });
+
+
+    // pri resize ne ostavqme prozoreca v kosmosa
+    window.addEventListener('resize', function () {
+        var desktop = document.getElementById('desktop');
+
+        for (var i = 0; i < openWindows.length; i++) {
+            var win = getWin(openWindows[i]);
+
+            if (!win || win.style.display !== 'block') {
+                continue;
+            }
+
+            var maxLeft = Math.max(0, desktop.clientWidth - win.offsetWidth);
+            var maxTop = Math.max(0, desktop.clientHeight - win.offsetHeight);
+
+            var left = Math.min(Math.max(0, win.offsetLeft), maxLeft);
+            var top = Math.min(Math.max(0, win.offsetTop), maxTop);
+
+            win.style.left = left + 'px';
+            win.style.top = top + 'px';
+        }
+    });
+
+
+    // zatvarq start menuto s escape
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+            document.getElementById('start-menu').classList.add('hidden');
+        }
+    });
+
     </script>
 </body>
 </html>
