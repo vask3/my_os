@@ -1,11 +1,12 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VaskoOS</title>
+    <!-- нормална връзка към стиловете в същата папка -->
     <link rel="stylesheet" href="style.css">
-    <!-- Истински работещ линк за иконите от официален източник -->
+    <!-- Истински работещ линк за иконите, за да не са празни кутийките -->
     <link rel="stylesheet" href="https://cloudflare.com">
 </head>
 <body>
@@ -164,7 +165,7 @@
             </div>
         </div>
 
-        <!-- 8. конзола / терминал -->
+        <!-- 8. конзола / терминал (ТУК Е ЗАТВОРЕН ПРАВИЛНО) -->
         <div class="window" id="win-terminal">
             <div class="win-header">
                 <div><i class="fa-solid fa-terminal"></i> Terminal</div>
@@ -179,7 +180,7 @@
             </div>
         </div>
 
-        <!-- скритото старт меню -->
+        <!-- старт менюто -->
         <div id="start-menu" class="hidden">
             <div class="menu-item" onclick="openWin('win-about'); toggleMenu();"><i class="fa-solid fa-info"></i> About</div>
             <div class="menu-item" onclick="openWin('win-notes'); toggleMenu();"><i class="fa-solid fa-file-lines"></i> Notepad</div>
@@ -193,5 +194,3 @@
 
     </main>
 
-    <!-- долния таскбар -->
-    <footer class="taskbar">
