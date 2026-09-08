@@ -4,18 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VaskoOS</title>
-    <!-- Истински работещ източник за иконите на системата -->
-    <link rel="stylesheet" href="https://cloudflare.com">
-    
     <style>
-        /* // основен изглед и фон */
+        /* // основна база за уеб операционната система */
         * {
           box-sizing: border-box;
+          margin: 0;
+          padding: 0;
           font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-          margin: 0;
           height: 100vh;
           overflow: hidden;
           user-select: none;
@@ -23,8 +21,8 @@
           color: #f8fafc;
         }
 
-        /* // горната и долната лента */
-        .top-bar, .taskbar {
+        /* // горната лента с часовника */
+        .top-bar {
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -36,14 +34,6 @@
           position: relative;
           border-bottom: 1px solid rgba(255, 255, 255, 0.08);
           box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-        }
-
-        .taskbar {
-          border-bottom: none;
-          position: fixed;
-          width: 100%;
-          bottom: 0;
-          border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .brand { 
@@ -58,7 +48,7 @@
           color: #94a3b8;
         }
 
-        /* // подредба на десктоп иконите */
+        /* // настройки на десктопа и иконите */
         #desktop {
           position: relative;
           height: calc(100vh - 96px);
@@ -94,18 +84,11 @@
           align-items: center;
           justify-content: center;
           background: rgba(30, 41, 59, 0.7);
-          font-size: 20px;
+          font-size: 24px;
           border-radius: 17px;
-          color: #818cf8;
           border: 1px solid rgba(255, 255, 255, 0.1);
           box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
           transition: all 0.2s ease;
-        }
-
-        .desk-icon:hover .icon-box {
-          color: #a5b4fc;
-          border-color: rgba(129, 140, 248, 0.4);
-          box-shadow: 0 0 15px rgba(129, 140, 248, 0.2);
         }
 
         .desk-icon span {
@@ -115,7 +98,7 @@
           color: #cbd5e1;
         }
 
-        /* // стъклени прозорци за приложенията */
+        /* // стъклените прозорци на приложенията */
         .window {
           position: absolute;
           width: 350px;
@@ -125,7 +108,9 @@
           border: 1px solid rgba(255, 255, 255, 0.1);
           box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
           overflow: hidden;
-          display: none; /* Прозорците са скрити в началото */
+          display: none; /* скрити са по подразбиране */
+          top: 120px;
+          left: 125px;
         }
 
         .win-header {
@@ -139,11 +124,6 @@
           color: #e2e8f0;
           cursor: move;
           border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .win-header i {
-          color: #818cf8;
-          margin-right: 6px;
         }
 
         .win-close {
@@ -176,9 +156,10 @@
         .win-body h2 {
           color: #f8fafc;
           margin-top: 0;
+          margin-bottom: 8px;
         }
 
-        /* // бутони и текстови полета */
+        /* // бутони и полета за въвеждане */
         .btn-primary, .btn-start {
           background: #6366f1;
           border: none;
@@ -189,12 +170,6 @@
           font-size: 13px;
           cursor: pointer;
           box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-          transition: all 0.2s ease;
-        }
-
-        .btn-primary:hover, .btn-start:hover {
-          background: #4f46e5;
-          transform: translateY(-1px);
         }
 
         .btn-secondary {
@@ -206,12 +181,6 @@
           font-weight: 600;
           font-size: 13px;
           cursor: pointer;
-          transition: all 0.2s ease;
-        }
-
-        .btn-secondary:hover {
-          background: rgba(255, 255, 255, 0.12);
-          color: #fff;
         }
 
         textarea, input[type="text"] {
@@ -237,20 +206,20 @@
           cursor: crosshair;
         }
 
-        /* // решетка за калкулатор */
+        /* // решетка за калкулатора */
         .calc-grid {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
           gap: 6px;
+          margin-top: 8px;
         }
 
-        /* // списък със задачи */
+        /* // туду лист задачи */
         #task-list {
           list-style: none;
-          padding: 0;
-          margin: 0;
           max-height: 120px;
           overflow-y: auto;
+          margin-top: 8px;
         }
 
         #task-list li {
@@ -263,15 +232,15 @@
           border-radius: 8px;
           margin-bottom: 6px;
           font-size: 13px;
-          color: #e2e8f0;
         }
 
         .task-del {
           color: #f87171;
           cursor: pointer;
+          font-weight: bold;
         }
 
-        /* // терминал екран */
+        /* // черния екран на терминала */
         #term-out {
           height: 130px;
           background: #020617;
@@ -285,7 +254,23 @@
           border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* // старт меню */
+        /* // долната лента с таскбара */
+        .taskbar {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          height: 48px;
+          background: rgba(15, 23, 42, 0.75);
+          backdrop-filter: blur(20px);
+          padding: 0 19px;
+          z-index: 1000;
+          position: fixed;
+          width: 100%;
+          bottom: 0;
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* // изскачащото старт меню */
         #start-menu {
           position: absolute;
           bottom: 56px;
@@ -313,24 +298,12 @@
           cursor: pointer;
           border-radius: 9px;
           font-size: 13px;
-          font-weight: 500;
           transition: all 0.2s ease;
-        }
-
-        .menu-item i {
-          color: #818cf8;
         }
 
         .menu-item:hover {
           background: rgba(129, 140, 248, 0.15);
           color: #fff;
-        }
-
-        /* // форсиране на FontAwesome шрифта за иконите */
-        .icon-box i, .win-header i, .menu-item i {
-          font-family: "Font Awesome 6 Free", "Font Awesome 5 Free", sans-serif !important;
-          font-style: normal;
-          font-weight: 900;
         }
     </style>
 </head>
@@ -342,24 +315,46 @@
         <div id="clock">00:00:00</div>
     </header>
 
-    <!-- главен плот -->
+    <!-- десктоп -->
     <main id="desktop">
         
+        <!-- иконите на приложенията на екрана -->
         <div class="icon-grid">
             <div class="desk-icon" onclick="openWin('win-about')">
-                <div class="icon-box"><i class="fa-solid fa-info"></i></div>
+                <div class="icon-box">ℹ️</div>
                 <span>About</span>
             </div>
             <div class="desk-icon" onclick="openWin('win-notes')">
-                <div class="icon-box"><i class="fa-solid fa-file-lines"></i></div>
+                <div class="icon-box">📝</div>
                 <span>Notepad</span>
             </div>
             <div class="desk-icon" onclick="openWin('win-paint')">
-                <div class="icon-box"><i class="fa-solid fa-paint-brush"></i></div>
+                <div class="icon-box">🎨</div>
                 <span>Paint</span>
             </div>
             <div class="desk-icon" onclick="openWin('win-calc')">
-                <div class="icon-box"><i class="fa-solid fa-calculator"></i></div>
+                <div class="icon-box">🧮</div>
                 <span>Calculator</span>
             </div>
             <div class="desk-icon" onclick="openWin('win-tasks')">
+                <div class="icon-box">🎯</div>
+                <span>Tasks</span>
+            </div>
+            <div class="desk-icon" onclick="openWin('win-pomo')">
+                <div class="icon-box">⏱️</div>
+                <span>Pomodoro</span>
+            </div>
+            <div class="desk-icon" onclick="openWin('win-weather')">
+                <div class="icon-box">🌤️</div>
+                <span>Weather</span>
+            </div>
+            <div class="desk-icon" onclick="openWin('win-terminal')">
+                <div class="icon-box">💻</div>
+                <span>Terminal</span>
+            </div>
+        </div>
+
+        <!-- 1. прозорец: инфо -->
+        <div class="window" id="win-about">
+            <div class="win-header">
+                <div>About VaskoOS</div>
