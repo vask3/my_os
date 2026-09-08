@@ -1,4 +1,4 @@
-/* // обща основа на операционната система */
+/* // базова подредба на екрана */
 * {
   box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -13,7 +13,7 @@ body {
   color: #f8fafc;
 }
 
-/* // настройки за горната и долната лента */
+/* // навигационни ленти */
 .top-bar, .taskbar {
   display: flex;
   align-items: center;
@@ -48,7 +48,7 @@ body {
   color: #94a3b8;
 }
 
-/* // разположение на иконите по работния плот */
+/* // разположение на иконите по десктопа */
 #desktop {
   position: relative;
   height: calc(100vh - 96px);
@@ -77,7 +77,6 @@ body {
   transform: translateY(-2px);
 }
 
-/* // кутийките на самите икони */
 .icon-box {
   width: 56px;
   height: 56px;
@@ -106,7 +105,7 @@ body {
   color: #cbd5e1;
 }
 
-/* // стил за изскачащите стъклени прозорци */
+/* // прозорци с ефект на замръзнало стъкло */
 .window {
   position: absolute;
   width: 350px;
@@ -137,7 +136,6 @@ body {
   margin-right: 6px;
 }
 
-/* // бутона за затваряне Х */
 .win-close {
   display: flex;
   align-items: center;
@@ -170,7 +168,7 @@ body {
   margin-top: 0;
 }
 
-/* // бутони и полета за писане */
+/* // бутони и текстови кутии */
 .btn-primary, .btn-start {
   background: #6366f1;
   border: none;
@@ -229,14 +227,13 @@ textarea {
   cursor: crosshair;
 }
 
-/* // решетката на калкулатора */
+/* // специфични разпределения за приложенията */
 .calc-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 6px;
 }
 
-/* // списъка със задачи */
 #task-list {
   list-style: none;
   padding: 0;
@@ -263,7 +260,6 @@ textarea {
   cursor: pointer;
 }
 
-/* // прозореца на черния терминал */
 #term-out {
   height: 130px;
   background: #020617;
@@ -277,7 +273,6 @@ textarea {
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* // старт менюто в левия ъгъл */
 #start-menu {
   position: absolute;
   bottom: 56px;
@@ -318,7 +313,7 @@ textarea {
   color: #fff;
 }
 
-/* // ТОВА ОПРАВЯ ПРАЗНИТЕ КВАДРАТЧЕТА НА ИКОНИТЕ */
+/* // засичане на външния шрифт за иконите */
 .icon-box i, .win-header i, .menu-item i {
   font-family: "Font Awesome 6 Free", "Font Awesome 5 Free", sans-serif !important;
   font-style: normal;
