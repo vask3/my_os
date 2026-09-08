@@ -1,78 +1,59 @@
-# VaskoOS
+VaskoOS
 
-Instead of sharing a standard, basic personal portfolio link with people on the internet, I built VaskoOS — a fully interactive web-based operating system simulator where people can explore my work, test apps, and see what I am about. 
+Run it
 
-The whole thing runs completely client-side using pure HTML5, CSS3, and Vanilla JavaScript. No heavy frameworks, no NPM install headaches, and no complex backend configurations. It features a dark neon glassmorphism UI layout, custom app workflows, and dynamic window stacking.
+Just open index.html in any modern browser. No build step, no server, no dependencies — everything is inline HTML/CSS/JS.
 
----
+Features
+Real-time clock in the top bar
+Windows open from desktop icons or the start menu, drag freely via Pointer Events, and stack in front on focus
+Notepad persists text across reloads (localStorage)
+Paint: freehand canvas drawing with a color picker
+Calculator: basic arithmetic with input validation
+Tasks: add/delete a simple to-do list (localStorage)
+Pomodoro: start/pause/reset a 25-minute countdown
+Weather: simulated conditions (no external API/key)
+Terminal: a handful of fake commands (help, date, clear, echo, apps, whoami)
+Tech stack
 
-## Core OS Architecture and Features
+Vanilla HTML, CSS, and JavaScript — no frameworks, no build tools, no external libraries or CDNs. Icons are plain text emoji rather than an icon font, so the UI renders identically regardless of network access. State that needs to survive a reload (notes, tasks) is kept in localStorage; everything else (open windows, calculator input, pomodoro state) lives in memory and resets on refresh.
 
-* **Advanced Pointer Window Dragging:** Unlike standard mouse listeners, the window system hooks into native Pointer Events (pointerdown, pointermove, pointerup). This ensures smooth dragging functionality across mouse setups on PCs and touch gestures on mobile devices or tablets. It also uses setPointerCapture to lock focus so windows do not lag or snap away if you drag too fast.
-* **Dynamic Depth Management (Z-Index Engine):** The script tracks active windows using a global layering counter. Clicking anywhere inside an app or initiating a drag sequence instantly bumps that specific window's zIndex property to the top, so active projects never get lost underneath other open tabs.
-* **On-the-Fly Wallpaper Changing:** The desktop background has custom event listeners for drag-and-drop actions (dragover and drop). You can pull any image file directly from your computer files, drop it onto the workspace, and the FileReader API instantly encodes it into a local string to update the CSS background style.
-* **Live Global Clock:** A JavaScript timer runs non-stop on a 1-second interval sequence, pulling the local Date() metrics and piping them smoothly into the top navigation header bar.
-* **Start Menu Layout and Hidden App Logic:** The layout wraps everything in separate viewport wrappers. The bottom taskbar holds a core toggle switch that applies hidden utility states to show or hide the global app list menu panel.
+Project structure
 
----
+Everything lives in one file, index.html, split into three parts:
 
-## Deep Dive Into the Apps (What is Inside)
+<style> — desktop background, top bar, taskbar, window chrome, and per-app layout (calculator grid, task list, terminal output, etc.)
+HTML body — the desktop icon grid, the start menu, the taskbar, and one .window block per app (About, Notepad, Paint, Calculator, Tasks, Pomodoro, Weather, Terminal)
+<script> — window management (open/close/focus/drag via Pointer Events), the taskbar renderer, and one small self-contained block of logic per app
+Apps in detail
 
-### 1. About Module
-* The primary dashboard landing window explaining the core goal of the project.
-* Holds tips on how to interact with the system and unlock features.
+About — static info panel with the project name and a short description of how to use the desktop.
 
-### 2. Notepad (With Local Persistence)
-* A text container view where you can write out random thoughts, ideas, or to-do targets.
-* Connected straight to the browser's localStorage engine under a unique data key. Even if you completely exit the page, reboot your machine, or refresh your browser tab, your data automatically hydrates back into the DOM upon the DOMContentLoaded event lifecycle.
+Notepad — a single textarea. "Save" writes the current text to localStorage under vasko-note and shows a small timestamp confirmation; "Clear" wipes both the textarea and the stored value.
 
-### 3. Canvas Paint
-* A digital sketch pad utilizing the HTML5 canvas element block and 2D rendering context (getContext('2d')).
-* Tracks mouse vector lines by chaining lineTo() and stroke() events together with a rounded line cap. Features a modular native color picker block and a fast wipe trigger function that fires clearRect() across the entire grid surface.
+Paint — a <canvas> you can draw on with the mouse or touch (Pointer Events), plus a native color picker input. "Clear" resets the canvas to blank.
 
-### 4. Exception-Safe Calculator
-* A classic grid math module capable of chaining base operations like addition, subtraction, division, and multiplication.
-* It parses multi-string values and safely routes them through an input scanner. The calculation logic is wrapped inside a strict try...catch wrapper utilizing JavaScript's math evaluator—meaning that feeding the system broken or invalid syntax equations will just safely print an Error log string instead of throwing a script crash.
+Calculator — button-driven input into a display string. Before evaluating, the input is checked against a strict allow-list of digits, + - * / ( ) . and whitespace; anything else shows "greshka" instead of running.
 
-### 5. Task Manager
-* A fully dynamic to-do script designed to clear off project sub-tasks.
-* It intercepts the text values from an input selector node, constructs an HTML li element layout on the fly, and uses appendChild() to inject it straight into the live list view. Finished elements can be dropped via inline parentElement.remove() handlers attached to individual trash font icons.
+Tasks — add a task with the input field or Enter key; each task renders as a list item with a delete (✕) button. List persists in localStorage under vasko-tasks.
 
-### 6. Pomodoro Timer
-* A focus sprint utility clock hardcoded to track standard 25-minute productivity windows (1500 seconds countdown intervals).
-* Employs clean state-checking closures; it protects against double-clicking bugs by locking the countdown sequence if an active thread interval loop is already ticking down in the workspace background.
+Pomodoro — a 25:00 countdown driven by setInterval. Start/Pause/Reset controls; the timer stops on its own at 00:00.
 
-### 7. Forecast Widget
-* A standalone graphical interface display that serves as a mini local forecast app dashboard.
-* Keeps the layout modular by isolating temperature elements and weather state descriptions for a neat desktop aesthetic.
+Weather — picks a random condition (sunny/cloudy/rainy/snowy) from a small local array each time you hit "Refresh." Not connected to any real weather service.
 
-### 8. CLI Terminal Simulation
-* A custom shell program focused on processing raw keyboard command codes.
-* Listens specifically for onkeydown triggers matching the Enter action key code. The script scans string queries and matches them against conditional statements to execute commands like:
-  * help — Prints a list of every active program call line.
-  * clear — Empties the container's inner HTML stack.
-  * date — Grabs and returns a fresh local time data string.
-  * version — Logs out the active operating system build details.
+Terminal — a text input that matches against a small command table (help, date, clear, echo, apps, whoami) and echoes output to a scrollable log; unknown commands get a "neznaya komanda" message instead of failing silently.
 
----
+Roadmap / ideas not yet built
+Window resizing and a proper minimize-to-taskbar animation
+Snapping windows to screen edges
+Real weather via a public API (would need a key, so left out for a no-config Jam submission)
+Keyboard shortcuts for opening/closing apps
+Saving overall desktop layout (which windows are open, and where) between sessions
+FAQ
 
-## The Technology Blueprint
+Why is the weather fake? To keep the project runnable with zero setup — no API keys, no server, works straight from file://.
 
-* **Semantic HTML5:** Structuring clean component frames, absolute layout layers, and individual template wrappers for all workspace utilities.
-* **Modern CSS3:** Heavy implementation of Flexbox lines and explicit CSS Grid template fractions for layout alignment. Uses advanced backdrop-filter: blur(25px) rules combined with translucent background opacities to render the frosty glass appearance.
-* **Pure JavaScript Engine:** No third-party build packages, zero bulky modules, and no external frameworks. Handles raw DOM node creation, memory streams, dragging logic, and arithmetic parsers fully client-side.
+Why emoji instead of an icon font? So icons render the same everywhere without depending on an external font/CDN being reachable.
 
----
+Can I add more apps? Yes — each app is just a .window block in the HTML plus a small, self-contained chunk of JS; nothing else needs to change to add a new one.
 
-## Running the OS on Your Machine
-
-### Prerequisites
-You do not need any complex code setups, local servers, or development environments to preview this workspace.
-
-### Steps to Run
-1. Download a copy of these repository files straight onto your local hard drive:
-   ```bash
-   git clone https://github.com
-   ```
-2. Navigate into the main repository directory folder.
-3. Locate the index.html file and double-click it (or drag it inside any open browser tab) to spin up the entire system instantly.
