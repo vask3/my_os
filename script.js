@@ -1,234 +1,326 @@
-// върти часовника на всеки секунда
-setInterval(function() {
-  var dataVreme = new Date();
-  document.getElementById('clock').textContent = dataVreme.toLocaleTimeString();
-}, 1000);
-
-// управление на прозорците и местенето им
-let zIndexCounter = 10;
-
-document.querySelectorAll('.window').forEach(function(win) {
-  var header = win.querySelector('.win-header');
-  if (!header) return;
-  
-  let влачене = false;
-  let offsetX = 0;
-  let offsetY = 0;
-
-  // цъкане върху самия прозорец го вдига най-отгоре
-  win.addEventListener('pointerdown', function() {
-    zIndexCounter = zIndexCounter + 1;
-    win.style.zIndex = zIndexCounter;
-  });
-
-  // започване на местенето от хедъра
-  header.addEventListener('pointerdown', function(e) {
-    if (e.target.closest('.win-close')) return;
-    влачене = true;
-    offsetX = e.clientX - win.offsetLeft;
-    offsetY = e.clientY - win.offsetTop;
-    header.setPointerCapture(e.pointerId);
-  });
-
-  // мърдане по екрана
-  header.addEventListener('pointermove', function(e) {
-    if (влачене === true) {
-      win.style.left = (e.clientX - offsetX) + 'px';
-      win.style.top = (e.clientY - offsetY) + 'px';
-    }
-  });
-
-  // пускане на мишката спира местенето
-  header.addEventListener('pointerup', function() {
-    влачене = false;
-  });
-});
-
-// отваряне на приложение по ID
-function openWin(id) {
-  var tTarget = document.getElementById(id);
-  if (tTarget) {
-    tTarget.style.display = 'block';
-    zIndexCounter++;
-    tTarget.style.zIndex = zIndexCounter;
-  }
+/* // обща основа на операционната система */
+* {
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-// затваряне на приложение
-function closeWin(id) {
-  var tTarget = document.getElementById(id);
-  if (tTarget) {
-    tTarget.style.display = 'none';
-  }
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  user-select: none;
+  background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 60%, #020617 100%);
+  color: #f8fafc;
 }
 
-// пускане и скриване на старт менюто
-function toggleMenu() {
-  var elementMenu = document.getElementById('start-menu');
-  if (elementMenu) {
-    elementMenu.classList.toggle('hidden');
-  }
+/* // настройки за горната и долната лента */
+.top-bar, .taskbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(20px);
+  padding: 0 19px;
+  z-index: 1000;
+  position: relative;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
-// логика за чертане в пейнт приложението
-const canvas = document.getElementById('canvas');
-if (canvas) {
-  const ctx = canvas.getContext('2d');
-  let рисуваЛи = false;
-
-  canvas.addEventListener('mousedown', function() { рисуваЛи = true; });
-  canvas.addEventListener('mouseup', function() { рисуваЛи = false; ctx.beginPath(); });
-  canvas.addEventListener('mousemove', function(e) {
-    if (!рисуваЛи) return;
-    var позиция = canvas.getBoundingClientRect();
-    ctx.lineWidth = 4;
-    ctx.lineCap = 'round';
-    ctx.strokeStyle = document.getElementById('draw-color').value;
-    ctx.lineTo(e.clientX - позиция.left, e.clientY - позиция.top);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(e.clientX - позиция.left, e.clientY - позиция.top);
-  });
+.taskbar {
+  border-bottom: none;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-// чистене на платното
-function clearCanvas() { 
-  const cv = document.getElementById('canvas');
-  if (cv) {
-    const cx = cv.getContext('2d');
-    cx.clearRect(0, 0, cv.width, cv.height); 
-  }
+.brand { 
+  font-size: 16px; 
+  font-weight: 700; 
+  color: #818cf8;
+  letter-spacing: 0.5px;
 }
 
-// запис на бележките в паметта на браузъра
-function saveNote() {
-  var съдържание = document.getElementById('note-input').value;
-  localStorage.setItem('vasko_dark_notes', съдържание);
-  alert('Notes saved successfully!');
+#clock {
+  font-weight: 600;
+  color: #94a3b8;
 }
 
-// зареждане на старите бележки при пускане на сайта
-document.addEventListener('DOMContentLoaded', function() {
-  var стадиданни = localStorage.getItem('vasko_dark_notes');
-  var текстоваКутия = document.getElementById('note-input');
-  if (стадиданни && текстоваКутия) {
-    текстоваКутия.value = стадиданни;
-  }
-});
-
-// калкулатор въвеждане на числа
-function calcInput(val) {
-  const екран = document.getElementById('calc-display');
-  if (!екран) return;
-  if (екран.value === '0') {
-    екран.value = val;
-  } else {
-    екран.value += val;
-  }
+/* // разположение на иконите по работния плот */
+#desktop {
+  position: relative;
+  height: calc(100vh - 96px);
+  padding: 23px;
 }
 
-// чистене на калкулатора
-function calcClear() {
-  const екран = document.getElementById('calc-display');
-  if (екран) екран.value = '0';
+.icon-grid {
+  display: grid;
+  width: 240px;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 23px;
 }
 
-// смятане на резултата
-function calcEqual() {
-  const екран = document.getElementById('calc-display');
-  if (!екран) return;
-  try {
-    екран.value = eval(екран.value);
-  } catch (err) {
-    екран.value = 'Error';
-  }
+.desk-icon {
+  display: flex;
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 17px;
+  padding: 9px;
+  transition: all 0.2s ease-in-out;
 }
 
-// добавяне на задача към списъка
-function addTask() {
-  var кутияЗаВъвеждане = document.getElementById('task-in');
-  var текстЗадачa = кутияЗаВъвеждане.value.trim();
-  if (текстЗадачa === '') return;
-
-  var новРед = document.createElement('li');
-  новРед.innerHTML = `<span>${текстЗадачa}</span> <i class="fa-solid fa-trash task-del" onclick="this.parentElement.remove()"></i>`;
-  document.getElementById('task-list').appendChild(новРед);
-  кутияЗаВъвеждане.value = '';
+.desk-icon:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateY(-2px);
 }
 
-// помодоро таймер настройки
-let pomoTime = 1500;
-let pomoInterval = null;
-
-function updatePomoDisplay() {
-  let мин = Math.floor(pomoTime / 60).toString().padStart(2, '0');
-  let сек = (pomoTime % 60).toString().padStart(2, '0');
-  var дисплей = document.getElementById('pomo-display');
-  if (дисплей) дисплей.textContent = мин + ':' + сек;
+/* // кутийките на самите икони */
+.icon-box {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(30, 41, 59, 0.7);
+  font-size: 20px;
+  border-radius: 17px;
+  color: #818cf8;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
 }
 
-function startPomo() {
-  if (pomoInterval != null) return;
-  pomoInterval = setInterval(function() {
-    if (pomoTime > 0) {
-      pomoTime--;
-      updatePomoDisplay();
-    } else {
-      clearInterval(pomoInterval);
-      alert('Time is up!');
-    }
-  }, 1000);
+.desk-icon:hover .icon-box {
+  color: #a5b4fc;
+  border-color: rgba(129, 140, 248, 0.4);
+  box-shadow: 0 0 15px rgba(129, 140, 248, 0.2);
 }
 
-function resetPomo() {
-  clearInterval(pomoInterval);
-  pomoInterval = null;
-  pomoTime = 1500;
-  updatePomoDisplay();
+.desk-icon span {
+  font-size: 12px;
+  margin-top: 8px;
+  font-weight: 500;
+  color: #cbd5e1;
 }
 
-// терминални команди
-function handleTerm(e) {
-  if (e.key !== 'Enter') return;
-  var inputEl = document.getElementById('term-in');
-  var изходЕл = document.getElementById('term-out');
-  var чистаКоманда = inputEl.value.trim().toLowerCase();
-  
-  изходЕл.innerHTML += `> ${inputEl.value}<br>`;
-  
-  if (чистаКоманда === 'help') {
-    изходЕл.innerHTML += 'Available commands: help, clear, date, version<br>';
-  } else if (чистаКоманда === 'clear') {
-    изходЕл.innerHTML = '';
-  } else if (чистаКоманда === 'date') {
-    изходЕл.innerHTML += `${new Date().toLocaleString()}<br>`;
-  } else if (чистаКоманда === 'version') {
-    изходЕл.innerHTML += 'VaskoOS Dark Edition v4.0<br>';
-  } else {
-    изходЕл.innerHTML += `Command not recognized: ${чистаКоманда}<br>`;
-  }
-  
-  inputEl.value = '';
-  изходЕл.scrollTop = изходЕл.scrollHeight;
+/* // стил за изскачащите стъклени прозорци */
+.window {
+  position: absolute;
+  width: 350px;
+  backdrop-filter: blur(25px);
+  background: rgba(15, 23, 42, 0.85);
+  border-radius: 21px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  display: none;
 }
 
-// влачене на картинка за смяна на тапет
-var десктопЕлемент = document.getElementById('desktop');
-if (десктопЕлемент) {
-  десктопЕлемент.addEventListener('dragover', function(e) {
-    e.preventDefault();
-  });
-  десктопЕлемент.addEventListener('drop', function(e) {
-    e.preventDefault();
-    var файлове = e.dataTransfer.files;
-    if (файлове && файлове[0] && файлове[0].type.startsWith('image/')) {
-      var четец = new FileReader();
-      четец.onload = function(event) {
-        document.body.style.backgroundImage = "url('" + event.target.result + "')";
-        document.body.style.backgroundSize = 'cover';
-        document.body.style.backgroundPosition = 'center';
-      };
-      четец.readAsDataURL(файлове[0]);
-    }
-  });
+.win-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 11px 17px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #e2e8f0;
+  cursor: move;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.win-header i {
+  color: #818cf8;
+  margin-right: 6px;
+}
+
+/* // бутона за затваряне Х */
+.win-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.win-close:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+.win-body {
+  padding: 17px;
+  font-size: 14px;
+  color: #94a3b8;
+  line-height: 1.6;
+}
+
+.win-body h2 {
+  color: #f8fafc;
+  margin-top: 0;
+}
+
+/* // бутони и полета за писане */
+.btn-primary, .btn-start {
+  background: #6366f1;
+  border: none;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 11px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover, .btn-start:hover {
+  background: #4f46e5;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: #cbd5e1;
+  padding: 10px 18px;
+  border-radius: 11px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+textarea, input[type="text"] {
+  width: 100%;
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 11px;
+  color: #f8fafc;
+  padding: 11px;
+  outline: none;
+  font-size: 13px;
+}
+
+textarea { 
+  height: 110px; 
+  resize: none; 
+}
+
+#canvas {
+  background: #020617;
+  border-radius: 11px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: crosshair;
+}
+
+/* // решетката на калкулатора */
+.calc-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+/* // списъка със задачи */
+#task-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+#task-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: #e2e8f0;
+}
+
+.task-del {
+  color: #f87171;
+  cursor: pointer;
+}
+
+/* // прозореца на черния терминал */
+#term-out {
+  height: 130px;
+  background: #020617;
+  border-radius: 11px;
+  padding: 11px;
+  font-family: monospace;
+  font-size: 12px;
+  overflow-y: auto;
+  color: #38bdf8;
+  margin-bottom: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* // старт менюто в левия ъгъл */
+#start-menu {
+  position: absolute;
+  bottom: 56px;
+  left: 16px;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+  width: 200px;
+  padding: 8px;
+  z-index: 2000;
+}
+
+.hidden { 
+  display: none; 
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  color: #cbd5e1;
+  cursor: pointer;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.menu-item i {
+  color: #818cf8;
+}
+
+.menu-item:hover {
+  background: rgba(129, 140, 248, 0.15);
+  color: #fff;
+}
+
+/* // ТОВА ОПРАВЯ ПРАЗНИТЕ КВАДРАТЧЕТА НА ИКОНИТЕ */
+.icon-box i, .win-header i, .menu-item i {
+  font-family: "Font Awesome 6 Free", "Font Awesome 5 Free", sans-serif !important;
+  font-style: normal;
+  font-weight: 900;
 }
