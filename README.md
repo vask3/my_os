@@ -1,59 +1,82 @@
-VaskoOS
+# VaskoOS
 
-Run it
+VaskoOS is a lightweight, interactive web-based operating system simulation contained within a single file.
 
-Just open index.html in any modern browser. No build step, no server, no dependencies — everything is inline HTML/CSS/JS.
+## Getting Started
 
-Features
-Real-time clock in the top bar
-Windows open from desktop icons or the start menu, drag freely via Pointer Events, and stack in front on focus
-Notepad persists text across reloads (localStorage)
-Paint: freehand canvas drawing with a color picker
-Calculator: basic arithmetic with input validation
-Tasks: add/delete a simple to-do list (localStorage)
-Pomodoro: start/pause/reset a 25-minute countdown
-Weather: simulated conditions (no external API/key)
-Terminal: a handful of fake commands (help, date, clear, echo, apps, whoami)
-Tech stack
+To run the project, simply open index.html in any modern web browser. 
+* No build steps required
+* No local server needed
+* No external dependencies
 
-Vanilla HTML, CSS, and JavaScript — no frameworks, no build tools, no external libraries or CDNs. Icons are plain text emoji rather than an icon font, so the UI renders identically regardless of network access. State that needs to survive a reload (notes, tasks) is kept in localStorage; everything else (open windows, calculator input, pomodoro state) lives in memory and resets on refresh.
+Everything is contained inline within a single structure of HTML, CSS, and JavaScript.
 
-Project structure
+---
 
-Everything lives in one file, index.html, split into three parts:
+## Core Features
 
-<style> — desktop background, top bar, taskbar, window chrome, and per-app layout (calculator grid, task list, terminal output, etc.)
-HTML body — the desktop icon grid, the start menu, the taskbar, and one .window block per app (About, Notepad, Paint, Calculator, Tasks, Pomodoro, Weather, Terminal)
-<script> — window management (open/close/focus/drag via Pointer Events), the taskbar renderer, and one small self-contained block of logic per app
-Apps in detail
+* Real-time Clock: Integrated directly into the top bar.
+* Window Management: Launch windows from desktop icons or the start menu. Drag them freely using Pointer Events, and focus them dynamically to bring them to the front.
+* Notepad: Text persists across page reloads using localStorage.
+* Paint: A freehand canvas drawing application utilizing Pointer Events for mouse or touch input, complete with a native color picker.
+* Calculator: Basic arithmetic operations featuring strict input validation.
+* Tasks: A simple to-do list where you can add or delete tasks, persisting via localStorage.
+* Pomodoro Timer: A 25-minute countdown clock with start, pause, and reset functionality.
+* Weather Simulation: Simulated conditions generated locally without relying on external API calls or access keys.
+* Terminal: A text-based command line interface supporting specific commands (help, date, clear, echo, apps, whoami).
 
-About — static info panel with the project name and a short description of how to use the desktop.
+---
 
-Notepad — a single textarea. "Save" writes the current text to localStorage under vasko-note and shows a small timestamp confirmation; "Clear" wipes both the textarea and the stored value.
+## Tech Stack
 
-Paint — a <canvas> you can draw on with the mouse or touch (Pointer Events), plus a native color picker input. "Clear" resets the canvas to blank.
+The project is built entirely with Vanilla HTML, CSS, and JavaScript.
+* No frameworks
+* No build tools
+* No external libraries or CDNs
 
-Calculator — button-driven input into a display string. Before evaluating, the input is checked against a strict allow-list of digits, + - * / ( ) . and whitespace; anything else shows "greshka" instead of running.
+Icons are rendered using plain text characters, ensuring the UI remains consistent regardless of network access. Persistent application states (Notepad, Tasks) rely on localStorage, while temporary data (open windows, calculator input, pomodoro state) live in memory and reset upon page refresh.
 
-Tasks — add a task with the input field or Enter key; each task renders as a list item with a delete (✕) button. List persists in localStorage under vasko-tasks.
+---
 
-Pomodoro — a 25:00 countdown driven by setInterval. Start/Pause/Reset controls; the timer stops on its own at 00:00.
+## Project Structure
 
-Weather — picks a random condition (sunny/cloudy/rainy/snowy) from a small local array each time you hit "Refresh." Not connected to any real weather service.
+Everything lives in a single file, index.html, which is split into three main parts:
+1. style tag: Handles the desktop background, top bar, taskbar, window chrome, and per-app layouts (e.g., calculator grid, task list, terminal output).
+2. HTML body: Contains the desktop icon grid, the start menu, the taskbar, and individual window blocks for each application.
+3. script tag: Manages system-level features (opening, closing, focusing, and dragging windows via Pointer Events), the taskbar renderer, and isolated blocks of logic for each application.
 
-Terminal — a text input that matches against a small command table (help, date, clear, echo, apps, whoami) and echoes output to a scrollable log; unknown commands get a "neznaya komanda" message instead of failing silently.
+---
 
-Roadmap / ideas not yet built
-Window resizing and a proper minimize-to-taskbar animation
-Snapping windows to screen edges
-Real weather via a public API (would need a key, so left out for a no-config Jam submission)
-Keyboard shortcuts for opening/closing apps
-Saving overall desktop layout (which windows are open, and where) between sessions
-FAQ
+## Applications in Detail
 
-Why is the weather fake? To keep the project runnable with zero setup — no API keys, no server, works straight from file://.
+* About: A static information panel providing the project name and a brief guide on how to interact with the desktop environment.
+* Notepad: A single textarea element. Clicking "Save" writes the current text to localStorage under the key "vasko-note" along with a timestamp confirmation. Clicking "Clear" wipes both the UI textarea and the stored key.
+* Paint: A canvas element supporting freehand drawing via Pointer Events (mouse and touch input) along with a native color picker. The "Clear" button resets the canvas to blank.
+* Calculator: Button-driven input parsed into a display string. Before evaluation, the input is cross-referenced against a strict allow-list of characters (digits, +, -, *, /, (, ), ., and whitespace). Invalid inputs yield a "greshka" output instead of processing.
+* Tasks: Add entries using the input field or by pressing the Enter key. Each task features a delete button (X). The task list persists in localStorage under the key "vasko-tasks".
+* Pomodoro: A 25:00 countdown timer driven by setInterval. Features Start, Pause, and Reset controls, and stops automatically upon reaching 00:00.
+* Weather: Picks a random condition (sunny, cloudy, rainy, snowy) from a local array whenever you click "Refresh". It is not connected to a live weather service.
+* Terminal: A text input matching commands against a local lookup table. Valid commands display their respective outputs, while unknown inputs return a "neznaya komanda" message instead of failing silently.
 
-Why emoji instead of an icon font? So icons render the same everywhere without depending on an external font/CDN being reachable.
+---
 
-Can I add more apps? Yes — each app is just a .window block in the HTML plus a small, self-contained chunk of JS; nothing else needs to change to add a new one.
+## Roadmap
 
+* Add window resizing options and smooth minimize-to-taskbar animations.
+* Implement window snapping to screen edges.
+* Integrate real-world weather tracking via a public API.
+* Introduce keyboard shortcuts for launching and closing specific applications.
+* Save the overall desktop state (window locations and open statuses) between sessions.
+
+---
+
+## FAQ
+
+**Q: Why is the weather simulated?**  
+A: To keep the project runnable with zero setup—no API keys or servers are required, allowing it to work natively via the file:// protocol.
+
+**Q: Why use text characters for icons instead of an icon font?**  
+A: To ensure icons render identically across all environments without relying on external network requests or CDN availability.
+
+**Q: Can I add more applications?**  
+A: Yes. Each application requires only a single window block in the HTML and a self-contained block of JavaScript logic. No global state adjustments are necessary.
