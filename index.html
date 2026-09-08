@@ -4,21 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VaskoOS</title>
+    <!-- връзка към стиловете в същата папка -->
     <link rel="stylesheet" href="style.css">
-    <!-- Истински работещ линк за иконите от официален източник -->
+    <!-- библиотека за иконките по екрана -->
     <link rel="stylesheet" href="https://cloudflare.com">
 </head>
 <body>
 
-    <!-- горната лента на операционната система -->
+    <!-- горната лента, където ще се върти часовника -->
     <header class="top-bar">
         <div class="brand">VaskoOS</div>
         <div id="clock">00:00:00</div>
     </header>
 
-    <!-- работния плот с мрежата от икони -->
+    <!-- главното пространство на десктопа -->
     <main id="desktop">
         
+        <!-- мрежата с иконите за стартиране -->
         <div class="icon-grid">
             <div class="desk-icon" onclick="openWin('win-about')">
                 <div class="icon-box"><i class="fa-solid fa-info"></i></div>
@@ -54,7 +56,7 @@
             </div>
         </div>
 
-        <!-- 1. за приложението -->
+        <!-- 1. прозорец за инфо -->
         <div class="window" id="win-about">
             <div class="win-header">
                 <div><i class="fa-solid fa-info"></i> About VaskoOS</div>
@@ -67,7 +69,7 @@
             </div>
         </div>
 
-        <!-- 2. бележник -->
+        <!-- 2. прозорец тефтер за бележки -->
         <div class="window" id="win-notes">
             <div class="win-header">
                 <div><i class="fa-solid fa-file-lines"></i> Notepad</div>
@@ -79,7 +81,7 @@
             </div>
         </div>
 
-        <!-- 3. рисуване -->
+        <!-- 3. прозорец за рисуване (канвас) -->
         <div class="window" id="win-paint">
             <div class="win-header">
                 <div><i class="fa-solid fa-paint-brush"></i> Canvas Paint</div>
@@ -94,7 +96,7 @@
             </div>
         </div>
 
-        <!-- 4. калкулатор -->
+        <!-- 4. прозорец на калкулатора -->
         <div class="window" id="win-calc">
             <div class="win-header">
                 <div><i class="fa-solid fa-calculator"></i> Calculator</div>
@@ -123,7 +125,7 @@
             </div>
         </div>
 
-        <!-- 5. списък със задачи -->
+        <!-- 5. прозорец за задачите -->
         <div class="window" id="win-tasks">
             <div class="win-header">
                 <div><i class="fa-solid fa-list-check"></i> Task Manager</div>
@@ -138,7 +140,7 @@
             </div>
         </div>
 
-        <!-- 6. таймер -->
+        <!-- 6. прозорец помодоро таймер -->
         <div class="window" id="win-pomo">
             <div class="win-header">
                 <div><i class="fa-solid fa-clock"></i> Pomodoro</div>
@@ -151,7 +153,7 @@
             </div>
         </div>
 
-        <!-- 7. прогноза време -->
+        <!-- 7. прозорец прогноза за времето -->
         <div class="window" id="win-weather">
             <div class="win-header">
                 <div><i class="fa-solid fa-cloud-sun"></i> Weather</div>
@@ -164,7 +166,7 @@
             </div>
         </div>
 
-        <!-- 8. конзола / терминал -->
+        <!-- 8. прозорец на конзолата (терминал) -->
         <div class="window" id="win-terminal">
             <div class="win-header">
                 <div><i class="fa-solid fa-terminal"></i> Terminal</div>
@@ -179,7 +181,7 @@
             </div>
         </div>
 
-        <!-- скритото старт меню -->
+        <!-- падащото меню от старт бутона -->
         <div id="start-menu" class="hidden">
             <div class="menu-item" onclick="openWin('win-about'); toggleMenu();"><i class="fa-solid fa-info"></i> About</div>
             <div class="menu-item" onclick="openWin('win-notes'); toggleMenu();"><i class="fa-solid fa-file-lines"></i> Notepad</div>
@@ -188,10 +190,3 @@
             <div class="menu-item" onclick="openWin('win-tasks'); toggleMenu();"><i class="fa-solid fa-list-check"></i> Tasks</div>
             <div class="menu-item" onclick="openWin('win-pomo'); toggleMenu();"><i class="fa-solid fa-clock"></i> Pomodoro</div>
             <div class="menu-item" onclick="openWin('win-weather'); toggleMenu();"><i class="fa-solid fa-cloud-sun"></i> Weather</div>
-            <div class="menu-item" onclick="openWin('win-terminal'); toggleMenu();"><i class="fa-solid fa-terminal"></i> Terminal</div>
-        </div>
-
-    </main>
-
-    <!-- долния таскбар -->
-    <footer class="taskbar">
