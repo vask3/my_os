@@ -1,7 +1,3 @@
-
-### 2. Поправеният JavaScript (`script.js`)
-
-```javascript
 // върти часовника на всеки секунда
 setInterval(function() {
   var dataVreme = new Date();
@@ -194,11 +190,11 @@ function resetPomo() {
 // терминални команди
 function handleTerm(e) {
   if (e.key !== 'Enter') return;
-  var входЕл = document.getElementById('term-in');
+  var inputEl = document.getElementById('term-in');
   var изходЕл = document.getElementById('term-out');
-  var чистаКоманда = входЕл.value.trim().toLowerCase();
+  var чистаКоманда = inputEl.value.trim().toLowerCase();
   
-  изходЕл.innerHTML += `> ${vходЕл.value}<br>`;
+  изходЕл.innerHTML += `> ${inputEl.value}<br>`;
   
   if (чистаКоманда === 'help') {
     изходЕл.innerHTML += 'Available commands: help, clear, date, version<br>';
@@ -212,7 +208,7 @@ function handleTerm(e) {
     изходЕл.innerHTML += `Command not recognized: ${чистаКоманда}<br>`;
   }
   
-  входЕл.value = '';
+  inputEl.value = '';
   изходЕл.scrollTop = изходЕл.scrollHeight;
 }
 
@@ -225,7 +221,7 @@ if (десктопЕлемент) {
   десктопЕлемент.addEventListener('drop', function(e) {
     e.preventDefault();
     var файлове = e.dataTransfer.files;
-    if (файлове[0] && файлове[0].type.startsWith('image/')) {
+    if (файлове && файлове[0] && файлове[0].type.startsWith('image/')) {
       var четец = new FileReader();
       четец.onload = function(event) {
         document.body.style.backgroundImage = "url('" + event.target.result + "')";
