@@ -5,18 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VaskoOS</title>
     <link rel="stylesheet" href="style.css">
-    <!-- ТОВА ОПРАВЯ ПРОБЛЕМА: Истинският работещ линк за иконите на системата -->
+    <!-- Истински работещ линк за иконите от официален източник -->
     <link rel="stylesheet" href="https://cloudflare.com">
 </head>
 <body>
 
-    <!-- горната черна лента, където е часовника -->
+    <!-- горната лента на операционната система -->
     <header class="top-bar">
         <div class="brand">VaskoOS</div>
         <div id="clock">00:00:00</div>
     </header>
 
-    <!-- самия десктоп с иконите -->
+    <!-- работния плот с мрежата от икони -->
     <main id="desktop">
         
         <div class="icon-grid">
@@ -54,7 +54,7 @@
             </div>
         </div>
 
-        <!-- 1. прозорец инфо -->
+        <!-- 1. за приложението -->
         <div class="window" id="win-about">
             <div class="win-header">
                 <div><i class="fa-solid fa-info"></i> About VaskoOS</div>
@@ -67,7 +67,7 @@
             </div>
         </div>
 
-        <!-- 2. прозорец тефтер -->
+        <!-- 2. бележник -->
         <div class="window" id="win-notes">
             <div class="win-header">
                 <div><i class="fa-solid fa-file-lines"></i> Notepad</div>
@@ -79,7 +79,7 @@
             </div>
         </div>
 
-        <!-- 3. прозорец за рисуване -->
+        <!-- 3. рисуване -->
         <div class="window" id="win-paint">
             <div class="win-header">
                 <div><i class="fa-solid fa-paint-brush"></i> Canvas Paint</div>
@@ -94,7 +94,7 @@
             </div>
         </div>
 
-        <!-- 4. прозорец калкулатор -->
+        <!-- 4. калкулатор -->
         <div class="window" id="win-calc">
             <div class="win-header">
                 <div><i class="fa-solid fa-calculator"></i> Calculator</div>
@@ -117,13 +117,13 @@
                     <button class="btn-secondary" onclick="calcInput('-')">-</button>
                     <button class="btn-secondary" onclick="calcClear()">C</button>
                     <button class="btn-secondary" onclick="calcInput('0')">0</button>
-                    <button class="btn-secondary" onclick="calcEqual('=')">=</button>
+                    <button class="btn-secondary" onclick="calcEqual()">=</button>
                     <button class="btn-secondary" onclick="calcInput('+')">+</button>
                 </div>
             </div>
         </div>
 
-        <!-- 5. прозорец задачи -->
+        <!-- 5. списък със задачи -->
         <div class="window" id="win-tasks">
             <div class="win-header">
                 <div><i class="fa-solid fa-list-check"></i> Task Manager</div>
@@ -138,7 +138,7 @@
             </div>
         </div>
 
-        <!-- 6. прозорец помодоро -->
+        <!-- 6. таймер -->
         <div class="window" id="win-pomo">
             <div class="win-header">
                 <div><i class="fa-solid fa-clock"></i> Pomodoro</div>
@@ -151,7 +151,7 @@
             </div>
         </div>
 
-        <!-- 7. прозорец време -->
+        <!-- 7. прогноза време -->
         <div class="window" id="win-weather">
             <div class="win-header">
                 <div><i class="fa-solid fa-cloud-sun"></i> Weather</div>
@@ -164,7 +164,7 @@
             </div>
         </div>
 
-        <!-- 8. прозорец терминал (ТУК Е ЗАВЪРШЕН СТРУКТУРНО) -->
+        <!-- 8. конзола / терминал -->
         <div class="window" id="win-terminal">
             <div class="win-header">
                 <div><i class="fa-solid fa-terminal"></i> Terminal</div>
@@ -179,7 +179,7 @@
             </div>
         </div>
 
-        <!-- старт менюто -->
+        <!-- скритото старт меню -->
         <div id="start-menu" class="hidden">
             <div class="menu-item" onclick="openWin('win-about'); toggleMenu();"><i class="fa-solid fa-info"></i> About</div>
             <div class="menu-item" onclick="openWin('win-notes'); toggleMenu();"><i class="fa-solid fa-file-lines"></i> Notepad</div>
@@ -193,4 +193,5 @@
 
     </main>
 
-    <!-- долната лента със старт бутона -->
+    <!-- долния таскбар -->
+    <footer class="taskbar">
