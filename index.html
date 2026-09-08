@@ -5,18 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VaskoOS</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Dobavqm font-awesome za ikonki, ako tvoite sa bili takiva -->
     <link rel="stylesheet" href="https://cloudflare.com">
 </head>
 <body>
 
-    <!-- gornata lenta s chasa -->
+    <!-- горната черна лента, където е часовника -->
     <header class="top-bar">
         <div class="brand">VaskoOS</div>
         <div id="clock">00:00:00</div>
     </header>
 
-    <!-- glavnoto mqsto s ikonite -->
+    <!-- самия десктоп с иконите -->
     <main id="desktop">
         
         <div class="icon-grid">
@@ -54,7 +53,7 @@
             </div>
         </div>
 
-        <!-- 1. About -->
+        <!-- 1. прозорец инфо -->
         <div class="window" id="win-about">
             <div class="win-header">
                 <div><i class="fa-solid fa-info"></i> About VaskoOS</div>
@@ -67,7 +66,7 @@
             </div>
         </div>
 
-        <!-- 2. Notepad -->
+        <!-- 2. прозорец тефтер -->
         <div class="window" id="win-notes">
             <div class="win-header">
                 <div><i class="fa-solid fa-file-lines"></i> Notepad</div>
@@ -79,7 +78,7 @@
             </div>
         </div>
 
-        <!-- 3. Paint -->
+        <!-- 3. прозорец за рисуване -->
         <div class="window" id="win-paint">
             <div class="win-header">
                 <div><i class="fa-solid fa-paint-brush"></i> Canvas Paint</div>
@@ -94,7 +93,7 @@
             </div>
         </div>
 
-        <!-- 4. Calculator -->
+        <!-- 4. прозорец калкулатор -->
         <div class="window" id="win-calc">
             <div class="win-header">
                 <div><i class="fa-solid fa-calculator"></i> Calculator</div>
@@ -123,7 +122,7 @@
             </div>
         </div>
 
-        <!-- 5. Tasks -->
+        <!-- 5. прозорец задачи -->
         <div class="window" id="win-tasks">
             <div class="win-header">
                 <div><i class="fa-solid fa-list-check"></i> Task Manager</div>
@@ -138,7 +137,7 @@
             </div>
         </div>
 
-        <!-- 6. Pomodoro -->
+        <!-- 6. прозорец помодоро -->
         <div class="window" id="win-pomo">
             <div class="win-header">
                 <div><i class="fa-solid fa-clock"></i> Pomodoro</div>
@@ -151,7 +150,7 @@
             </div>
         </div>
 
-        <!-- 7. Weather -->
+        <!-- 7. прозорец време -->
         <div class="window" id="win-weather">
             <div class="win-header">
                 <div><i class="fa-solid fa-cloud-sun"></i> Weather</div>
@@ -164,7 +163,7 @@
             </div>
         </div>
 
-        <!-- 8. Terminal -->
+        <!-- 8. прозорец терминал -->
         <div class="window" id="win-terminal">
             <div class="win-header">
                 <div><i class="fa-solid fa-terminal"></i> Terminal</div>
@@ -175,11 +174,12 @@
                     VaskoOS Terminal v4.0 (Dark Edition)<br>
                     Type 'help' to see commands.<br>
                 </div>
-                <input type="text" id="term-in" onkeydown="handleTerm(e)" placeholder="Type a command..." style="font-family: monospace;">
+                <!-- тук добавих event за натискане на клавиш -->
+                <input type="text" id="term-in" onkeydown="handleTerm(event)" placeholder="Type a command..." style="font-family: monospace;">
             </div>
         </div>
 
-        <!-- Start menuto -->
+        <!-- старт менюто -->
         <div id="start-menu" class="hidden">
             <div class="menu-item" onclick="openWin('win-about'); toggleMenu();"><i class="fa-solid fa-info"></i> About</div>
             <div class="menu-item" onclick="openWin('win-notes'); toggleMenu();"><i class="fa-solid fa-file-lines"></i> Notepad</div>
@@ -193,10 +193,4 @@
 
     </main>
 
-    <!-- lentiata otbqlu -->
-    <footer class="taskbar">
-        <button class="btn-start" onclick="toggleMenu()">Start</button>
-    </footer>
-
-</body>
-</html>
+    <!-- долната лента със старт бутона -->
