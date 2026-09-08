@@ -1,89 +1,101 @@
-// chasovnik deto baci non stop
+
+### 2. Поправеният JavaScript (`script.js`)
+
+```javascript
+// върти часовника на всеки секунда
 setInterval(function() {
-  var t = new Date();
-  document.getElementById('clock').textContent = t.toLocaleTimeString();
+  var dataVreme = new Date();
+  document.getElementById('clock').textContent = dataVreme.toLocaleTimeString();
 }, 1000);
 
-// PROZORCI LOGIKA & DRAG
+// управление на прозорците и местенето им
 let zIndexCounter = 10;
 
 document.querySelectorAll('.window').forEach(function(win) {
   var header = win.querySelector('.win-header');
-  if (!header) return; // zastrahovka
+  if (!header) return;
   
-  let isDragging = false;
-  let ox = 0;
-  let oy = 0;
+  let влачене = false;
+  let offsetX = 0;
+  let offsetY = 0;
 
-  win.addEventListener('pointerdown', () => {
+  // цъкане върху самия прозорец го вдига най-отгоре
+  win.addEventListener('pointerdown', function() {
     zIndexCounter = zIndexCounter + 1;
     win.style.zIndex = zIndexCounter;
   });
 
+  // започване на местенето от хедъра
   header.addEventListener('pointerdown', function(e) {
     if (e.target.closest('.win-close')) return;
-    isDragging = true;
-    ox = e.clientX - win.offsetLeft;
-    oy = e.clientY - win.offsetTop;
+    влачене = true;
+    offsetX = e.clientX - win.offsetLeft;
+    offsetY = e.clientY - win.offsetTop;
     header.setPointerCapture(e.pointerId);
   });
 
-  header.addEventListener('pointermove', (e) => {
-    if (isDragging == true) {
-      win.style.left = (e.clientX - ox) + 'px';
-      win.style.top = (e.clientY - oy) + 'px';
+  // мърдане по екрана
+  header.addEventListener('pointermove', function(e) {
+    if (влачене === true) {
+      win.style.left = (e.clientX - offsetX) + 'px';
+      win.style.top = (e.clientY - offsetY) + 'px';
     }
   });
 
-  header.addEventListener('pointerup', () => {
-    isDragging = false;
+  // пускане на мишката спира местенето
+  header.addEventListener('pointerup', function() {
+    влачене = false;
   });
 });
 
+// отваряне на приложение по ID
 function openWin(id) {
-  var targetWin = document.getElementById(id);
-  if (targetWin) {
-    targetWin.style.display = 'block';
+  var tTarget = document.getElementById(id);
+  if (tTarget) {
+    tTarget.style.display = 'block';
     zIndexCounter++;
-    targetWin.style.zIndex = zIndexCounter;
+    tTarget.style.zIndex = zIndexCounter;
   }
 }
 
+// затваряне на приложение
 function closeWin(id) {
-  var targetWin = document.getElementById(id);
-  if (targetWin) {
-    targetWin.style.display = 'none';
+  var tTarget = document.getElementById(id);
+  if (tTarget) {
+    tTarget.style.display = 'none';
   }
 }
 
+// пускане и скриване на старт менюто
 function toggleMenu() {
-  var menu = document.getElementById('start-menu');
-  if (menu) {
-    menu.classList.toggle('hidden');
+  var elementMenu = document.getElementById('start-menu');
+  if (elementMenu) {
+    elementMenu.classList.toggle('hidden');
   }
 }
 
-// DRAWING CANVAS (PAINT)
+// логика за чертане в пейнт приложението
 const canvas = document.getElementById('canvas');
 if (canvas) {
   const ctx = canvas.getContext('2d');
-  let drawing = false;
+  let рисуваЛи = false;
 
-  canvas.addEventListener('mousedown', () => { drawing = true; });
-  canvas.addEventListener('mouseup', () => { drawing = false; ctx.beginPath(); });
+  canvas.addEventListener('mousedown', function() { рисуваЛи = true; });
+  canvas.addEventListener('mouseup', function() { рисуваЛи = false; ctx.beginPath(); });
   canvas.addEventListener('mousemove', function(e) {
-    if (!drawing) return;
-    var bounds = canvas.getBoundingClientRect();
+    if (!рисуваЛи) return;
+    var позиция = canvas.getBoundingClientRect();
     ctx.lineWidth = 4;
     ctx.lineCap = 'round';
     ctx.strokeStyle = document.getElementById('draw-color').value;
-    ctx.lineTo(e.clientX - bounds.left, e.clientY - bounds.top);
+    ctx.lineTo(e.clientX - позиция.left, e.clientY - позиция.top);
     ctx.stroke();
     ctx.beginPath();
-    ctx.moveTo(e.clientX - bounds.left, e.clientY - bounds.top);
+    ctx.moveTo(e.clientX - позиция.left, e.clientY - позиция.top);
   });
 }
 
+// чистене на платното
 function clearCanvas() { 
   const cv = document.getElementById('canvas');
   if (cv) {
@@ -92,67 +104,71 @@ function clearCanvas() {
   }
 }
 
-// ZAPISVANE NA BELEJKI (LOCALSTORAGE)
+// запис на бележките в паметта на браузъра
 function saveNote() {
-  var noteContent = document.getElementById('note-input').value;
-  localStorage.setItem('vasko_dark_notes', noteContent);
+  var съдържание = document.getElementById('note-input').value;
+  localStorage.setItem('vasko_dark_notes', съдържание);
   alert('Notes saved successfully!');
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  var savedData = localStorage.getItem('vasko_dark_notes');
-  var inputField = document.getElementById('note-input');
-  if (savedData && inputField) {
-    inputField.value = savedData;
+// зареждане на старите бележки при пускане на сайта
+document.addEventListener('DOMContentLoaded', function() {
+  var стадиданни = localStorage.getItem('vasko_dark_notes');
+  var текстоваКутия = document.getElementById('note-input');
+  if (стадиданни && текстоваКутия) {
+    текстоваКутия.value = стадиданни;
   }
 });
 
-// CALCULATOR APPA
-const calcDisplay = document.getElementById('calc-display');
-
+// калкулатор въвеждане на числа
 function calcInput(val) {
-  if (!calcDisplay) return;
-  if (calcDisplay.value === '0') {
-    calcDisplay.value = val;
+  const екран = document.getElementById('calc-display');
+  if (!екран) return;
+  if (екран.value === '0') {
+    екран.value = val;
   } else {
-    calcDisplay.value += val;
+    екран.value += val;
   }
 }
 
+// чистене на калкулатора
 function calcClear() {
-  if (calcDisplay) calcDisplay.value = '0';
+  const екран = document.getElementById('calc-display');
+  if (екран) екран.value = '0';
 }
 
+// смятане на резултата
 function calcEqual() {
-  if (!calcDisplay) return;
+  const екран = document.getElementById('calc-display');
+  if (!екран) return;
   try {
-    calcDisplay.value = eval(calcDisplay.value);
+    екран.value = eval(екран.value);
   } catch (err) {
-    calcDisplay.value = 'Error';
+    екран.value = 'Error';
   }
 }
 
-// TASK LOGIKA (TO-DO LIST)
+// добавяне на задача към списъка
 function addTask() {
-  var inputField = document.getElementById('task-in');
-  var txt = inputField.value.trim();
-  if (txt === '') return;
+  var кутияЗаВъвеждане = document.getElementById('task-in');
+  var текстЗадачa = кутияЗаВъвеждане.value.trim();
+  if (текстЗадачa === '') return;
 
-  var elementLi = document.createElement('li');
-  elementLi.innerHTML = `<span>${txt}</span> <i class="fa-solid fa-trash task-del" onclick="this.parentElement.remove()"></i>`;
-  document.getElementById('task-list').appendChild(elementLi);
-  inputField.value = '';
+  var новРед = document.createElement('li');
+  новРед.innerHTML = `<span>${текстЗадачa}</span> <i class="fa-solid fa-trash task-del" onclick="this.parentElement.remove()"></i>`;
+  document.getElementById('task-list').appendChild(новРед);
+  кутияЗаВъвеждане.value = '';
 }
 
-// POMODORO TIMER CHEKROK
+// помодоро таймер настройки
 let pomoTime = 1500;
 let pomoInterval = null;
 
 function updatePomoDisplay() {
-  let minutes = Math.floor(pomoTime / 60).toString().padStart(2, '0');
-  let seconds = (pomoTime % 60).toString().padStart(2, '0');
-  var disp = document.getElementById('pomo-display');
-  if (disp) disp.textContent = minutes + ':' + seconds;
+  let мин = Math.floor(pomoTime / 60).toString().padStart(2, '0');
+  let сек = (pomoTime % 60).toString().padStart(2, '0');
+  var дисплей = document.getElementById('pomo-display');
+  if (дисплей) дисплей.textContent = мин + ':' + сек;
 }
 
 function startPomo() {
@@ -168,7 +184,6 @@ function startPomo() {
   }, 1000);
 }
 
-// tva e za reset na pomodoro
 function resetPomo() {
   clearInterval(pomoInterval);
   pomoInterval = null;
@@ -176,48 +191,48 @@ function resetPomo() {
   updatePomoDisplay();
 }
 
-// TERMINAL CODES
+// терминални команди
 function handleTerm(e) {
   if (e.key !== 'Enter') return;
-  var inputEl = document.getElementById('term-in');
-  var outputEl = document.getElementById('term-out');
-  var commandClean = inputEl.value.trim().toLowerCase();
+  var входЕл = document.getElementById('term-in');
+  var изходЕл = document.getElementById('term-out');
+  var чистаКоманда = входЕл.value.trim().toLowerCase();
   
-  outputEl.innerHTML += `> ${inputEl.value}<br>`;
+  изходЕл.innerHTML += `> ${vходЕл.value}<br>`;
   
-  if (commandClean === 'help') {
-    outputEl.innerHTML += 'Available commands: help, clear, date, version<br>';
-  } else if (commandClean === 'clear') {
-    outputEl.innerHTML = '';
-  } else if (commandClean === 'date') {
-    outputEl.innerHTML += `${new Date().toLocaleString()}<br>`;
-  } else if (commandClean === 'version') {
-    outputEl.innerHTML += 'VaskoOS Dark Edition v4.0<br>';
+  if (чистаКоманда === 'help') {
+    изходЕл.innerHTML += 'Available commands: help, clear, date, version<br>';
+  } else if (чистаКоманда === 'clear') {
+    изходЕл.innerHTML = '';
+  } else if (чистаКоманда === 'date') {
+    изходЕл.innerHTML += `${new Date().toLocaleString()}<br>`;
+  } else if (чистаКоманда === 'version') {
+    изходЕл.innerHTML += 'VaskoOS Dark Edition v4.0<br>';
   } else {
-    outputEl.innerHTML += `Command not recognized: ${commandClean}<br>`;
+    изходЕл.innerHTML += `Command not recognized: ${чистаКоманда}<br>`;
   }
   
-  inputEl.value = '';
-  outputEl.scrollTop = outputEl.scrollHeight;
+  входЕл.value = '';
+  изходЕл.scrollTop = изходЕл.scrollHeight;
 }
 
-// DRPNI I PUSNI ZA FON NA DESKTOPA
-var deskElement = document.getElementById('desktop');
-if (deskElement) {
-  deskElement.addEventListener('dragover', function(e) {
+// влачене на картинка за смяна на тапет
+var десктопЕлемент = document.getElementById('desktop');
+if (десктопЕлемент) {
+  десктопЕлемент.addEventListener('dragover', function(e) {
     e.preventDefault();
   });
-  deskElement.addEventListener('drop', function(e) {
+  десктопЕлемент.addEventListener('drop', function(e) {
     e.preventDefault();
-    var dropFile = e.dataTransfer.files[0];
-    if (dropFile && dropFile.type.startsWith('image/')) {
-      var fileReader = new FileReader();
-      fileReader.onload = function(event) {
+    var файлове = e.dataTransfer.files;
+    if (файлове[0] && файлове[0].type.startsWith('image/')) {
+      var четец = new FileReader();
+      четец.onload = function(event) {
         document.body.style.backgroundImage = "url('" + event.target.result + "')";
         document.body.style.backgroundSize = 'cover';
         document.body.style.backgroundPosition = 'center';
       };
-      fileReader.readAsDataURL(dropFile);
+      четец.readAsDataURL(файлове[0]);
     }
   });
 }
