@@ -1,472 +1,388 @@
 <!DOCTYPE html>
-<html lang="bg">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VaskoOS</title>
 
     <style>
-        /* obshti neshta */
+        :root {
+            --bg-base: #101012;
+            --bg-surface: #18181c;
+            --border-subtle: #27272a;
+            --accent-color: #5865f2;
+            --accent-hover: #4752c4;
+            --text-primary: #ededed;
+            --text-secondary: #9ba1a6;
+            --danger-color: #ed4245;
+            --radius-box: 10px;
+            --shadow-popup: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+
         * {
-          box-sizing: border-box;
-          margin: 0;
-          padding: 0;
-          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
         body {
-          overflow: hidden;
-          height: 100vh;
-          user-select: none;
-          color: #f8fafc;
-          background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 60%, #020617 100%);
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            height: 100vh;
+            overflow: hidden;
+            user-select: none;
         }
 
-        button,
-        input,
-        textarea {
-          font: inherit;
+        button, input, textarea {
+            font: inherit;
+            color: inherit;
         }
 
-        button {
-          -webkit-tap-highlight-color: transparent;
-        }
-
-        /* gornata lenta */
+        /* Горна лента */
         .top-bar {
-          height: 48px;
-          display: flex;
-          padding: 0 19px;
-          position: relative;
-          z-index: 1000;
-          justify-content: space-between;
-          align-items: center;
-          background: rgba(15, 23, 42, 0.75);
-          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-          backdrop-filter: blur(20px);
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            height: 36px;
+            background: #141416;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 12px;
+            font-size: 13px;
         }
 
         .brand {
-          color: #818cf8;
-          font-weight: 700;
-          font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
         }
 
         #clock {
-          color: #94a3b8;
-          font-weight: 600;
-          font-variant-numeric: tabular-nums;
+            color: var(--text-secondary);
+            font-variant-numeric: tabular-nums;
         }
 
-        /* rabotniq plot */
+        /* Работен плот (десктоп) */
         #desktop {
-          position: relative;
-          padding: 23px;
-          height: calc(100vh - 96px);
-          overflow: hidden;
+            position: relative;
+            height: calc(100vh - 72px);
+            padding: 16px;
         }
 
         .icon-grid {
-          width: 240px;
-          gap: 23px;
-          display: grid;
-          grid-template-columns: repeat(2, minmax(90px, 1fr));
+            display: grid;
+            grid-template-columns: repeat(2, 72px);
+            gap: 12px;
         }
 
         .desk-icon {
-          padding: 9px;
-          cursor: pointer;
-          display: flex;
-          border-radius: 17px;
-          flex-direction: column;
-          align-items: center;
-          transition: all .2s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            transition: background 0.1s, border-color 0.1s;
         }
 
         .desk-icon:hover {
-          background: rgba(255,255,255,.06);
-          transform: translateY(-2px);
-        }
-
-        .desk-icon:active {
-          transform: translateY(0);
+            background: rgba(255, 255, 255, 0.03);
+            border-color: var(--border-subtle);
         }
 
         .icon-box {
-          width: 56px;
-          height: 56px;
-          display: flex;
-          font-size: 24px;
-          border-radius: 17px;
-          align-items: center;
-          justify-content: center;
-          color: #818cf8;
-          background: rgba(30, 41, 59, 0.7);
-          border: 1px solid rgba(255,255,255,.1);
-          box-shadow: 0 10px 25px rgba(0,0,0,.3);
+            width: 40px;
+            height: 40px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-bottom: 4px;
         }
 
         .desk-icon span {
-          margin-top: 8px;
-          font-size: 12px;
-          color: #cbd5e1;
+            font-size: 12px;
+            text-align: center;
+            color: var(--text-primary);
         }
 
-        /* prozorci */
+        /* Прозорци */
         .window {
-          width: 350px;
-          max-width: calc(100vw - 30px);
-          display: none;
-          position: absolute;
-          top: 120px;
-          left: 120px;
-          overflow: hidden;
-          border-radius: 21px;
-          background: rgba(15, 23, 42, 0.85);
-          border: 1px solid rgba(255,255,255,.1);
-          backdrop-filter: blur(25px);
-          box-shadow: 0 20px 50px rgba(0,0,0,.6);
-          min-height: 80px;
+            position: absolute;
+            top: 60px;
+            left: 60px;
+            width: 320px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-box);
+            box-shadow: var(--shadow-popup);
+            display: none;
+            overflow: hidden;
         }
 
         .win-header {
-          display: flex;
-          padding: 11px 17px;
-          cursor: move;
-          font-size: 14px;
-          font-weight: 600;
-          align-items: center;
-          justify-content: space-between;
-          background: rgba(255,255,255,.03);
-          border-bottom: 1px solid rgba(255,255,255,.05);
-          touch-action: none;
+            background: #1c1c21;
+            padding: 8px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-subtle);
+            cursor: move;
+            touch-action: none;
         }
 
         .win-title {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          min-width: 0;
-        }
-
-        .win-title span:last-child {
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 500;
         }
 
         .win-close {
-          width: 26px;
-          height: 26px;
-          display: flex;
-          cursor: pointer;
-          border: none;
-          border-radius: 50%;
-          align-items: center;
-          justify-content: center;
-          color: #f87171;
-          background: rgba(239,68,68,.15);
-          flex: 0 0 auto;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 14px;
+            padding: 2px 6px;
+            border-radius: 4px;
         }
 
         .win-close:hover {
-          background: rgba(239,68,68,.25);
+            background: var(--danger-color);
+            color: #fff;
         }
 
         .win-body {
-          padding: 17px;
-          font-size: 14px;
-          color: #94a3b8;
+            padding: 12px;
+            font-size: 13px;
+            color: var(--text-secondary);
         }
 
-        .btn-primary,
-        .btn-start {
-          border: none;
-          padding: 9px 16px;
-          cursor: pointer;
-          border-radius: 10px;
-          color: #fff;
-          background: #6366f1;
+        /* Формулярни елементи */
+        input[type="text"], textarea {
+            width: 100%;
+            background: var(--bg-base);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            padding: 6px 8px;
+            color: var(--text-primary);
+            outline: none;
         }
 
-        .btn-primary:hover,
-        .btn-start:hover {
-          background: #5558dd;
-        }
-
-        .btn-secondary {
-          padding: 9px 16px;
-          cursor: pointer;
-          border-radius: 10px;
-          color: #cbd5e1;
-          background: rgba(255,255,255,.06);
-          border: 1px solid rgba(255,255,255,.05);
-        }
-
-        .btn-secondary:hover {
-          background: rgba(255,255,255,.1);
-        }
-
-        textarea,
-        input[type="text"] {
-          width: 100%;
-          color: #f8fafc;
-          padding: 10px;
-          outline: none;
-          border-radius: 10px;
-          background: rgba(30,41,59,.6);
-          border: 1px solid rgba(255,255,255,.1);
-        }
-
-        textarea:focus,
-        input[type="text"]:focus {
-          border-color: rgba(129,140,248,.55);
+        input[type="text"]:focus, textarea:focus {
+            border-color: var(--accent-color);
         }
 
         textarea {
-          height: 110px;
-          resize: none;
+            height: 90px;
+            resize: none;
         }
 
-        #canvas {
-          cursor: crosshair;
-          display: block;
-          border-radius: 10px;
-          background: #020617;
-          border: 1px solid rgba(255,255,255,.1);
-          max-width: 100%;
-          touch-action: none;
+        .btn-primary {
+            background: var(--accent-color);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+            font-weight: 500;
         }
 
-        .calc-grid {
-          display: grid;
-          grid-template-columns: repeat(4,1fr);
-          gap: 6px;
-          margin-top: 8px;
+        .btn-primary:hover {
+            background: var(--accent-hover);
         }
 
-        .calc-grid button {
-          padding: 12px 0;
-          font-size: 15px;
-          border-radius: 9px;
-          border: 1px solid rgba(255,255,255,.06);
-          background: rgba(255,255,255,.04);
-          color: #f1f5f9;
-          cursor: pointer;
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            padding: 6px 12px;
+            border-radius: 6px;
+            color: var(--text-primary);
+            cursor: pointer;
         }
 
-        .calc-grid button:hover {
-          background: rgba(99,102,241,.25);
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.05);
         }
 
-        .calc-grid button:active {
-          transform: scale(.97);
-        }
-
-        #calc-display {
-          text-align: right;
-          font-size: 20px;
-          padding: 12px;
-          border-radius: 10px;
-          background: #020617;
-          border: 1px solid rgba(255,255,255,.1);
-          margin-bottom: 4px;
-          min-height: 26px;
-          word-break: break-all;
-          font-variant-numeric: tabular-nums;
-        }
-
-        #task-list {
-          list-style: none;
-          max-height: 120px;
-          overflow-y: auto;
-          margin-top: 8px;
-        }
-
-        #task-list li {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          gap: 10px;
-          padding: 8px 12px;
-          margin-bottom: 6px;
-          border-radius: 8px;
-          background: rgba(255,255,255,.04);
-          border: 1px solid rgba(255,255,255,.05);
-        }
-
-        #task-list li span:first-child {
-          overflow-wrap: anywhere;
-        }
-
-        .task-del {
-          color: #f87171;
-          cursor: pointer;
-          font-weight: bold;
-          padding: 2px 5px;
-          flex: 0 0 auto;
-        }
-
-        #term-out {
-          height: 130px;
-          overflow-y: auto;
-          margin-bottom: 10px;
-          padding: 11px;
-          font-size: 12px;
-          border-radius: 10px;
-          color: #38bdf8;
-          background: #020617;
-          font-family: monospace;
-          border: 1px solid rgba(255,255,255,.05);
-          white-space: pre-wrap;
-          overflow-wrap: anywhere;
-        }
-
-        #term-input {
-          font-family: monospace;
-        }
-
+        /* Долна лента (Taskbar) */
         .taskbar {
-          bottom: 0;
-          width: 100%;
-          height: 48px;
-          display: flex;
-          padding: 0 19px;
-          position: fixed;
-          z-index: 1000;
-          align-items: center;
-          justify-content: space-between;
-          background: rgba(15,23,42,.75);
-          border-top: 1px solid rgba(255,255,255,.08);
-          backdrop-filter: blur(20px);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 36px;
+            background: #141416;
+            border-top: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            gap: 6px;
+            z-index: 999;
+        }
+
+        .btn-start {
+            background: var(--accent-color);
+            border: none;
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
         }
 
         #open-apps {
-          display: flex;
-          gap: 8px;
-          max-width: calc(100vw - 120px);
-          overflow-x: auto;
-          scrollbar-width: none;
-        }
-
-        #open-apps::-webkit-scrollbar {
-          display: none;
+            display: flex;
+            gap: 4px;
         }
 
         .taskbar-item {
-          padding: 6px 12px;
-          font-size: 12px;
-          border-radius: 8px;
-          background: rgba(255,255,255,.06);
-          cursor: pointer;
-          color: #cbd5e1;
-          white-space: nowrap;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            color: var(--text-secondary);
         }
 
         .taskbar-item.active {
-          background: rgba(99,102,241,.4);
-          color: #fff;
+            color: var(--text-primary);
+            border-color: var(--accent-color);
         }
 
+        /* Старт меню */
         #start-menu {
-          bottom: 56px;
-          left: 16px;
-          width: 200px;
-          max-height: calc(100vh - 75px);
-          overflow-y: auto;
-          padding: 8px;
-          position: fixed;
-          z-index: 2000;
-          border-radius: 15px;
-          background: rgba(15,23,42,.95);
-          border: 1px solid rgba(255,255,255,.1);
-          backdrop-filter: blur(25px);
-          box-shadow: 0 15px 40px rgba(0,0,0,.5);
-        }
-
-        .hidden {
-          display: none !important;
+            position: fixed;
+            bottom: 42px;
+            left: 8px;
+            width: 180px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-box);
+            box-shadow: var(--shadow-popup);
+            padding: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            z-index: 1000;
         }
 
         .menu-item {
-          display: flex;
-          gap: 10px;
-          padding: 10px 14px;
-          cursor: pointer;
-          border-radius: 9px;
-          color: #cbd5e1;
-          font-size: 13px;
-          align-items: center;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            color: var(--text-secondary);
         }
 
         .menu-item:hover {
-          background: rgba(129,140,248,.15);
-          color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
         }
 
-        #pomo-time {
-          font-size: 40px;
-          text-align: center;
-          font-weight: 700;
-          color: #818cf8;
-          margin: 6px 0;
-          font-variant-numeric: tabular-nums;
+        .hidden {
+            display: none !important;
         }
 
-        .pomo-controls {
-          display: flex;
-          gap: 8px;
-          justify-content: center;
-          flex-wrap: wrap;
+        /* Канвас и калкулатор */
+        #canvas {
+            background: var(--bg-base);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            display: block;
+            touch-action: none;
         }
 
-        #weather-box {
-          text-align: center;
-          padding: 10px 0;
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+            margin-top: 6px;
         }
 
-        #weather-box .temp {
-          font-size: 36px;
-          font-weight: 700;
-          color: #f8fafc;
+        .calc-grid button {
+            background: var(--bg-base);
+            border: 1px solid var(--border-subtle);
+            padding: 8px 0;
+            border-radius: 4px;
+            cursor: pointer;
         }
 
-        @media (max-width: 600px) {
-          .window {
-            width: calc(100vw - 30px);
-          }
+        .calc-grid button:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
 
-          #desktop {
-            padding: 14px;
-          }
+        #calc-display {
+            background: var(--bg-base);
+            border: 1px solid var(--border-subtle);
+            padding: 8px;
+            border-radius: 6px;
+            text-align: right;
+            font-size: 16px;
+            font-variant-numeric: tabular-nums;
+            margin-bottom: 6px;
+        }
 
-          .icon-grid {
-            width: 220px;
-            gap: 12px;
-          }
+        #task-list {
+            list-style: none;
+            max-height: 100px;
+            overflow-y: auto;
+            margin-top: 6px;
+        }
 
-          .taskbar {
-            padding: 0 12px;
-          }
+        #task-list li {
+            display: flex;
+            justify-content: space-between;
+            background: var(--bg-base);
+            border: 1px solid var(--border-subtle);
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-bottom: 4px;
+            font-size: 12px;
+        }
 
-          #start-menu {
-            left: 10px;
-          }
+        .task-del {
+            color: var(--danger-color);
+            cursor: pointer;
+        }
+
+        #term-out {
+            background: var(--bg-base);
+            border: 1px solid var(--border-subtle);
+            padding: 6px;
+            height: 100px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 11px;
+            color: #38bdf8;
+            margin-bottom: 6px;
+            white-space: pre-wrap;
+        }
+
+        #term-input {
+            font-family: monospace;
+            font-size: 11px;
         }
     </style>
 </head>
 <body>
 
-    <!-- gornata lenta -->
     <header class="top-bar">
         <div class="brand">VaskoOS</div>
         <div id="clock">00:00:00</div>
     </header>
 
-    <!-- raboten plot -->
     <main id="desktop">
-
         <div class="icon-grid">
             <div class="desk-icon" onclick="openWin('win-about')">
                 <div class="icon-box">ℹ️</div>
@@ -488,68 +404,58 @@
                 <div class="icon-box">🎯</div>
                 <span>Tasks</span>
             </div>
-            <div class="desk-icon" onclick="openWin('win-pomo')">
-                <div class="icon-box">⏱️</div>
-                <span>Pomodoro</span>
-            </div>
-            <div class="desk-icon" onclick="openWin('win-weather')">
-                <div class="icon-box">🌤️</div>
-                <span>Weather</span>
-            </div>
             <div class="desk-icon" onclick="openWin('win-terminal')">
                 <div class="icon-box">💻</div>
                 <span>Terminal</span>
             </div>
         </div>
 
-        <!-- 1. about -->
+        <!-- 1. Прозорец "About" -->
         <div class="window" id="win-about">
             <div class="win-header">
                 <div class="win-title"><span>ℹ️</span><span>About VaskoOS</span></div>
-                <button class="win-close" onclick="closeWin('win-about')" aria-label="Close">✕</button>
+                <button class="win-close" onclick="closeWin('win-about')">✕</button>
             </div>
             <div class="win-body">
-                <p style="color:#f1f5f9; margin-bottom:8px;">VaskoOS v1.0</p>
-                <p>Malka web operationna sistema, napravena za Hack Club Jam. Otvori prozorcite ot desktopa ili start menuto, dvijat se svobodno, zatvarash gi s x-a. Vsichko raboti v browsera, nishto ne se izprashta nikade.</p>
+                <p style="color:var(--text-primary); margin-bottom:4px; font-weight: 500;">VaskoOS v1.0</p>
+                <p>A lightweight browser-based web operating system built for Hack Club Jam.</p>
             </div>
         </div>
 
-        <!-- 2. notepad -->
+        <!-- 2. Прозорец "Notepad" -->
         <div class="window" id="win-notes">
             <div class="win-header">
                 <div class="win-title"><span>📝</span><span>Notepad</span></div>
-                <button class="win-close" onclick="closeWin('win-notes')" aria-label="Close">✕</button>
+                <button class="win-close" onclick="closeWin('win-notes')">✕</button>
             </div>
             <div class="win-body">
-                <textarea id="notes-area" placeholder="pishi tuk..."></textarea>
-                <div style="display:flex; gap:8px; margin-top:8px;">
+                <textarea id="notes-area" placeholder="Type notes here..."></textarea>
+                <div style="display:flex; gap:6px; margin-top:6px;">
                     <button class="btn-primary" onclick="saveNote()">Save</button>
                     <button class="btn-secondary" onclick="clearNote()">Clear</button>
                 </div>
-                <p id="notes-status" style="margin-top:6px; font-size:11px; color:#64748b;"></p>
             </div>
         </div>
 
-        <!-- 3. paint -->
+        <!-- 3. Прозорец "Paint" -->
         <div class="window" id="win-paint">
             <div class="win-header">
                 <div class="win-title"><span>🎨</span><span>Paint</span></div>
-                <button class="win-close" onclick="closeWin('win-paint')" aria-label="Close">✕</button>
+                <button class="win-close" onclick="closeWin('win-paint')">✕</button>
             </div>
             <div class="win-body">
-                <canvas id="canvas" width="316" height="200"></canvas>
-                <div style="display:flex; gap:8px; align-items:center; margin-top:8px;">
-                    <input type="color" id="paint-color" value="#818cf8" style="width:36px; height:30px; border:none; background:none; cursor:pointer;">
+                <canvas id="canvas" width="290" height="150"></canvas>
+                <div style="margin-top:6px;">
                     <button class="btn-secondary" onclick="clearCanvas()">Clear</button>
                 </div>
             </div>
         </div>
 
-        <!-- 4. calc -->
+        <!-- 4. Прозорец "Calculator" -->
         <div class="window" id="win-calc">
             <div class="win-header">
                 <div class="win-title"><span>🧮</span><span>Calculator</span></div>
-                <button class="win-close" onclick="closeWin('win-calc')" aria-label="Close">✕</button>
+                <button class="win-close" onclick="closeWin('win-calc')">✕</button>
             </div>
             <div class="win-body">
                 <div id="calc-display">0</div>
@@ -563,102 +469,62 @@
             </div>
         </div>
 
-        <!-- 5. tasks -->
+        <!-- 5. Прозорец "Tasks" -->
         <div class="window" id="win-tasks">
             <div class="win-header">
                 <div class="win-title"><span>🎯</span><span>Tasks</span></div>
-                <button class="win-close" onclick="closeWin('win-tasks')" aria-label="Close">✕</button>
+                <button class="win-close" onclick="closeWin('win-tasks')">✕</button>
             </div>
             <div class="win-body">
                 <div style="display:flex; gap:6px;">
-                    <input type="text" id="task-input" placeholder="nova zadacha...">
+                    <input type="text" id="task-input" placeholder="New task...">
                     <button class="btn-primary" onclick="addTask()">+</button>
                 </div>
                 <ul id="task-list"></ul>
             </div>
         </div>
 
-        <!-- 6. pomodoro -->
-        <div class="window" id="win-pomo">
-            <div class="win-header">
-                <div class="win-title"><span>⏱️</span><span>Pomodoro</span></div>
-                <button class="win-close" onclick="closeWin('win-pomo')" aria-label="Close">✕</button>
-            </div>
-            <div class="win-body">
-                <div id="pomo-time">25:00</div>
-                <div class="pomo-controls">
-                    <button class="btn-primary" onclick="pomoStart()">Start</button>
-                    <button class="btn-secondary" onclick="pomoPause()">Pause</button>
-                    <button class="btn-secondary" onclick="pomoReset()">Reset</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 7. weather -->
-        <div class="window" id="win-weather">
-            <div class="win-header">
-                <div class="win-title"><span>🌤️</span><span>Weather</span></div>
-                <button class="win-close" onclick="closeWin('win-weather')" aria-label="Close">✕</button>
-            </div>
-            <div class="win-body">
-                <div id="weather-box">
-                    <div style="font-size:34px;">☀️</div>
-                    <div class="temp">24°C</div>
-                    <div style="margin-top:4px;">Plovdiv &middot; Slanchevo</div>
-                </div>
-                <button class="btn-secondary" style="width:100%; margin-top:8px;" onclick="refreshWeather()">Refresh</button>
-            </div>
-        </div>
-
-        <!-- 8. terminal -->
+        <!-- 6. Прозорец "Terminal" -->
         <div class="window" id="win-terminal">
             <div class="win-header">
                 <div class="win-title"><span>💻</span><span>Terminal</span></div>
-                <button class="win-close" onclick="closeWin('win-terminal')" aria-label="Close">✕</button>
+                <button class="win-close" onclick="closeWin('win-terminal')">✕</button>
             </div>
             <div class="win-body">
                 <div id="term-out">VaskoOS terminal v1.0
-pishi 'help' za komandi</div>
-                <input type="text" id="term-input" placeholder="vkarai komanda..." autocomplete="off" spellcheck="false">
+Type 'help' for available commands</div>
+                <input type="text" id="term-input" placeholder="Enter command..." autocomplete="off">
             </div>
         </div>
-
     </main>
 
-    <!-- start menu -->
+    <!-- Старт меню -->
     <div id="start-menu" class="hidden">
         <div class="menu-item" onclick="openWin('win-about')"><span>ℹ️</span><span>About</span></div>
         <div class="menu-item" onclick="openWin('win-notes')"><span>📝</span><span>Notepad</span></div>
         <div class="menu-item" onclick="openWin('win-paint')"><span>🎨</span><span>Paint</span></div>
         <div class="menu-item" onclick="openWin('win-calc')"><span>🧮</span><span>Calculator</span></div>
         <div class="menu-item" onclick="openWin('win-tasks')"><span>🎯</span><span>Tasks</span></div>
-        <div class="menu-item" onclick="openWin('win-pomo')"><span>⏱️</span><span>Pomodoro</span></div>
-        <div class="menu-item" onclick="openWin('win-weather')"><span>🌤️</span><span>Weather</span></div>
         <div class="menu-item" onclick="openWin('win-terminal')"><span>💻</span><span>Terminal</span></div>
     </div>
 
-    <!-- dolna lenta -->
     <footer class="taskbar">
         <button class="btn-start" onclick="toggleStart()">☰ Start</button>
         <div id="open-apps"></div>
     </footer>
 
     <script>
-    // chasovnik
+    // Функция за обновяване на часовника в горния десен ъгъл
     function updateClock() {
         var now = new Date();
         var h = String(now.getHours()).padStart(2, '0');
-        let m = String(now.getMinutes()).padStart(2, '0');
-        const s = String(now.getSeconds()).padStart(2, '0');
-
+        var m = String(now.getMinutes()).padStart(2, '0');
+        var s = String(now.getSeconds()).padStart(2, '0');
         document.getElementById('clock').textContent = h + ':' + m + ':' + s;
     }
-
     updateClock();
     setInterval(updateClock, 1000);
 
-
-    // prozorci i nastroiki po tyh
     var topZ = 10;
     var openWindows = [];
 
@@ -666,715 +532,244 @@ pishi 'help' za komandi</div>
         return document.getElementById(id);
     }
 
+    // Отваряне на прозорец
     function openWin(id) {
         var win = getWin(id);
         if (!win) return;
-
-        var menu = document.getElementById('start-menu');
-        menu.classList.add('hidden');
+        document.getElementById('start-menu').classList.add('hidden');
 
         if (win.style.display === 'block') {
             focusWin(id);
             return;
         }
-
         win.style.display = 'block';
-
         topZ += 1;
         win.style.zIndex = topZ;
 
-        var offset = (openWindows.length % 5) * 18;
+        var offset = (openWindows.length % 5) * 16;
         var desktop = document.getElementById('desktop');
-
         var maxLeft = Math.max(10, desktop.clientWidth - win.offsetWidth - 20);
         var maxTop = Math.max(10, desktop.clientHeight - win.offsetHeight - 20);
 
-        var left = Math.min(110 + offset, maxLeft);
-        var top = Math.min(62 + offset, maxTop);
+        win.style.left = Math.min(50 + offset, maxLeft) + 'px';
+        win.style.top = Math.min(40 + offset, maxTop) + 'px';
 
-        win.style.left = left + 'px';
-        win.style.top = top + 'px';
-
-        if (openWindows.indexOf(id) === -1) {
-            openWindows.push(id);
-        }
-
+        if (openWindows.indexOf(id) === -1) openWindows.push(id);
         makeDraggable(win);
         renderTaskbar();
     }
 
+    // Затваряне на прозорец
     function closeWin(id) {
         var win = getWin(id);
         if (!win) return;
-
         win.style.display = 'none';
-
         var idx = openWindows.indexOf(id);
-
-        if (idx !== -1) {
-            openWindows.splice(idx, 1);
-        }
-
+        if (idx !== -1) openWindows.splice(idx, 1);
         renderTaskbar();
     }
 
+    // Фокусиране върху прозорец
     function focusWin(id) {
         var win = getWin(id);
         if (!win) return;
-
         topZ += 1;
         win.style.zIndex = topZ;
-
         renderTaskbar();
     }
 
+    // Рендиране на долната лента със задачи (Taskbar)
     function renderTaskbar() {
         var box = document.getElementById('open-apps');
         box.innerHTML = '';
-
         for (var i = 0; i < openWindows.length; i++) {
             var id = openWindows[i];
             var win = getWin(id);
             if (!win) continue;
-
-            var label = id.replace('win-', '');
             var item = document.createElement('div');
-
             item.className = 'taskbar-item';
-            if (win.style.zIndex == topZ) {
-                item.classList.add('active');
-            }
-
-            item.textContent = label;
-
-            item.onclick = function (clickedId) {
+            if (win.style.zIndex == topZ) item.classList.add('active');
+            item.textContent = id.replace('win-', '');
+            item.onclick = (function (cid) {
                 return function () {
-                    var target = getWin(clickedId);
-
-                    if (!target) return;
-
-                    if (target.style.display !== 'block') {
-                        openWin(clickedId);
-                    } else {
-                        focusWin(clickedId);
-                    }
+                    var t = getWin(cid);
+                    if (t.style.display !== 'block') openWin(cid);
+                    else focusWin(cid);
                 };
-            }(id);
-
+            })(id);
             box.appendChild(item);
         }
     }
 
-
-    // drpni prozoreca
+    // Логика за влачене на прозорците с мишка или пръст
     function makeDraggable(win) {
         var header = win.querySelector('.win-header');
+        if (!header || header.dataset.drag === 'true') return;
+        header.dataset.drag = 'true';
 
-        if (!header || header.dataset.draggable === 'yes') {
-            return;
-        }
-
-        header.dataset.draggable = 'yes';
-
-        var dragging = false;
-        var pointerId = null;
-        var startX = 0;
-        var startY = 0;
-        var startLeft = 0;
-        var startTop = 0;
-
-        function stopDragging() {
-            dragging = false;
-            pointerId = null;
-        }
+        var dragging = false, pid = null, startX = 0, startY = 0, startL = 0, startT = 0;
 
         header.addEventListener('pointerdown', function (e) {
-            if (e.target.closest('.win-close')) {
-                return;
-            }
-
+            if (e.target.closest('.win-close')) return;
             dragging = true;
-            pointerId = e.pointerId;
-
+            pid = e.pointerId;
             startX = e.clientX;
             startY = e.clientY;
-            startLeft = win.offsetLeft;
-            startTop = win.offsetTop;
-
+            startL = win.offsetLeft;
+            startT = win.offsetTop;
             focusWin(win.id);
-
-            try {
-                header.setPointerCapture(e.pointerId);
-            } catch (err) {
-                // ako browsera se pravi na interesen
-            }
-
+            try { header.setPointerCapture(e.pointerId); } catch (err) {}
             e.preventDefault();
         });
 
         header.addEventListener('pointermove', function (e) {
-            if (!dragging || e.pointerId !== pointerId) {
-                return;
-            }
-
-            var desktop = document.getElementById('desktop');
-            var dx = e.clientX - startX;
-            var dy = e.clientY - startY;
-
-            var newLeft = startLeft + dx;
-            var newTop = startTop + dy;
-
-            var minLeft = 0;
-            var minTop = 0;
-
-            var maxLeft = Math.max(0, desktop.clientWidth - win.offsetWidth);
-            var maxTop = Math.max(0, desktop.clientHeight - win.offsetHeight);
-
-            if (newLeft < minLeft) newLeft = minLeft;
-            if (newTop < minTop) newTop = minTop;
-            if (newLeft > maxLeft) newLeft = maxLeft;
-            if (newTop > maxTop) newTop = maxTop;
-
-            win.style.left = newLeft + 'px';
-            win.style.top = newTop + 'px';
+            if (!dragging || e.pointerId !== pid) return;
+            var desk = document.getElementById('desktop');
+            var nl = Math.max(0, Math.min(startL + (e.clientX - startX), desk.clientWidth - win.offsetWidth));
+            var nt = Math.max(0, Math.min(startT + (e.clientY - startY), desk.clientHeight - win.offsetHeight));
+            win.style.left = nl + 'px';
+            win.style.top = nt + 'px';
         });
 
-        header.addEventListener('pointerup', function (e) {
-            if (pointerId === e.pointerId) {
-                stopDragging();
-            }
-        });
-
-        header.addEventListener('pointercancel', function (e) {
-            if (pointerId === e.pointerId) {
-                stopDragging();
-            }
-        });
-
-        header.addEventListener('lostpointercapture', function () {
-            stopDragging();
-        });
+        function endDrag(e) {
+            if (pid === e.pointerId) dragging = false;
+        }
+        header.addEventListener('pointerup', endDrag);
+        header.addEventListener('pointercancel', endDrag);
     }
 
-
-    // start menu
+    // Показване/скриване на старт менюто
     function toggleStart() {
-        var menu = document.getElementById('start-menu');
-        menu.classList.toggle('hidden');
+        document.getElementById('start-menu').classList.toggle('hidden');
     }
 
     document.addEventListener('click', function (e) {
         var menu = document.getElementById('start-menu');
-
         if (!menu.contains(e.target) && !e.target.closest('.btn-start')) {
             menu.classList.add('hidden');
         }
     });
 
-
-    // notepad
-    var noteArea = document.getElementById('notes-area');
-
-    function loadNote() {
-        try {
-            var savedNote = localStorage.getItem('vasko-note');
-
-            if (savedNote !== null) {
-                noteArea.value = savedNote;
-            }
-        } catch (err) {
-            console.warn('localStorage ne e dostapen', err);
-        }
-    }
+    // Логика за Notepad (Бележник)
+    var notesArea = document.getElementById('notes-area');
+    try {
+        var saved = localStorage.getItem('vasko-note');
+        if (saved !== null) notesArea.value = saved;
+    } catch (e) {}
 
     function saveNote() {
-        var status = document.getElementById('notes-status');
-
-        try {
-            localStorage.setItem('vasko-note', noteArea.value);
-            status.textContent = 'zapazeno ' + new Date().toLocaleTimeString();
-
-            setTimeout(function () {
-                status.textContent = '';
-            }, 2000);
-        } catch (err) {
-            status.textContent = 'ne uspqh da zapazq';
-        }
+        try { localStorage.setItem('vasko-note', notesArea.value); } catch (e) {}
     }
-
     function clearNote() {
-        noteArea.value = '';
-
-        try {
-            localStorage.removeItem('vasko-note');
-        } catch (err) {
-            console.warn('ne moje da iztrie note-a', err);
-        }
-
-        document.getElementById('notes-status').textContent = '';
+        notesArea.value = '';
+        try { localStorage.removeItem('vasko-note'); } catch (e) {}
     }
 
-    loadNote();
-
-
-    // paint
+    // Логика за Paint (Рисуване)
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
-    var drawing = false;
-    var paintPointer = null;
-
-    function canvasPoint(e) {
-        var rect = canvas.getBoundingClientRect();
-
-        return {
-            x: (e.clientX - rect.left) * (canvas.width / rect.width),
-            y: (e.clientY - rect.top) * (canvas.height / rect.height)
-        };
-    }
+    var painting = false, paintId = null;
 
     canvas.addEventListener('pointerdown', function (e) {
-        drawing = true;
-        paintPointer = e.pointerId;
-
-        var p = canvasPoint(e);
-
+        painting = true;
+        paintId = e.pointerId;
+        var r = canvas.getBoundingClientRect();
         ctx.beginPath();
-        ctx.moveTo(p.x, p.y);
-
-        ctx.strokeStyle = document.getElementById('paint-color').value;
-        ctx.lineWidth = 3;
+        ctx.moveTo((e.clientX - r.left) * (canvas.width / r.width), (e.clientY - r.top) * (canvas.height / r.height));
+        ctx.strokeStyle = '#5865f2';
+        ctx.lineWidth = 2;
         ctx.lineCap = 'round';
-        ctx.lineJoin = 'round';
-
-        try {
-            canvas.setPointerCapture(e.pointerId);
-        } catch (err) {}
-
+        try { canvas.setPointerCapture(e.pointerId); } catch (e) {}
         e.preventDefault();
     });
 
     canvas.addEventListener('pointermove', function (e) {
-        if (!drawing || e.pointerId !== paintPointer) {
-            return;
-        }
-
-        var p = canvasPoint(e);
-
-        ctx.lineTo(p.x, p.y);
+        if (!painting || e.pointerId !== paintId) return;
+        var r = canvas.getBoundingClientRect();
+        ctx.lineTo((e.clientX - r.left) * (canvas.width / r.width), (e.clientY - r.top) * (canvas.height / r.height));
         ctx.stroke();
     });
 
-    function stopPaint() {
-        drawing = false;
-        paintPointer = null;
-        ctx.closePath();
+    function stopPaint(e) {
+        if (paintId === e.pointerId) painting = false;
     }
-
     canvas.addEventListener('pointerup', stopPaint);
     canvas.addEventListener('pointercancel', stopPaint);
-    canvas.addEventListener('lostpointercapture', stopPaint);
 
     function clearCanvas() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
-
-    // kalkulatura skript
+    // Логика за калкулатора
     var calcVal = '';
-
-    function updateCalcDisplay(value) {
-        document.getElementById('calc-display').textContent = value || '0';
-    }
-
-    function calcInput(v) {
-        if (calcVal.length > 100) return;
-
-        calcVal += v;
-        updateCalcDisplay(calcVal);
-    }
-
-    function calcClear() {
-        calcVal = '';
-        updateCalcDisplay('');
-    }
-
-    function calcBack() {
-        calcVal = calcVal.slice(0, -1);
-        updateCalcDisplay(calcVal);
-    }
-
+    function updateCalc(v) { document.getElementById('calc-display').textContent = v || '0'; }
+    function calcInput(v) { calcVal += v; updateCalc(calcVal); }
+    function calcClear() { calcVal = ''; updateCalc(''); }
+    function calcBack() { calcVal = calcVal.slice(0, -1); updateCalc(calcVal); }
     function calcEval() {
-        if (!calcVal) {
-            return;
-        }
-
-        if (!/^[0-9+\-*/().\s]+$/.test(calcVal)) {
-            calcVal = '';
-            updateCalcDisplay('greshka');
-            return;
-        }
-
         try {
-            var result = Function('"use strict"; return (' + calcVal + ')')();
-
-            if (typeof result !== 'number' || !Number.isFinite(result)) {
-                throw new Error('bad result');
-            }
-
-            result = Math.round(result * 100000000) / 100000000;
-
-            calcVal = String(result);
-            updateCalcDisplay(calcVal);
-        } catch (err) {
-            calcVal = '';
-            updateCalcDisplay('greshka');
+            var res = Function('"use strict"; return (' + calcVal + ')')();
+            calcVal = String(res);
+            updateCalc(calcVal);
+        } catch (e) {
+            calcVal = ''; updateCalc('Error');
         }
     }
 
-
-    // zadachi
+    // Логика за списъка със задачи (Tasks)
     var tasks = [];
-
-    function loadTasks() {
-        try {
-            var raw = localStorage.getItem('vasko-tasks');
-
-            if (!raw) {
-                tasks = [];
-                return;
-            }
-
-            var parsed = JSON.parse(raw);
-
-            if (Array.isArray(parsed)) {
-                tasks = parsed.filter(function (item) {
-                    return typeof item === 'string';
-                });
-            } else {
-                tasks = [];
-            }
-        } catch (err) {
-            tasks = [];
-        }
-    }
-
-    function saveTasks() {
-        try {
-            localStorage.setItem('vasko-tasks', JSON.stringify(tasks));
-        } catch (err) {
-            console.warn('tasks ne se zapazvat', err);
-        }
-    }
+    try {
+        var t = localStorage.getItem('vasko-tasks');
+        if (t) tasks = JSON.parse(t);
+    } catch (e) {}
 
     function renderTasks() {
         var list = document.getElementById('task-list');
         list.innerHTML = '';
-
         for (var i = 0; i < tasks.length; i++) {
             let li = document.createElement('li');
-
-            var span = document.createElement('span');
-            span.textContent = tasks[i];
-
-            var del = document.createElement('span');
-            del.textContent = '✕';
-            del.className = 'task-del';
-            del.title = 'Iztrii';
-
-            del.onclick = function (idx) {
-                return function () {
-                    deleteTask(idx);
-                };
-            }(i);
-
-            li.appendChild(span);
-            li.appendChild(del);
+            li.innerHTML = '<span>' + tasks[i] + '</span><span class="task-del" onclick="delTask(' + i + ')">✕</span>';
             list.appendChild(li);
         }
     }
-
     function addTask() {
         var input = document.getElementById('task-input');
         var val = input.value.trim();
-
         if (!val) return;
-
         tasks.push(val);
-        saveTasks();
-
+        try { localStorage.setItem('vasko-tasks', JSON.stringify(tasks)); } catch (e) {}
         input.value = '';
         renderTasks();
-        input.focus();
     }
-
-    function deleteTask(idx) {
-        if (idx < 0 || idx >= tasks.length) return;
-
-        tasks.splice(idx, 1);
-        saveTasks();
+    function delTask(i) {
+        tasks.splice(i, 1);
+        try { localStorage.setItem('vasko-tasks', JSON.stringify(tasks)); } catch (e) {}
         renderTasks();
     }
-
-    document.getElementById('task-input').addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            addTask();
-        }
-    });
-
-    loadTasks();
     renderTasks();
 
-
-    // pomodoro
-    var pomoSeconds = 25 * 60;
-    var pomoTimer = null;
-    var pomoRunning = false;
-    var pomoLastTick = 0;
-
-    function pomoRender() {
-        var m = Math.floor(pomoSeconds / 60);
-        var s = pomoSeconds % 60;
-
-        document.getElementById('pomo-time').textContent =
-            String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
-    }
-
-    function pomoStart() {
-        if (pomoRunning || pomoSeconds <= 0) {
-            return;
-        }
-
-        pomoRunning = true;
-        pomoLastTick = Date.now();
-
-        clearInterval(pomoTimer);
-
-        pomoTimer = setInterval(function () {
-            var now = Date.now();
-            var elapsed = Math.floor((now - pomoLastTick) / 1000);
-
-            if (elapsed < 1) {
-                return;
-            }
-
-            pomoLastTick += elapsed * 1000;
-            pomoSeconds -= elapsed;
-
-            if (pomoSeconds <= 0) {
-                pomoSeconds = 0;
-                pomoPause();
-            }
-
-            pomoRender();
-        }, 250);
-    }
-
-    function pomoPause() {
-        if (pomoTimer !== null) {
-            clearInterval(pomoTimer);
-        }
-
-        pomoTimer = null;
-        pomoRunning = false;
-    }
-
-    function pomoReset() {
-        pomoPause();
-        pomoSeconds = 25 * 60;
-        pomoRender();
-    }
-
-    pomoRender();
-
-
-    // weather - samo simulaciq
-    var weatherOptions = [
-        { icon: '☀️', temp: '24°C', label: 'Plovdiv · Slanchevo' },
-        { icon: '⛅', temp: '19°C', label: 'Plovdiv · Oblachno' },
-        { icon: '🌧️', temp: '15°C', label: 'Plovdiv · Dazhd' },
-        { icon: '❄️', temp: '-2°C', label: 'Plovdiv · Snyag' }
-    ];
-
-    function refreshWeather() {
-        var pick = weatherOptions[
-            Math.floor(Math.random() * weatherOptions.length)
-        ];
-
-        var box = document.getElementById('weather-box');
-
-        box.innerHTML = '';
-
-        var icon = document.createElement('div');
-        icon.style.fontSize = '34px';
-        icon.textContent = pick.icon;
-
-        var temp = document.createElement('div');
-        temp.className = 'temp';
-        temp.textContent = pick.temp;
-
-        var label = document.createElement('div');
-        label.style.marginTop = '4px';
-        label.textContent = pick.label;
-
-        box.appendChild(icon);
-        box.appendChild(temp);
-        box.appendChild(label);
-    }
-
-
-    // terminal, malko pseudo linux ot moje ime
-    var termOut = document.getElementById('term-out');
+    // Логика за терминала
     var termInput = document.getElementById('term-input');
-
-    var termCommands = {
-        help: function () {
-            return 'komandi: help, date, clear, echo [text], apps, whoami';
-        },
-
-        date: function () {
-            return new Date().toString();
-        },
-
-        clear: function () {
-            termOut.textContent = '';
-            return null;
-        },
-
-        apps: function () {
-            return 'about, notes, paint, calc, tasks, pomo, weather, terminal';
-        },
-
-        whoami: function () {
-            return 'vasko@vaskoOS';
-        }
-    };
-
-    function termLog(line) {
-        if (termOut.textContent.length > 5000) {
-            termOut.textContent = termOut.textContent.slice(-3500);
-        }
-
-        if (termOut.textContent) {
-            termOut.textContent += '\n';
-        }
-
-        termOut.textContent += line;
-        termOut.scrollTop = termOut.scrollHeight;
-    }
-
-    function runTerminalCommand(raw) {
-        var parts = raw.split(/\s+/);
-        var cmd = parts.shift().toLowerCase();
-
-        if (cmd === 'echo') {
-            termLog(parts.join(' '));
-            return;
-        }
-
-        if (termCommands[cmd]) {
-            var result = termCommands[cmd]();
-
-            if (result !== null && result !== undefined && result !== '') {
-                termLog(result);
-            }
-
-            return;
-        }
-
-        termLog('neznaya komanda: ' + cmd + ' (pishi help)');
-    }
-
+    var termOut = document.getElementById('term-out');
     termInput.addEventListener('keydown', function (e) {
-        if (e.key !== 'Enter') {
-            return;
-        }
-
-        e.preventDefault();
-
-        var raw = termInput.value.trim();
-
-        if (!raw) {
-            return;
-        }
-
-        termLog('> ' + raw);
-        runTerminalCommand(raw);
-
-        termInput.value = '';
-    });
-
-
-    // kalkulator i terminal da se usetqt s klaviaturata
-    document.addEventListener('keydown', function (e) {
-        var active = document.activeElement;
-
-        if (active === termInput || active === noteArea || active === document.getElementById('task-input')) {
-            return;
-        }
-
-        var calcWin = document.getElementById('win-calc');
-
-        if (calcWin.style.display !== 'block') {
-            return;
-        }
-
-        if (/^[0-9.]$/.test(e.key)) {
-            calcInput(e.key);
-        } else if (['+', '-', '*', '/', '(', ')'].indexOf(e.key) !== -1) {
-            calcInput(e.key);
-        } else if (e.key === 'Enter') {
-            calcEval();
-        } else if (e.key === 'Backspace') {
-            calcBack();
-        } else if (e.key.toLowerCase() === 'c') {
-            calcClear();
-        }
-    });
-
-
-    // ako nqkoi klikne prozoreca izdiga go
-    document.getElementById('desktop').addEventListener('pointerdown', function (e) {
-        var win = e.target.closest('.window');
-
-        if (!win) {
-            return;
-        }
-
-        focusWin(win.id);
-    });
-
-
-    // pri resize ne ostavqme prozoreca v kosmosa
-    window.addEventListener('resize', function () {
-        var desktop = document.getElementById('desktop');
-
-        for (var i = 0; i < openWindows.length; i++) {
-            var win = getWin(openWindows[i]);
-
-            if (!win || win.style.display !== 'block') {
-                continue;
+        if (e.key === 'Enter') {
+            var cmd = termInput.value.trim();
+            termOut.textContent += '\n> ' + cmd;
+            if (cmd === 'help') {
+                termOut.textContent += '\ncommands: clear, about, date';
+            } else if (cmd === 'clear') {
+                termOut.textContent = 'VaskoOS terminal v1.0';
+            } else if (cmd === 'about') {
+                termOut.textContent += '\nVaskoOS v1.0 - successfully loaded.';
+            } else if (cmd === 'date') {
+                termOut.textContent += '\n' + new Date().toLocaleString();
+            } else if (cmd !== '') {
+                termOut.textContent += '\nunknown command: ' + cmd;
             }
-
-            var maxLeft = Math.max(0, desktop.clientWidth - win.offsetWidth);
-            var maxTop = Math.max(0, desktop.clientHeight - win.offsetHeight);
-
-            var left = Math.min(Math.max(0, win.offsetLeft), maxLeft);
-            var top = Math.min(Math.max(0, win.offsetTop), maxTop);
-
-            win.style.left = left + 'px';
-            win.style.top = top + 'px';
+            termInput.value = '';
+            termOut.scrollTop = termOut.scrollHeight;
         }
     });
-
-
-    // zatvarq start menuto s escape
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') {
-            document.getElementById('start-menu').classList.add('hidden');
-        }
-    });
-
     </script>
 </body>
 </html>
