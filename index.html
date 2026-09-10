@@ -2,60 +2,109 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>VaskoOS - alpha</title>
+    <title>VaskoOS</title>
     <style>
-        body { background: #111; color: #fff; font-family: monospace; margin: 0; }
-        .desktop { padding: 20px; display: flex; gap: 10px; }
-        .icon { background: #222; border: 1px solid #444; padding: 10px; cursor: pointer; }
-        
-        .window {
-            position: absolute; top: 100px; left: 100px;
-            width: 250px; background: #18181b; border: 1px solid #444;
-            display: none; padding: 10px;
+        :root {
+            --bg: #121214;
+            --surface: #1e1e24;
+            --border: #33333d;
+            --accent: #6366f1;
+            --text: #f4f4f5;
         }
-        .win-header { display: flex; justify-content: space-between; border-bottom: 1px solid #333; padding-bottom: 5px; margin-bottom: 8px; }
-        button { background: #333; color: white; border: none; padding: 3px 6px; cursor: pointer; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+        body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
+
+        .top-bar { height: 30px; background: #0a0a0c; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; padding: 0 10px; font-size: 12px; }
+        
+        #desktop { padding: 15px; position: relative; height: calc(100vh - 60px); }
+        .desk-icon { width: 60px; text-align: center; cursor: pointer; font-size: 11px; }
+        .desk-icon div { width: 40px; height: 40px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; margin: 0 auto 4px; display: flex; align-items: center; justify-content: center; }
+
+        .window { position: absolute; top: 40px; left: 40px; width: 280px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; display: none; }
+        .win-titlebar { background: #272730; padding: 6px 10px; display: flex; justify-content: space-between; font-size: 12px; cursor: move; }
+        .win-body { padding: 10px; font-size: 12px; }
+
+        .taskbar { position: fixed; bottom: 0; width: 100%; height: 30px; background: #0a0a0c; border-top: 1px solid var(--border); display: flex; align-items: center; padding: 0 5px; gap: 5px; }
+        .task-btn { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 2px 8px; font-size: 11px; cursor: pointer; border-radius: 3px; }
+        
+        button.primary { background: var(--accent); border: none; color: white; padding: 4px 8px; border-radius: 3px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div class="desktop">
-        <div class="icon" onclick="openWin('about')">ℹ️ About</div>
-        <div class="icon" onclick="openWin('notes')">📝 Notes</div>
+    <div class="top-bar">
+        <span>VaskoOS v0.5</span>
+        <span id="clock">00:00:00</span>
     </div>
 
-    <!-- Прозорци -->
-    <div class="window" id="win-about">
-        <div class="win-header">
-            <span>About</span>
-            <button onclick="closeWin('about')">X</button>
+    <div id="desktop">
+        <div class="desk-icon" onclick="openWindow('calc')">
+            <div>🧮</div><span>Calc</span>
         </div>
-        <p>VaskoOS prototype v0.1</p>
+
+        <div class="window" id="win-calc">
+            <div class="win-titlebar"><span>Calculator</span><span onclick="closeWindow('calc')" style="cursor:pointer;">×</span></div>
+            <div class="win-body">
+                <div id="calc-screen" style="background:#000; padding:5px; text-align:right; margin-bottom:5px;">0</div>
+                <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:2px;">
+                    <button onclick="appendCalc('7')">7</button><button onclick="appendCalc('8')">8</button><button onclick="appendCalc('9')">9</button><button onclick="appendCalc('+')">+</button>
+                    <button onclick="appendCalc('4')">4</button><button onclick="appendCalc('5')">5</button><button onclick="appendCalc('6')">6</button><button onclick="appendCalc('-')">-</button>
+                    <button onclick="calcResult()">=</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="window" id="win-notes">
-        <div class="win-header">
-            <span>Notes</span>
-            <button onclick="closeWin('notes')">X</button>
-        </div>
-        <textarea id="my-note" style="width:100%; background:#000; color:#fff; height:60px;"></textarea>
-        <button onclick="saveNote()" style="margin-top:5px;">Save</button>
-    </div>
+    <div class="taskbar" id="taskbar"></div>
 
     <script>
-        function openWin(id) {
-            document.getElementById('win-' + id).style.display = 'block';
+        // Clock tick
+        setInterval(() => {
+            document.getElementById('clock').textContent = new Date().toLocaleTimeString();
+        }, 1000);
+
+        let activeApps = [];
+
+        function openWindow(id) {
+            let w = document.getElementById('win-' + id);
+            w.style.display = 'block';
+            if(!activeApps.includes(id)) {
+                activeApps.push(id);
+                renderTaskbar();
+            }
         }
-        function closeWin(id) {
+
+        function closeWindow(id) {
             document.getElementById('win-' + id).style.display = 'none';
+            activeApps = activeApps.filter(item => item !== id);
+            renderTaskbar();
         }
-        function saveNote() {
-            localStorage.setItem('note', document.getElementById('my-note').value);
-            alert('Saved to localstorage');
+
+        function renderTaskbar() {
+            let tb = document.getElementById('taskbar');
+            tb.innerHTML = '';
+            activeApps.forEach(app => {
+                let btn = document.createElement('button');
+                btn.className = 'task-btn';
+                btn.textContent = app;
+                btn.onclick = () => openWindow(app);
+                tb.appendChild(btn);
+            });
         }
-        // Зареждане на бележката, ако я има
-        if(localStorage.getItem('note')) {
-            document.getElementById('my-note').value = localStorage.getItem('note');
+
+        let expr = "";
+        function appendCalc(val) {
+            expr += val;
+            document.getElementById('calc-screen').textContent = expr;
+        }
+        function calcResult() {
+            try {
+                expr = eval(expr).toString();
+                document.getElementById('calc-screen').textContent = expr;
+            } catch(e) {
+                document.getElementById('calc-screen').textContent = "Error";
+                expr = "";
+            }
         }
     </script>
 </body>
