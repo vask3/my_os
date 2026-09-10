@@ -1,265 +1,171 @@
 <!DOCTYPE html>
-<html>
+<html lang="bg">
 <head>
-<meta charset="utf-8">
-<title>vaskoOS v0.9-alpha</title>
-<style>
-  /* main styles - DONT TOUCH */
-  body { background: #0f1115; color: #d0d0d0; font-family: monospace; margin: 0; padding: 0; overflow: hidden; }
-  
-  .topbar { background: #1a1c23; height: 26px; border-bottom: 2px solid #282c37; display: flex; justify-content: space-between; align-items: center; padding: 0 10px; font-size: 12px; }
-  
-  /* desktop grid - fix alignment on small screens? */
-  #desktop { padding: 20px; position: relative; height: calc(100vh - 60px); }
-  .icon { width: 64px; text-align: center; cursor: pointer; margin-bottom: 15px; }
-  .icon b { display: block; width: 42px; height: 42px; background: #222632; border: 1px solid #3b4252; line-height: 42px; font-size: 18px; margin: 0 auto 4px; border-radius: 4px; }
-  .icon span { font-size: 10px; color: #8892b0; }
+  <title>Vasko OS</title>
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      color: #eee;
+      font-family: sans-serif;
+    }
 
-  /* windows */
-  .win { position: absolute; top: 50px; left: 100px; width: 260px; background: #16181d; border: 1px solid #3b4252; display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-  .win-hdr { background: #222632; padding: 5px 8px; font-size: 11px; display: flex; justify-content: space-between; cursor: move; border-bottom: 1px solid #3b4252; }
-  .win-body { padding: 10px; font-size: 11px; }
+    .topbar {
+      height: 30px;
+      background: #1a1a1a;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 10px;
+    }
 
-  input, textarea { width: 100%; background: #0b0c10; border: 1px solid #3b4252; color: #fff; padding: 4px; font-family: monospace; font-size: 11px; margin-bottom: 5px; box-sizing: border-box; }
-  textarea { height: 70px; resize: none; }
-  
-  .btn { background: #3b4252; color: #fff; border: none; padding: 4px 8px; cursor: pointer; font-family: monospace; font-size: 11px; }
-  .btn:hover { background: #4c566a; }
+    #desktop {
+      padding: 20px;
+      display: flex;
+      gap: 15px;
+    }
 
-  /* taskbar bottom */
-  .tb { position: fixed; bottom: 0; width: 100%; height: 28px; background: #1a1c23; border-top: 2px solid #282c37; display: flex; align-items: center; padding: 0 4px; gap: 4px; z-index: 9999; }
-  .tb-btn { background: #222632; border: 1px solid #3b4252; color: #fff; padding: 2px 8px; font-size: 11px; cursor: pointer; }
-  
-  #start-menu { position: fixed; bottom: 32px; left: 4px; width: 130px; background: #16181d; border: 1px solid #3b4252; display: none; padding: 4px; z-index: 10000; }
-  .menu-item { padding: 4px; font-size: 11px; cursor: pointer; }
-  .menu-item:hover { background: #222632; }
+    .icon {
+      width: 60px;
+      text-align: center;
+      cursor: pointer;
+    }
 
-  /* calc & paint specific hacks */
-  .calc-screen { background: #0b0c10; border: 1px solid #3b4252; padding: 4px; text-align: right; margin-bottom: 4px; font-size: 13px; }
-  .calc-pad { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
-  .calc-pad button { background: #222632; border: 1px solid #3b4252; color: #fff; padding: 5px; cursor: pointer; font-size: 11px; }
-  
-  #p-canvas { background: #0b0c10; border: 1px solid #3b4252; display: block; }
-  .todo-line { display: flex; justify-content: space-between; background: #0b0c10; padding: 3px 5px; border: 1px solid #3b4252; margin-bottom: 3px; }
-</style>
+    .icon-box {
+      display: block;
+      width: 40px;
+      height: 40px;
+      background: #222;
+      border: 1px solid #444;
+      line-height: 40px;
+      margin: 0 auto 5px;
+      border-radius: 6px;
+    }
+
+    .window {
+      display: none;
+      position: absolute;
+      top: 80px;
+      left: 80px;
+      width: 250px;
+      background: #1c1c1c;
+      border: 1px solid #444;
+    }
+
+    .window-header {
+      background: #2a2a2a;
+      padding: 5px 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .window-body {
+      padding: 10px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 80px;
+      background: #000;
+      color: #fff;
+      border: 1px solid #444;
+    }
+
+    .calc-pad button {
+      width: 45px;
+      height: 30px;
+      margin: 2px;
+      background: #333;
+      color: #fff;
+      border: 1px solid #555;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-
-<div class="topbar">
-  <span>vaskoOS [dev]</span>
-  <span id="clck">00:00:00</span>
-</div>
-
-<div id="desktop">
-  <!-- Desktop icons -->
-  <div class="icon" onclick="openWindow('notepad')">
-    <b>📝</b><span>Notepad</span>
-  </div>
-  <div class="icon" onclick="openWindow('calc')">
-    <b>🧮</b><span>Calc</span>
-  </div>
-  <div class="icon" onclick="openWindow('paint')">
-    <b>🎨</b><span>Paint</span>
-  </div>
-  <div class="icon" onclick="openWindow('todos')">
-    <b>📌</b><span>Todos</span>
+  <div class="topbar">
+    <span>Vasko OS</span>
+    <span id="clock">00:00:00</span>
   </div>
 
-  <!-- Notepad Window -->
-  <div class="win" id="w-notepad">
-    <div class="win-hdr" onmousedown="dragMe(this.parentNode, event)">
-      <span>Notepad.exe</span>
-      <span onclick="closeWindow('notepad')" style="cursor:pointer">[_]</span>
+  <div id="desktop">
+    <div class="icon" onclick="openWindow()">
+      <span class="icon-box">📝</span>
+      <span>Notes</span>
     </div>
-    <div class="win-body">
-      <textarea id="txt-area" placeholder="write something..."></textarea>
-      <button class="btn" onclick="saveTxt()">Save</button>
+
+    <div class="icon" onclick="openCalc()">
+      <span class="icon-box">🧮</span>
+      <span>Calc</span>
     </div>
   </div>
 
-  <!-- Calc Window -->
-  <div class="win" id="w-calc">
-    <div class="win-hdr" onmousedown="dragMe(this.parentNode, event)">
+  <div class="window" id="myWindow">
+    <div class="window-header">
+      <span>Notepad</span>
+      <button onclick="closeWindow()">X</button>
+    </div>
+    <div class="window-body">
+      <textarea id="noteText" placeholder="Пиши тук..."></textarea>
+    </div>
+  </div>
+
+  <div class="window" id="calcWindow">
+    <div class="window-header">
       <span>Calculator</span>
-      <span onclick="closeWindow('calc')" style="cursor:pointer">[_]</span>
+      <button onclick="closeCalc()">X</button>
     </div>
-    <div class="win-body">
-      <div id="c-screen" class="calc-screen">0</div>
+    <div class="window-body">
+      <div id="calcScreen" style="background:#000; padding:5px; text-align:right; margin-bottom:5px;">0</div>
       <div class="calc-pad">
-        <button onclick="cP('7')">7</button><button onclick="cP('8')">8</button><button onclick="cP('9')">9</button><button onclick="cP('/')">/</button>
-        <button onclick="cP('4')">4</button><button onclick="cP('5')">5</button><button onclick="cP('6')">6</button><button onclick="cP('*')">*</button>
-        <button onclick="cP('1')">1</button><button onclick="cP('2')">2</button><button onclick="cP('3')">3</button><button onclick="cP('-')">-</button>
-        <button onclick="cP('0')">0</button><button onclick="cP('.')">.</button><button onclick="cRes()">=</button><button onclick="cP('+')">+</button>
+        <button onclick="press('7')">7</button>
+        <button onclick="press('8')">8</button>
+        <button onclick="press('9')">9</button>
+        <button onclick="press('+')">+</button><br>
+        <button onclick="press('4')">4</button>
+        <button onclick="press('5')">5</button>
+        <button onclick="press('6')">6</button>
+        <button onclick="press('-')">-</button><br>
+        <button onclick="press('1')">1</button>
+        <button onclick="press('2')">2</button>
+        <button onclick="press('3')">3</button>
+        <button onclick="calculate()">=</button>
       </div>
     </div>
   </div>
 
-  <!-- Paint Window -->
-  <div class="win" id="w-paint">
-    <div class="win-hdr" onmousedown="dragMe(this.parentNode, event)">
-      <span>Paint.rip</span>
-      <span onclick="closeWindow('paint')" style="cursor:pointer">[_]</span>
-    </div>
-    <div class="win-body">
-      <canvas id="p-canvas" width="238" height="100"></canvas>
-      <button class="btn" style="margin-top:4px;" onclick="clrCanvas()">Clear</button>
-    </div>
-  </div>
+  <script>
+    // Часовник - обновява се всяка секунда
+    setInterval(function() {
+      let now = new Date();
+      document.getElementById('clock').textContent = now.toTimeString().split(' ')[0];
+    }, 1000);
 
-  <!-- Todos Window -->
-  <div class="win" id="w-todos">
-    <div class="win-hdr" onmousedown="dragMe(this.parentNode, event)">
-      <span>TaskList</span>
-      <span onclick="closeWindow('todos')" style="cursor:pointer">[_]</span>
-    </div>
-    <div class="win-body">
-      <div style="display:flex;">
-        <input type="text" id="t-inp" placeholder="new task..." style="margin-bottom:0;">
-        <button class="btn" onclick="addT()" style="margin-left:2px;">+</button>
-      </div>
-      <div id="t-box" style="margin-top:5px; max-height:60px; overflow-y:auto;"></div>
-    </div>
-  </div>
-</div>
-
-<!-- Start Menu -->
-<div id="start-menu">
-  <div class="menu-item" onclick="openWindow('notepad')">Notepad</div>
-  <div class="menu-item" onclick="openWindow('calc')">Calculator</div>
-  <div class="menu-item" onclick="openWindow('paint')">Paint</div>
-  <div class="menu-item" onclick="openWindow('todos')">Todos</div>
-</div>
-
-<div class="tb">
-  <button class="tb-btn" onclick="toggleStart()">Start</button>
-  <div id="tb-list" style="display:flex; gap:3px;"></div>
-</div>
-
-<script>
-  // Clock loop - quick hack
-  setInterval(() => {
-    let d = new Date();
-    document.getElementById('clck').innerText = d.toTimeString().split(' ')[0];
-  }, 1000);
-
-  let opened = [];
-  let zIdx = 100;
-
-  function openWindow(name) {
-    let el = document.getElementById('w-' + name);
-    el.style.display = 'block';
-    el.style.zIndex = ++zIdx;
-    document.getElementById('start-menu').style.display = 'none';
-    
-    if(!opened.includes(name)) {
-      opened.push(name);
-      renderTaskbar();
+    // Notepad
+    function openWindow() {
+      document.getElementById('myWindow').style.display = 'block';
     }
-  }
-
-  function closeWindow(name) {
-    document.getElementById('w-' + name).style.display = 'none';
-    opened = opened.filter(x => x !== name);
-    renderTaskbar();
-  }
-
-  function renderTaskbar() {
-    let bar = document.getElementById('tb-list');
-    bar.innerHTML = '';
-    opened.forEach(app => {
-      let b = document.createElement('button');
-      b.className = 'tb-btn';
-      b.innerText = app;
-      b.onclick = () => openWindow(app);
-      bar.appendChild(b);
-    });
-  }
-
-  function toggleStart() {
-    let m = document.getElementById('start-menu');
-    m.style.display = m.style.display == 'block' ? 'none' : 'block';
-  }
-
-  // Draggable logic - messy but works
-  function dragMe(elem, e) {
-    elem.style.zIndex = ++zIdx;
-    let startX = e.clientX - elem.offsetLeft;
-    let startY = e.clientY - elem.offsetTop;
-    
-    function move(ev) {
-      elem.style.left = (ev.clientX - startX) + 'px';
-      elem.style.top = (ev.clientY - startY) + 'px';
+    function closeWindow() {
+      document.getElementById('myWindow').style.display = 'none';
     }
-    function up() {
-      window.removeEventListener('mousemove', move);
-      window.removeEventListener('mouseup', up);
+
+    // Calculator
+    function openCalc() {
+      document.getElementById('calcWindow').style.display = 'block';
     }
-    window.addEventListener('mousemove', move);
-    window.addEventListener('mouseup', up);
-  }
-
-  // Notepad persistence
-  let ta = document.getElementById('txt-area');
-  if(localStorage.getItem('v_saved_text')) ta.value = localStorage.getItem('v_saved_text');
-  function saveTxt() {
-    localStorage.setItem('v_saved_text', ta.value);
-    alert('saved ok'); // temporary alert
-  }
-
-  // Calc stuff
-  let expr = '';
-  function cP(val) {
-    expr += val;
-    document.getElementById('c-screen').innerText = expr;
-  }
-  function cRes() {
-    try {
-      expr = eval(expr).toString();
-      document.getElementById('c-screen').innerText = expr;
-    } catch(err) {
-      document.getElementById('c-screen').innerText = 'ERROR';
-      expr = '';
+    function closeCalc() {
+      document.getElementById('calcWindow').style.display = 'none';
     }
-  }
 
-  // Paint setup
-  let cv = document.getElementById('p-canvas');
-  let ctx = cv.getContext('2d');
-  let isDraw = false;
-  cv.onmousedown = (e) => { isDraw = true; ctx.beginPath(); ctx.moveTo(e.offsetX, e.offsetY); };
-  cv.onmousemove = (e) => {
-    if(!isDraw) return;
-    ctx.lineTo(e.offsetX, e.offsetY);
-    ctx.strokeStyle = '#8892b0';
-    ctx.lineWidth = 1;
-    ctx.stroke();
-  };
-  window.onmouseup = () => { isDraw = false; };
-  function clrCanvas() { ctx.clearRect(0,0,cv.width,cv.height); }
-
-  // Todo list hack
-  let tasks = JSON.parse(localStorage.getItem('v_tasks_arr') || '[]');
-  function drawTasks() {
-    let box = document.getElementById('t-box');
-    box.innerHTML = '';
-    tasks.forEach((t, i) => {
-      box.innerHTML += `<div class="todo-line"><span>${t}</span><span style="color:#bf616a; cursor:pointer;" onclick="rmT(${i})">[del]</span></div>`;
-    });
-  }
-  function addT() {
-    let inp = document.getElementById('t-inp');
-    if(!inp.value) return;
-    tasks.push(inp.value);
-    localStorage.setItem('v_tasks_arr', JSON.stringify(tasks));
-    inp.value = '';
-    drawTasks();
-  }
-  function rmT(idx) {
-    tasks.splice(idx, 1);
-    localStorage.setItem('v_tasks_arr', JSON.stringify(tasks));
-    drawTasks();
-  }
-  drawTasks();
-</script>
+    let calcValue = "";
+    function press(num) {
+      calcValue += num;
+      document.getElementById('calcScreen').textContent = calcValue;
+    }
+    function calculate() {
+      calcValue = eval(calcValue).toString();
+      document.getElementById('calcScreen').textContent = calcValue;
+    }
+  </script>
 </body>
 </html>
